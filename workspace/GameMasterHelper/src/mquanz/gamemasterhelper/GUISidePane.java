@@ -1,18 +1,12 @@
 package mquanz.gamemasterhelper;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import javax.swing.JButton;
-import javax.swing.JFormattedTextField;
-import javax.swing.JPanel;
-import javax.swing.JSlider;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 public class GUISidePane extends JPanel implements ChangeListener, PropertyChangeListener {
 	private static final long serialVersionUID = 1L;
@@ -31,9 +25,9 @@ public class GUISidePane extends JPanel implements ChangeListener, PropertyChang
 		setOpaque(true);
 
 		GridBagConstraints c = new GridBagConstraints();
-		GridBagLayout gridbagLayout = new GridBagLayout();
+		GridBagLayout gbl = new GridBagLayout();
 
-		setLayout(gridbagLayout);
+		setLayout(gbl);
 
 		changeMapPopupMenu = new GUIMapPopupMenu(this);
 
@@ -76,9 +70,10 @@ public class GUISidePane extends JPanel implements ChangeListener, PropertyChang
 		});
 
 		final JButton buttonModeDrag = new JButton();
-		buttonModeDrag.setIcon(GeneralInformation.createImageIcon("/gui/DragMode.png"));
+		buttonModeDrag.setIcon(GeneralInformation.createImageIcon("/gui/tool_drag.png"));
 		buttonModeDrag.setHorizontalTextPosition(SwingConstants.CENTER);
 		buttonModeDrag.setVerticalTextPosition(SwingConstants.CENTER);
+		buttonModeDrag.setPreferredSize(new Dimension(32,32));
 		buttonModeDrag.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				GUISidePane.this.parentFrame.scrollPane.mode = 1;
@@ -88,9 +83,10 @@ public class GUISidePane extends JPanel implements ChangeListener, PropertyChang
 		lastActiveButton = buttonModeDrag;
 		buttonModeDrag.setEnabled(false);
 		
-		final JButton buttonModePencil = new JButton("Pencil");
+		final JButton buttonModePencil = new JButton(GeneralInformation.createImageIcon("/gui/tool_pencil.png"));
 		buttonModePencil.setHorizontalTextPosition(SwingConstants.CENTER);
 		buttonModePencil.setVerticalTextPosition(SwingConstants.CENTER);
+		buttonModePencil.setPreferredSize(new Dimension(32,32));
 		buttonModePencil.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				GUISidePane.this.parentFrame.scrollPane.mode = 2;
@@ -98,9 +94,10 @@ public class GUISidePane extends JPanel implements ChangeListener, PropertyChang
 			}
 		});
 
-		final JButton buttonModeLine = new JButton("Line");
+		final JButton buttonModeLine = new JButton(GeneralInformation.createImageIcon("/gui/tool_line.png"));
 		buttonModeLine.setHorizontalTextPosition(SwingConstants.CENTER);
 		buttonModeLine.setVerticalTextPosition(SwingConstants.CENTER);
+		buttonModeLine.setPreferredSize(new Dimension(32,32));
 		buttonModeLine.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				GUISidePane.this.parentFrame.scrollPane.mode = 3;
@@ -108,9 +105,10 @@ public class GUISidePane extends JPanel implements ChangeListener, PropertyChang
 			}
 		});
 
-		final JButton buttonModeFill = new JButton("Fill");
+		final JButton buttonModeFill = new JButton(GeneralInformation.createImageIcon("/gui/tool_fill.png"));
 		buttonModeFill.setHorizontalTextPosition(SwingConstants.CENTER);
 		buttonModeFill.setVerticalTextPosition(SwingConstants.CENTER);
+		buttonModeFill.setPreferredSize(new Dimension(32,32));
 		buttonModeFill.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				GUISidePane.this.parentFrame.scrollPane.mode = 4;
@@ -131,39 +129,19 @@ public class GUISidePane extends JPanel implements ChangeListener, PropertyChang
 		textFieldStrokeSize.setColumns(3);
 		textFieldStrokeSize.addPropertyChangeListener(this);
 
-		c.fill = GridBagConstraints.HORIZONTAL;
-		//c.fill = GridBagConstraints.VERTICAL;
-		c.weightx = 1;
-		c.weighty = 1;
-		c.gridx = 0;
-		c.gridy = 0;
-		add(buttonChangeMap, c);
-		c.gridy = 1;
-		add(buttonSave, c);
-		c.gridy = 2;
-		add(buttonLoad, c);
-		c.gridy = 3;
-		add(buttonSaveToImage, c);
-		c.gridy = 4;
-		add(buttonModeDrag, c);
-		c.gridy = 5;
-		add(buttonModePencil, c);
-		c.gridy = 6;
-		add(buttonModeLine, c);
-		c.gridy = 7;
-		add(buttonModeFill, c);
-		c.gridy = 8;
-		// c.weightx = 0;
-		add(sliderStrokeSize, c);
-		c.gridx = 1;
-		
-		// c.weightx = 0.2;
-		add(textFieldStrokeSize, c);
-		c.gridy = 9;
-		c.gridx = 0;
-		c.fill = GridBagConstraints.CENTER;
-		add(colorChooser, c);
-		
+		LH.place(0,0,4,1,1,1,"h","c",null,this,gbl,c,buttonChangeMap);
+		LH.place(0,1,4,1,1,1,"h","c",null,this,gbl,c,buttonSave);
+		LH.place(0,2,4,1,1,1,"h","c",null,this,gbl,c,buttonLoad);
+		LH.place(0,3,4,1,1,1,"h","c",null,this,gbl,c,buttonSaveToImage);
+
+		LH.place(1,4,1,1,1,1,"n","e",null,this,gbl,c,buttonModeDrag);
+		LH.place(2,4,1,1,0.55,1,"n","w",null,this,gbl,c,buttonModePencil);
+		LH.place(1,5,1,1,1,1,"n","e",null,this,gbl,c,buttonModeLine);
+		LH.place(2,5,1,1,0.55,1,"n","w",null,this,gbl,c,buttonModeFill);
+
+		LH.place(0,6,3,1,1,1,"n","c",null,this,gbl,c,sliderStrokeSize);
+		LH.place(3,6,1,1,0,1,"h","c",null,this,gbl,c,textFieldStrokeSize);
+		LH.place(0,7,4,1,1,1,"n","c",null,this,gbl,c,colorChooser);
 
 		setVisible(true);
 	}

@@ -18,7 +18,6 @@ public class GUIMain extends JFrame{
 	 * TODO: Changing Tooltip for the modes in the bottom right corner
 	 * TODO: (SidePane) Toggle for grid
 	 * TODO: (SidePane) Snap to grid option
-	 * TODO: (SidePane) show distance option
 	 * TODO: (Menu) ability to set meter
 	 * TODO: Edit Screens for npcs & mapLink (with Dialog)
 	 * TODO: Link to a file in the edit screens
@@ -33,7 +32,6 @@ public class GUIMain extends JFrame{
 	 * TODO: (Button) Copy & Paste
 	 * TODO: (Button) Clear map
 	 * TODO: (Button) Cut
-	 * TODO: Icons for Pencil, Line and Fill tool
 	 * TODO: Flow Diagramm parts
 	 * TODO: Furniture
 	 * 
