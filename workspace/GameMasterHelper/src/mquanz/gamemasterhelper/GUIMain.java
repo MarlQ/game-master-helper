@@ -1,7 +1,7 @@
 package mquanz.gamemasterhelper;
-import java.awt.Color;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -9,27 +9,16 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import javax.swing.AbstractAction;
-import javax.swing.JComponent;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 
 public class GUIMain extends JFrame{
 	private static final long serialVersionUID = 1L;
 	
 	/**
-	 * TODO: show distance in line tool
 	 * TODO: Changing Tooltip for the modes in the bottom right corner
 	 * TODO: (SidePane) Toggle for grid
 	 * TODO: (SidePane) Snap to grid option
 	 * TODO: (SidePane) show distance option
-	 * TODO: (Menu) show distance in meters or pixels
 	 * TODO: (Menu) ability to set meter
 	 * TODO: Edit Screens for npcs & mapLink (with Dialog)
 	 * TODO: Link to a file in the edit screens
@@ -124,14 +113,16 @@ public class GUIMain extends JFrame{
 		GridBagLayout contentPaneLayout = new GridBagLayout();
 		JPanel contentPane = new JPanel();
 		contentPane.setLayout(contentPaneLayout);
-		
-		
+
+		GUIBottomPane bottomPane = new GUIBottomPane();
 		drawingSurface = new GUIDrawingSurface(generalInformation.maps.get(0), this.generalInformation);
-		scrollPane = new GUIDragScrollPane(this.drawingSurface);
+		scrollPane = new GUIDragScrollPane(this.drawingSurface,bottomPane);
 		drawingSurface.dragScrollPane = scrollPane;
 		
 		GUISidePane sidePane = new GUISidePane(this);
 		GUITopPane topPane = new GUITopPane(this);
+
+
 		
 		c.fill = GridBagConstraints.NONE;
 		c.weightx = 1;
@@ -152,6 +143,12 @@ public class GUIMain extends JFrame{
 		c.weightx = 0;
 		c.gridx++;
 		contentPane.add(sidePane, c);
+		c.gridy = 2;
+		c.gridx = 0;
+		c.gridwidth = 2;
+		c.weightx = 1;
+		c.weighty = 0;
+		contentPane.add(bottomPane, c);
 		
 		
 		AbstractAction pressedShiftAction = new AbstractAction() {

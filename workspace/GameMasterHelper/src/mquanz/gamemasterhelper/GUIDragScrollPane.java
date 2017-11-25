@@ -1,23 +1,8 @@
 package mquanz.gamemasterhelper;
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.HierarchyEvent;
-import java.awt.event.HierarchyListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
 import java.util.ArrayList;
-
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
-import javax.swing.JToolTip;
-import javax.swing.JViewport;
-import javax.swing.SwingUtilities;
 
 public class GUIDragScrollPane extends JScrollPane {
 	private static final long serialVersionUID = 1L;
@@ -27,6 +12,7 @@ public class GUIDragScrollPane extends JScrollPane {
 	GUIDrawingSurface objectToMove;
 	ArrayList<GUIObjectEditScreen> objectEditScreenList = new ArrayList<GUIObjectEditScreen>();
 
+	GUIBottomPane bottomPane;
 	
 	public boolean shiftPressed = false;
 	boolean snapToGrid = GUIMain.SNAP_TO_GRID_DEFAULT;
@@ -38,10 +24,11 @@ public class GUIDragScrollPane extends JScrollPane {
 	 */
 	public int shiftLineHorizontal = 0;
 
-	public GUIDragScrollPane(GUIDrawingSurface objectToMove) {
+	public GUIDragScrollPane(GUIDrawingSurface objectToMove, GUIBottomPane bottomPane) {
 		super(objectToMove);
 		popupMenu = new GUIPopupMenu(objectToMove);
 		this.objectToMove = objectToMove;
+		this.bottomPane = bottomPane;
 		setPreferredSize(new Dimension(500, 500));
 
 		ViewportDragScrollListener l = new ViewportDragScrollListener(objectToMove, false);
@@ -88,12 +75,9 @@ public class GUIDragScrollPane extends JScrollPane {
 
 		@Override
 		public void mouseMoved(MouseEvent e) {
-
-			
-			
-			
-			
-			
+			int x = e.getX()+ ((JViewport) e.getComponent()).getViewPosition().x;
+			int y = e.getY() + ((JViewport) e.getComponent()).getViewPosition().y;
+			bottomPane.updateMouseCoordinates(x,y);
 		}
 
 		@Override
@@ -101,6 +85,9 @@ public class GUIDragScrollPane extends JScrollPane {
 			if (SwingUtilities.isLeftMouseButton(e)) {
 				int mouseX = e.getX();
 				int mouseY = e.getY();
+				int xTrans = e.getX()+ ((JViewport) e.getComponent()).getViewPosition().x;
+				int yTrans = e.getY() + ((JViewport) e.getComponent()).getViewPosition().y;
+				bottomPane.updateMouseCoordinates(xTrans,yTrans);
 				switch (mode) {
 				case 1:
 					// Drag Mode
@@ -116,8 +103,8 @@ public class GUIDragScrollPane extends JScrollPane {
 					break;
 				case 2:
 					// Pencil Tool
-					currentX = mouseX + ((JViewport) e.getComponent()).getViewPosition().x;
-					currentY = mouseY + ((JViewport) e.getComponent()).getViewPosition().y;
+					currentX = xTrans;
+					currentY = yTrans;
 					
 					if(snapToGrid){
 						int modX = currentX%GUIMain.METER;
@@ -198,28 +185,17 @@ public class GUIDragScrollPane extends JScrollPane {
 					}		
 					// TODO: REDO!!!
 					objectToMove.lineEndPoint = new Point(lineX,lineY);
-					if(showDistance && objectToMove.lineStartPoint != null){
-						int xDist = objectToMove.lineEndPoint.x-objectToMove.lineStartPoint.x;
-						int yDist = objectToMove.lineEndPoint.y-objectToMove.lineStartPoint.y;
-						
-						int distance = (int) Math.sqrt(Math.pow(xDist,2)+Math.pow(yDist, 2));
-						int distanceInMeters = distance/GUIMain.METER;
 
-						/**
-						JToolTip tp = new JToolTip();
-						tp.setLocation(objectToMove.lineEndPoint);
-						String tpText = Integer.toString(distanceInMeters);
-						tp.setTipText(tpText);
-						tp.setVisible(true);
-						tp.setToolTipText(tpText);
-						tp.setComponent(objectToMove);
-						tp.setOpaque(true);
-						tp.setBackground(Color.RED);
-						**/
-						
-						System.out.println(distanceInMeters);
-						
+					if(objectToMove.lineStartPoint != null && objectToMove.lineEndPoint != null){
+					int xDist = objectToMove.lineEndPoint.x-objectToMove.lineStartPoint.x;
+					int yDist = objectToMove.lineEndPoint.y-objectToMove.lineStartPoint.y;
+
+					int distance = (int) Math.sqrt(xDist*xDist+yDist*yDist);
+
+					bottomPane.setLineLength(distance);
 					}
+
+
 					objectToMove.repaint();
 					break;
 				default:
@@ -311,6 +287,7 @@ public class GUIDragScrollPane extends JScrollPane {
 						}
 					}	
 					objectToMove.lineStartPoint = new Point(lineX,lineY);
+					bottomPane.setLineLength(0);
 					break;
 				case 4:
 					// Fill Tool
@@ -330,6 +307,7 @@ public class GUIDragScrollPane extends JScrollPane {
 					// Line Tool
 					objectToMove.lineStartPoint = null;
 					objectToMove.lineEndPoint = null;
+					bottomPane.nullLineLength();
 					objectToMove.repaint();
 				} else if (mode == 2) {
 					// Pencil Tool Sec
@@ -380,6 +358,7 @@ public class GUIDragScrollPane extends JScrollPane {
 					if (objectToMove.lineStartPoint != null && objectToMove.lineEndPoint != null) {
 						objectToMove.g2.drawLine(objectToMove.lineStartPoint.x, objectToMove.lineStartPoint.y,lineX,lineY);
 					}
+					bottomPane.nullLineLength();
 
 					objectToMove.lineStartPoint = null;
 					objectToMove.lineEndPoint = null;
