@@ -47,7 +47,7 @@ public class GUISidePane extends JPanel implements ChangeListener, PropertyChang
 		buttonSave.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				GUISidePane.this.parentFrame.saveGame();
-				
+
 			}
 		});
 

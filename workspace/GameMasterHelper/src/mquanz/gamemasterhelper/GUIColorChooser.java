@@ -1,31 +1,26 @@
 package mquanz.gamemasterhelper;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.JButton;
-import javax.swing.JPanel;
 
 public class GUIColorChooser extends JPanel implements ActionListener{
 	private static final long serialVersionUID = 1L;
 
-	Color colorChooserStandardColors[] = {Color.WHITE, Color.BLACK, Color.RED, Color.BLUE, Color.GREEN, Color.CYAN, Color.ORANGE, Color.YELLOW, Color.PINK, Color.DARK_GRAY};
+	private Color colorChooserStandardColors[] = {Color.WHITE, Color.BLACK, Color.RED, Color.BLUE, Color.GREEN, Color.CYAN, Color.ORANGE, Color.YELLOW, Color.PINK, Color.DARK_GRAY};
 	
-	static final int COLOR_CHOOSER_COLOR_COUNT = 10;
-	static final int COLORS_PER_ROW = 5;
+	private static final int COLOR_CHOOSER_COLOR_COUNT = 10;
+	private static final int COLORS_PER_ROW = 5;
 	
-	JButton buttonsColorChooser[] = new JButton[COLOR_CHOOSER_COLOR_COUNT];
-	JButton buttonColorChooserPrim;
-	JButton buttonColorChooserSeco;
+	private JButton buttonsColorChooser[] = new JButton[COLOR_CHOOSER_COLOR_COUNT];
+	private JButton buttonColorChooserPrim;
+	private JButton buttonColorChooserSeco;
 	
-	GUISidePane parentFrame;
+	private GUISidePane parentFrame;
 	
-	boolean isPrimSelected = true;
+	private boolean isPrimSelected = true;
 	
-	public GUIColorChooser(GUISidePane parentFrame){
+	 GUIColorChooser(GUISidePane parentFrame){
 		super();
 		this.parentFrame = parentFrame;
 		

@@ -108,9 +108,9 @@ public class GUIMain extends JFrame{
 	}
 	public JPanel createContentPane(){
 		GridBagConstraints c = new GridBagConstraints();
-		GridBagLayout contentPaneLayout = new GridBagLayout();
+		GridBagLayout gbl = new GridBagLayout();
 		JPanel contentPane = new JPanel();
-		contentPane.setLayout(contentPaneLayout);
+		contentPane.setLayout(gbl);
 
 		GUIBottomPane bottomPane = new GUIBottomPane();
 		drawingSurface = new GUIDrawingSurface(generalInformation.maps.get(0), this.generalInformation);
@@ -121,34 +121,11 @@ public class GUIMain extends JFrame{
 		GUITopPane topPane = new GUITopPane(this);
 
 
-		
-		c.fill = GridBagConstraints.NONE;
-		c.weightx = 1;
-		c.weighty = 0.2;
-		c.gridx = 0;
-		c.gridy = 0;
-		
-		contentPane.add(topPane);
-		
-		c.fill = GridBagConstraints.BOTH;
-		c.weightx = 1;
-		c.weighty = 0.8;
-		c.gridy = 1;
-		//c.insets = new Insets(50, 0, 0, 0);
+		LH.place(0,0,1,1,1,0.2,"n","c",null,contentPane,gbl,c,topPane);
+		LH.place(0,1,1,1,1,0.8,"b","c",null,contentPane,gbl,c,scrollPane);
+		LH.place(1,1,1,1,0,0.8,"n","c",null,contentPane,gbl,c,sidePane);
+		LH.place(0,2,2,1,1,0,"h","c",null,contentPane,gbl,c,bottomPane);
 
-		contentPane.add(scrollPane, c);
-		c.fill = GridBagConstraints.NONE;
-		c.weightx = 0;
-		c.gridx++;
-		contentPane.add(sidePane, c);
-		c.gridy = 2;
-		c.gridx = 0;
-		c.gridwidth = 2;
-		c.weightx = 1;
-		c.weighty = 0;
-		contentPane.add(bottomPane, c);
-		
-		
 		AbstractAction pressedShiftAction = new AbstractAction() {
 			private static final long serialVersionUID = 1L;
 		    public void actionPerformed(ActionEvent e) {	

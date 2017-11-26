@@ -4,27 +4,26 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
-public class GUIDragScrollPane extends JScrollPane {
+class GUIDragScrollPane extends JScrollPane {
 	private static final long serialVersionUID = 1L;
 
-	GUIPopupMenu popupMenu;
+	private GUIPopupMenu popupMenu;
 	MapObjectIcon selectedIcon;
 	GUIDrawingSurface objectToMove;
 	ArrayList<GUIObjectEditScreen> objectEditScreenList = new ArrayList<GUIObjectEditScreen>();
 
-	GUIBottomPane bottomPane;
+	private GUIBottomPane bottomPane;
 	
-	public boolean shiftPressed = false;
-	boolean snapToGrid = GUIMain.SNAP_TO_GRID_DEFAULT;
-	public int mode = GUIMain.MODE_DEFAULT;
-	boolean showDistance = true;
+	boolean shiftPressed = false;
+	private boolean snapToGrid = GUIMain.SNAP_TO_GRID_DEFAULT;
+	int mode = GUIMain.MODE_DEFAULT;
 	/*
 	 * 1 == Drag Mode 2 == Pencil 3 == Line 4 == Fill
 	 * 
 	 */
-	public int shiftLineHorizontal = 0;
+	int shiftLineHorizontal = 0;
 
-	public GUIDragScrollPane(GUIDrawingSurface objectToMove, GUIBottomPane bottomPane) {
+	GUIDragScrollPane(GUIDrawingSurface objectToMove, GUIBottomPane bottomPane) {
 		super(objectToMove);
 		popupMenu = new GUIPopupMenu(objectToMove);
 		this.objectToMove = objectToMove;
@@ -52,7 +51,7 @@ public class GUIDragScrollPane extends JScrollPane {
 
 		private int currentX, currentY, oldX, oldY;
 
-		public ViewportDragScrollListener(JComponent comp, boolean autoScroll) {
+		private ViewportDragScrollListener(JComponent comp, boolean autoScroll) {
 			this.label = comp;
 			this.autoScroll = autoScroll;
 			this.dc = comp.getCursor();
@@ -82,12 +81,11 @@ public class GUIDragScrollPane extends JScrollPane {
 
 		@Override
 		public void mouseDragged(MouseEvent e) {
+			int xTrans = e.getX() + ((JViewport) e.getComponent()).getViewPosition().x;
+			int yTrans = e.getY() + ((JViewport) e.getComponent()).getViewPosition().y;
+			bottomPane.updateMouseCoordinates(xTrans,yTrans);
+
 			if (SwingUtilities.isLeftMouseButton(e)) {
-				int mouseX = e.getX();
-				int mouseY = e.getY();
-				int xTrans = e.getX()+ ((JViewport) e.getComponent()).getViewPosition().x;
-				int yTrans = e.getY() + ((JViewport) e.getComponent()).getViewPosition().y;
-				bottomPane.updateMouseCoordinates(xTrans,yTrans);
 				switch (mode) {
 				case 1:
 					// Drag Mode
@@ -127,29 +125,27 @@ public class GUIDragScrollPane extends JScrollPane {
 						int difX = currentX-oldX;
 						int difY = currentY-oldY;
 
-						if(difX == 0&& difY == 0){
-							//Do nothing
-						}
-						else if(shiftLineHorizontal == 2){
-							currentY = oldY;
-						}
-						else if(shiftLineHorizontal == 1){
-							currentX = oldX;
-						}
-						else if(difX == 0){
-							currentX = oldX;
-							shiftLineHorizontal = 1;
-							System.out.println(1);
-						}
-						else if(difY == 0){
-							currentY = oldY;
-							shiftLineHorizontal = 2;
-							System.out.println(2);
-						}
-						else{
-							currentX = oldX;
-							shiftLineHorizontal = 1;
-							System.out.println(3);
+
+
+						if(!(difX == 0 && difY == 0)){
+							if(shiftLineHorizontal == 2){
+                                currentY = oldY;
+                            }
+                            else if(shiftLineHorizontal == 1){
+                                currentX = oldX;
+                            }
+                            else if(difX == 0){
+                                currentX = oldX;
+                                shiftLineHorizontal = 1;
+                            }
+                            else if(difY == 0){
+                                currentY = oldY;
+                                shiftLineHorizontal = 2;
+                            }
+                            else{
+                                currentX = oldX;
+                                shiftLineHorizontal = 1;
+                            }
 						}
 					}
 					
@@ -163,8 +159,8 @@ public class GUIDragScrollPane extends JScrollPane {
 					break;
 				case 3:
 					// Line Tool
-					int lineX = mouseX + ((JViewport) e.getComponent()).getViewPosition().x;
-					int lineY = mouseY + ((JViewport) e.getComponent()).getViewPosition().y;
+					int lineX = xTrans;
+					int lineY = yTrans;
 					
 					if(snapToGrid){
 						int modX = lineX%GUIMain.METER;
@@ -182,11 +178,15 @@ public class GUIDragScrollPane extends JScrollPane {
 						else{
 							lineY -= modY;
 						}
-					}		
-					// TODO: REDO!!!
-					objectToMove.lineEndPoint = new Point(lineX,lineY);
+					}
+					if(objectToMove.lineEndPoint == null){
+						objectToMove.lineEndPoint = new Point(lineX,lineY);
+					}
+					else{
+						objectToMove.lineEndPoint.setLocation(lineX,lineY);
+					}
 
-					if(objectToMove.lineStartPoint != null && objectToMove.lineEndPoint != null){
+					if(objectToMove.lineStartPoint != null){
 					int xDist = objectToMove.lineEndPoint.x-objectToMove.lineStartPoint.x;
 					int yDist = objectToMove.lineEndPoint.y-objectToMove.lineStartPoint.y;
 
@@ -206,8 +206,8 @@ public class GUIDragScrollPane extends JScrollPane {
 			if (SwingUtilities.isRightMouseButton(e)) {
 				if (mode == 2) {
 					// Pencil Tool Sec
-					currentX = e.getX() + ((JViewport) e.getComponent()).getViewPosition().x;
-					currentY = e.getY() + ((JViewport) e.getComponent()).getViewPosition().y;
+					currentX = xTrans;
+					currentY = yTrans;
 
 					if (objectToMove.g2 != null) {
 						objectToMove.g2.setPaint(objectToMove.drawingColorSeco);
@@ -295,10 +295,6 @@ public class GUIDragScrollPane extends JScrollPane {
 					int y = mouseY + ((JViewport) e.getComponent()).getViewPosition().y;
 					objectToMove.fillAreaWithColor(x, y);
 					break;
-				default:
-					// TODO: ERROR
-					break;
-
 				}
 
 			}
@@ -386,7 +382,7 @@ public class GUIDragScrollPane extends JScrollPane {
 		}
 	}
 
-	public void itemClicked(MapObjectIcon itemIcon) {
+	void itemClicked(MapObjectIcon itemIcon) {
 		if (selectedIcon == null) {
 			itemIcon.isSelected = true;
 			selectedIcon = itemIcon;
@@ -400,7 +396,7 @@ public class GUIDragScrollPane extends JScrollPane {
 		}
 	}
 
-	public void itemDoubleClicked(MapObjectIcon mapObjectIcon) {
+	void itemDoubleClicked(MapObjectIcon mapObjectIcon) {
 		MapObject mapObject = mapObjectIcon.mapObject;
 		if (mapObject.getClass() == MapLink.class) {
 			MapLink mapLink = (MapLink) mapObjectIcon.mapObject;

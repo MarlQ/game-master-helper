@@ -1,16 +1,8 @@
 package mquanz.gamemasterhelper;
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.color.ColorSpace;
 import java.awt.image.BufferedImage;
-import javax.swing.JPanel;
-import javax.swing.Scrollable;
 
 
 
@@ -21,18 +13,18 @@ public class GUIDrawingSurface extends JPanel implements Scrollable{
 	GeneralInformation generalInformation;
 	ComponentMover componentMover;
 	
-	public Graphics2D g2;
-	public Color drawingColorPrim = GUIMain.COLOR_PRIM_DEFAULT;
-	public Color drawingColorSeco = GUIMain.COLOR_SEC_DEFAULT;
+	Graphics2D g2;
+	Color drawingColorPrim = GUIMain.COLOR_PRIM_DEFAULT;
+	Color drawingColorSeco = GUIMain.COLOR_SEC_DEFAULT;
 	private BasicStroke drawingStroke = new BasicStroke(GUIMain.STROKE_INIT);
 	
 	GUIDragScrollPane dragScrollPane;
-	public Point lineStartPoint, lineEndPoint;
+	Point lineStartPoint, lineEndPoint;
 	
-	boolean drawGrid = GUIMain.DRAW_GRID_DEFAULT;
+	private boolean drawGrid = GUIMain.DRAW_GRID_DEFAULT;
 	
 
-	public GUIDrawingSurface(MapInformation mapInformation, GeneralInformation generalInformation) {
+	GUIDrawingSurface(MapInformation mapInformation, GeneralInformation generalInformation) {
 		setLayout(null);
 		this.setPreferredSize(mapInformation.mapSize);
 		this.generalInformation = generalInformation;
@@ -41,7 +33,7 @@ public class GUIDrawingSurface extends JPanel implements Scrollable{
 	}
 	
 	
-	public void addNewIcon(int posX, int posY, ObjectType objectType){
+	void addNewIcon(int posX, int posY, ObjectType objectType){
 		MapObjectIcon mapObjectIcon = null;
 		//TODO: description and stuff properly
 		
@@ -66,14 +58,14 @@ public class GUIDrawingSurface extends JPanel implements Scrollable{
 		}
 	}
 	
-	public void setDrawingColorPrim(Color color){
+	void setDrawingColorPrim(Color color){
 		this.drawingColorPrim = color;
 		g2.setPaint(drawingColorPrim);
 	}
-	public void setDrawingColorSeco(Color color){
+	void setDrawingColorSeco(Color color){
 		this.drawingColorSeco = color;
 	}
-	public void setDrawingStroke(int size){
+	void setDrawingStroke(int size){
 		if(g2 == null) return;
 		if(size < GUIMain.STROKE_MIN || size > GUIMain.STROKE_MAX) return;
 		this.drawingStroke = new BasicStroke(size);
@@ -119,18 +111,18 @@ public class GUIDrawingSurface extends JPanel implements Scrollable{
         	((Graphics2D) g).setPaint(drawingColorPrim);
         }
     }
-	public void clearDrawing(){
+	private void clearDrawing(){
 		g2.setPaint(GUIMain.COLOR_BACKGROUND_DEFAULT);
 		g2.fillRect(0, 0, getSize().width, getSize().height);
 		g2.setPaint(drawingColorPrim);
 		repaint();
 	}
-	public void fillAreaWithColor(int x, int y){
+	void fillAreaWithColor(int x, int y){
 		AreaFiller.floodFillImage(mapInformation.drawingImage, x, y, drawingColorPrim);
 		repaint();	
 	}
 
-	public void changeMap(MapInformation mapInformation){
+	void changeMap(MapInformation mapInformation){
 		
 		if(this.mapInformation != mapInformation){
 			if(dragScrollPane != null){

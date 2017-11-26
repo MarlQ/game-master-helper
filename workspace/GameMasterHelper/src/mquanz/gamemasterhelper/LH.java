@@ -6,7 +6,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 
 
-public class LH {
+public abstract class LH {
 
 	public static void place(int x, int y, int w, int h, double wx, double wy, String fill, String anchor, Insets insets, Container p, GridBagLayout gbl, GridBagConstraints c,Component component){
 		c.gridx = x;
