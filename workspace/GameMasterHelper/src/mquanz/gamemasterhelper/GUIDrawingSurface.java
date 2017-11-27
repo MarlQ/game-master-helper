@@ -20,8 +20,9 @@ public class GUIDrawingSurface extends JPanel implements Scrollable{
 	
 	GUIDragScrollPane dragScrollPane;
 	Point lineStartPoint, lineEndPoint;
+	Point rectangleStartPoint, rectangleEndPoint;
 	
-	private boolean drawGrid = GUIMain.DRAW_GRID_DEFAULT;
+	boolean drawGrid = GUIMain.DRAW_GRID_DEFAULT;
 	
 
 	GUIDrawingSurface(MapInformation mapInformation, GeneralInformation generalInformation) {
@@ -71,7 +72,7 @@ public class GUIDrawingSurface extends JPanel implements Scrollable{
 		this.drawingStroke = new BasicStroke(size);
 		g2.setStroke(drawingStroke);
 	}
-	
+
 	public void paintComponent(Graphics g)
     {
         super.paintComponent(g);
@@ -93,6 +94,25 @@ public class GUIDrawingSurface extends JPanel implements Scrollable{
         	((Graphics2D) g).setPaint(drawingColorPrim);
         	g.drawLine(lineStartPoint.x, lineStartPoint.y, lineEndPoint.x,  lineEndPoint.y);
         }
+        if(rectangleStartPoint != null && rectangleEndPoint != null){
+			((Graphics2D) g).setStroke(drawingStroke);
+			((Graphics2D) g).setPaint(drawingColorPrim);
+			int rectWidth = rectangleEndPoint.x-rectangleStartPoint.x;
+			int rectHeight = rectangleEndPoint.y-rectangleStartPoint.y;
+
+			if(rectHeight < 0 && rectWidth < 0){
+				g.drawRect(rectangleEndPoint.x, rectangleEndPoint.y,Math.abs(rectWidth),Math.abs(rectHeight));
+			}
+			else if(rectWidth < 0){
+				g.drawRect(rectangleStartPoint.x+rectWidth, rectangleStartPoint.y,Math.abs(rectWidth),rectHeight);
+			}
+			else if(rectHeight < 0 ){
+				g.drawRect(rectangleStartPoint.x, rectangleStartPoint.y+rectHeight,rectWidth,Math.abs(rectHeight));
+			}
+			else {
+				g.drawRect(rectangleStartPoint.x, rectangleStartPoint.y,rectWidth,rectHeight);
+			}
+		}
         if(drawGrid){
         	((Graphics2D) g).setStroke(new BasicStroke(GUIMain.GRID_WIDTH_DEFAULT));
             ((Graphics2D) g).setPaint(GUIMain.COLOR_GRID_DEFAULT);

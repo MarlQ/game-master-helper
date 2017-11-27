@@ -71,8 +71,6 @@ public class GUISidePane extends JPanel implements ChangeListener, PropertyChang
 
 		final JButton buttonModeDrag = new JButton();
 		buttonModeDrag.setIcon(GeneralInformation.createImageIcon("/gui/tool_drag.png"));
-		buttonModeDrag.setHorizontalTextPosition(SwingConstants.CENTER);
-		buttonModeDrag.setVerticalTextPosition(SwingConstants.CENTER);
 		buttonModeDrag.setPreferredSize(new Dimension(32,32));
 		buttonModeDrag.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
@@ -84,8 +82,6 @@ public class GUISidePane extends JPanel implements ChangeListener, PropertyChang
 		buttonModeDrag.setEnabled(false);
 		
 		final JButton buttonModePencil = new JButton(GeneralInformation.createImageIcon("/gui/tool_pencil.png"));
-		buttonModePencil.setHorizontalTextPosition(SwingConstants.CENTER);
-		buttonModePencil.setVerticalTextPosition(SwingConstants.CENTER);
 		buttonModePencil.setPreferredSize(new Dimension(32,32));
 		buttonModePencil.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
@@ -95,8 +91,6 @@ public class GUISidePane extends JPanel implements ChangeListener, PropertyChang
 		});
 
 		final JButton buttonModeLine = new JButton(GeneralInformation.createImageIcon("/gui/tool_line.png"));
-		buttonModeLine.setHorizontalTextPosition(SwingConstants.CENTER);
-		buttonModeLine.setVerticalTextPosition(SwingConstants.CENTER);
 		buttonModeLine.setPreferredSize(new Dimension(32,32));
 		buttonModeLine.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
@@ -106,13 +100,28 @@ public class GUISidePane extends JPanel implements ChangeListener, PropertyChang
 		});
 
 		final JButton buttonModeFill = new JButton(GeneralInformation.createImageIcon("/gui/tool_fill.png"));
-		buttonModeFill.setHorizontalTextPosition(SwingConstants.CENTER);
-		buttonModeFill.setVerticalTextPosition(SwingConstants.CENTER);
 		buttonModeFill.setPreferredSize(new Dimension(32,32));
 		buttonModeFill.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				GUISidePane.this.parentFrame.scrollPane.mode = 4;
 				toggleEnabled(buttonModeFill);
+			}
+		});
+
+		final JButton buttonDrawGrid = new JButton(GeneralInformation.createImageIcon("/gui/option_drawgrid.png"));
+		buttonDrawGrid.setPreferredSize(new Dimension(32,32));
+		buttonDrawGrid.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				GUISidePane.this.parentFrame.scrollPane.objectToMove.drawGrid = !GUISidePane.this.parentFrame.scrollPane.objectToMove.drawGrid;
+				GUISidePane.this.parentFrame.scrollPane.objectToMove.repaint();
+			}
+		});
+
+		final JButton buttonSnapGrid = new JButton(GeneralInformation.createImageIcon("/gui/option_snapgrid.png"));
+		buttonSnapGrid.setPreferredSize(new Dimension(32,32));
+		buttonSnapGrid.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				GUISidePane.this.parentFrame.scrollPane.snapToGrid = !GUISidePane.this.parentFrame.scrollPane.snapToGrid;
 			}
 		});
 		
@@ -138,10 +147,12 @@ public class GUISidePane extends JPanel implements ChangeListener, PropertyChang
 		LH.place(2,4,1,1,0.55,1,"n","w",null,this,gbl,c,buttonModePencil);
 		LH.place(1,5,1,1,1,1,"n","e",null,this,gbl,c,buttonModeLine);
 		LH.place(2,5,1,1,0.55,1,"n","w",null,this,gbl,c,buttonModeFill);
+		LH.place(1,6,1,1,1,1,"n","e",null,this,gbl,c,buttonDrawGrid);
+		LH.place(2,6,1,1,0.55,1,"n","w",null,this,gbl,c,buttonSnapGrid);
 
-		LH.place(0,6,3,1,1,1,"n","c",null,this,gbl,c,sliderStrokeSize);
-		LH.place(3,6,1,1,0,1,"h","c",null,this,gbl,c,textFieldStrokeSize);
-		LH.place(0,7,4,1,1,1,"n","c",null,this,gbl,c,colorChooser);
+		LH.place(0,7,3,1,1,1,"n","c",null,this,gbl,c,sliderStrokeSize);
+		LH.place(3,7,1,1,0,1,"h","c",null,this,gbl,c,textFieldStrokeSize);
+		LH.place(0,8,4,1,1,1,"n","c",null,this,gbl,c,colorChooser);
 
 		setVisible(true);
 	}

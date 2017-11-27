@@ -15,9 +15,18 @@ public class GUIMain extends JFrame{
 	private static final long serialVersionUID = 1L;
 	
 	/**
+	 * Side Bar
+	 * TODO: (Tool) rectangle draw tool
+	 * TODO: (Button) ladder creation tool (-> rectangle tool)
+	 * TODO: (Tool) Box Selection
+	 * TODO: (Function) Copy & Paste
+	 * TODO: (Button) Clear map
+	 * TODO: (Tool) Cut
+	 * TODO: Create proper on-off graphics for buttons
+	 *
+	 *
+	 *
 	 * TODO: Changing Tooltip for the modes in the bottom right corner
-	 * TODO: (SidePane) Toggle for grid
-	 * TODO: (SidePane) Snap to grid option
 	 * TODO: (Menu) ability to set meter
 	 * TODO: Edit Screens for npcs & mapLink (with Dialog)
 	 * TODO: Link to a file in the edit screens
@@ -28,18 +37,16 @@ public class GUIMain extends JFrame{
 	 * TODO: (Menu) Item/Npc/Maplink-Overview
 	 * TODO: (Opt.) Object quick info on the side
 	 * TODO: Option to change background color, and texture
-	 * TODO: (Button) Box Selection
-	 * TODO: (Button) Copy & Paste
-	 * TODO: (Button) Clear map
-	 * TODO: (Button) Cut
+	 *
+	 *
 	 * TODO: Flow Diagramm parts
 	 * TODO: Furniture
 	 * 
 	 * OTHER & CLEAN-UP
-	 * TODO: set up Github
-	 * TODO: (Clean up) gridbag stuff
+	 * TODO: (Clean up) line, rect.,etc. draw tool (move to drawing surface)
 	 * TODO: (Clean up) versioning
 	 * TODO: (Bug) Box by the slider only updates with Enter
+	 * TODO: Move to Java 8 or 9, replace listeners with lambda expressions
 	 * 
 	 * 
 	 * FUTURE THINGS:
@@ -52,7 +59,7 @@ public class GUIMain extends JFrame{
 	
 	//GUIDragScrollPane
 	static final boolean SNAP_TO_GRID_DEFAULT = true;
-	static final int MODE_DEFAULT = 1;
+	static final int MODE_DEFAULT = 5;
 	
 	//GUIDrawingSurface
 	static final Color COLOR_PRIM_DEFAULT = Color.BLACK;

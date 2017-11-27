@@ -15,7 +15,7 @@ class GUIDragScrollPane extends JScrollPane {
 	private GUIBottomPane bottomPane;
 	
 	boolean shiftPressed = false;
-	private boolean snapToGrid = GUIMain.SNAP_TO_GRID_DEFAULT;
+	boolean snapToGrid = GUIMain.SNAP_TO_GRID_DEFAULT;
 	int mode = GUIMain.MODE_DEFAULT;
 	/*
 	 * 1 == Drag Mode 2 == Pencil 3 == Line 4 == Fill
@@ -157,45 +157,52 @@ class GUIDragScrollPane extends JScrollPane {
 						oldY = currentY;
 					}
 					break;
-				case 3:
-					// Line Tool
-					int lineX = xTrans;
-					int lineY = yTrans;
-					
+				case 3: case 5:
+					// Line Tool, Rectangle Tool
 					if(snapToGrid){
-						int modX = lineX%GUIMain.METER;
-						int modY = lineY%GUIMain.METER;
+						int modX = xTrans%GUIMain.METER;
+						int modY = yTrans%GUIMain.METER;
 						
 						if(modX > GUIMain.METER/2){
-							lineX += GUIMain.METER-modX;
+							xTrans += GUIMain.METER-modX;
 						}
 						else{
-							lineX -= modX;
+							xTrans -= modX;
 						}
 						if(modY > GUIMain.METER/2){
-							lineY += GUIMain.METER-modY;
+							yTrans += GUIMain.METER-modY;
 						}
 						else{
-							lineY -= modY;
+							yTrans -= modY;
 						}
 					}
-					if(objectToMove.lineEndPoint == null){
-						objectToMove.lineEndPoint = new Point(lineX,lineY);
+					if(mode == 3){
+						//Line Tool
+						if(objectToMove.lineEndPoint == null){
+							objectToMove.lineEndPoint = new Point(xTrans,yTrans);
+						}
+						else{
+							objectToMove.lineEndPoint.setLocation(xTrans,yTrans);
+						}
+						if(objectToMove.lineStartPoint != null){
+							int xDist = objectToMove.lineEndPoint.x-objectToMove.lineStartPoint.x;
+							int yDist = objectToMove.lineEndPoint.y-objectToMove.lineStartPoint.y;
+
+							int distance = (int) Math.sqrt(xDist*xDist+yDist*yDist);
+
+							bottomPane.setLineLength(distance);
+						}
 					}
-					else{
-						objectToMove.lineEndPoint.setLocation(lineX,lineY);
+					else if(mode == 5){
+						//Rectangle Tool
+						if(objectToMove.rectangleEndPoint == null){
+							objectToMove.rectangleEndPoint = new Point(xTrans,yTrans);
+						}
+						else{
+							objectToMove.rectangleEndPoint.setLocation(xTrans,yTrans);
+						}
+
 					}
-
-					if(objectToMove.lineStartPoint != null){
-					int xDist = objectToMove.lineEndPoint.x-objectToMove.lineStartPoint.x;
-					int yDist = objectToMove.lineEndPoint.y-objectToMove.lineStartPoint.y;
-
-					int distance = (int) Math.sqrt(xDist*xDist+yDist*yDist);
-
-					bottomPane.setLineLength(distance);
-					}
-
-
 					objectToMove.repaint();
 					break;
 				default:
@@ -264,30 +271,39 @@ class GUIDragScrollPane extends JScrollPane {
 						}
 					}
 					break;
-				case 3:
-					// Line Tool
-					int lineX = mouseX + ((JViewport) e.getComponent()).getViewPosition().x;
-					int lineY = mouseY + ((JViewport) e.getComponent()).getViewPosition().y;
+				case 3: case 5:
+					// Line Tool, Rectangle Tool
+					int startX = mouseX + ((JViewport) e.getComponent()).getViewPosition().x;
+					int startY = mouseY + ((JViewport) e.getComponent()).getViewPosition().y;
 					
 					if(snapToGrid){
-						int modX = lineX%GUIMain.METER;
-						int modY = lineY%GUIMain.METER;
+						int modX = startX%GUIMain.METER;
+						int modY = startY%GUIMain.METER;
 						
 						if(modX > GUIMain.METER/2){
-							lineX += GUIMain.METER-modX;
+							startX += GUIMain.METER-modX;
 						}
 						else{
-							lineX -= modX;
+							startX -= modX;
 						}
 						if(modY > GUIMain.METER/2){
-							lineY += GUIMain.METER-modY;
+							startY += GUIMain.METER-modY;
 						}
 						else{
-							lineY -= modY;
+							startY -= modY;
 						}
-					}	
-					objectToMove.lineStartPoint = new Point(lineX,lineY);
-					bottomPane.setLineLength(0);
+					}
+					if(mode == 3){
+						//Line Tool
+						objectToMove.lineStartPoint = new Point(startX,startY);
+						bottomPane.setLineLength(0);
+					}
+					else if(mode == 5){
+						//Rectangle Tool
+						objectToMove.rectangleStartPoint = new Point(startX,startY);
+					}
+					objectToMove.repaint();
+
 					break;
 				case 4:
 					// Fill Tool
@@ -299,7 +315,13 @@ class GUIDragScrollPane extends JScrollPane {
 
 			}
 			if (SwingUtilities.isRightMouseButton(e)) {
-				if (mode == 3) {
+				if(mode == 5){
+					//Rectangle Tool
+					objectToMove.rectangleStartPoint = null;
+					objectToMove.rectangleEndPoint = null;
+					objectToMove.repaint();
+				}
+				else if (mode == 3) {
 					// Line Tool
 					objectToMove.lineStartPoint = null;
 					objectToMove.lineEndPoint = null;
@@ -329,35 +351,61 @@ class GUIDragScrollPane extends JScrollPane {
 					if (autoScroll) {
 						scroller.start();
 					}
-				} else if (mode == 3) {
-					// Line Tool
-					int lineX = mouseX + ((JViewport) e.getComponent()).getViewPosition().x;
-					int lineY = mouseY + ((JViewport) e.getComponent()).getViewPosition().y;
+				} else if (mode == 3 || mode == 5) {
+					// Line Tool, Rectangle Tool
+					int xTrans = mouseX + ((JViewport) e.getComponent()).getViewPosition().x;
+					int yTrans = mouseY + ((JViewport) e.getComponent()).getViewPosition().y;
 					
 					if(snapToGrid){
-						int modX = lineX%GUIMain.METER;
-						int modY = lineY%GUIMain.METER;
+						int modX = xTrans%GUIMain.METER;
+						int modY = yTrans%GUIMain.METER;
 						
 						if(modX > GUIMain.METER/2){
-							lineX += GUIMain.METER-modX;
+							xTrans += GUIMain.METER-modX;
 						}
 						else{
-							lineX -= modX;
+							xTrans -= modX;
 						}
 						if(modY > GUIMain.METER/2){
-							lineY += GUIMain.METER-modY;
+							yTrans += GUIMain.METER-modY;
 						}
 						else{
-							lineY -= modY;
+							yTrans -= modY;
 						}
-					}	
-					if (objectToMove.lineStartPoint != null && objectToMove.lineEndPoint != null) {
-						objectToMove.g2.drawLine(objectToMove.lineStartPoint.x, objectToMove.lineStartPoint.y,lineX,lineY);
 					}
-					bottomPane.nullLineLength();
+					if(mode == 3){
+						//Line Tool
+						if (objectToMove.lineStartPoint != null && objectToMove.lineEndPoint != null) {
+							objectToMove.g2.drawLine(objectToMove.lineStartPoint.x, objectToMove.lineStartPoint.y,xTrans,yTrans);
+						}
+						bottomPane.nullLineLength();
 
-					objectToMove.lineStartPoint = null;
-					objectToMove.lineEndPoint = null;
+						objectToMove.lineStartPoint = null;
+						objectToMove.lineEndPoint = null;
+					}
+					else if(mode == 5){
+						//Rectangle Tool
+						if (objectToMove.rectangleStartPoint != null && objectToMove.rectangleEndPoint != null) {
+							int rectWidth = objectToMove.rectangleEndPoint.x-objectToMove.rectangleStartPoint.x;
+							int rectHeight = objectToMove.rectangleEndPoint.y-objectToMove.rectangleStartPoint.y;
+
+							if(rectHeight < 0 && rectWidth < 0){
+								objectToMove.g2.drawRect(objectToMove.rectangleEndPoint.x, objectToMove.rectangleEndPoint.y,Math.abs(rectWidth),Math.abs(rectHeight));
+							}
+							else if(rectWidth < 0){
+								objectToMove.g2.drawRect(objectToMove.rectangleStartPoint.x+rectWidth, objectToMove.rectangleStartPoint.y,Math.abs(rectWidth),rectHeight);
+							}
+							else if(rectHeight < 0 ){
+								objectToMove.g2.drawRect(objectToMove.rectangleStartPoint.x, objectToMove.rectangleStartPoint.y+rectHeight,rectWidth,Math.abs(rectHeight));
+							}
+							else {
+								objectToMove.g2.drawRect(objectToMove.rectangleStartPoint.x, objectToMove.rectangleStartPoint.y,rectWidth,rectHeight);
+							}
+						}
+						objectToMove.rectangleStartPoint = null;
+						objectToMove.rectangleEndPoint = null;
+					}
+
 					objectToMove.repaint();
 				}
 			}
