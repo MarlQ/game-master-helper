@@ -77,10 +77,10 @@ public class GUIMain extends JFrame{
 	static final boolean DRAW_GRID_DEFAULT = true;
 	static final boolean ALLOW_ANTIALIASING = false;
 
-	//Tempory
+	//Temporary
 	static final int METER = 20;
 	
-	public GUIMain(String title, GeneralInformation generalInformation){
+	private GUIMain(String title, GeneralInformation generalInformation){
 		super(title);
 		this.generalInformation = generalInformation;
 	}
@@ -101,7 +101,7 @@ public class GUIMain extends JFrame{
 		SwingUtilities.invokeLater(r);
 	}
 	
-	public static void createGUI(){
+	private static void createGUI(){
 		
 		GeneralInformation generalInformation = new GeneralInformation();
 		GUIMain mainFrame = new GUIMain("Gamemaster helper", generalInformation);
@@ -109,7 +109,7 @@ public class GUIMain extends JFrame{
 		
 		
 		mainFrame.setContentPane(mainFrame.createContentPane());
-		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		
 		mainFrame.pack();
 	
@@ -117,7 +117,7 @@ public class GUIMain extends JFrame{
 		mainFrame.setLocationRelativeTo(null);
 		mainFrame.setVisible(true);
 	}
-	public JPanel createContentPane(){
+	private JPanel createContentPane(){
 		GridBagConstraints c = new GridBagConstraints();
 		GridBagLayout gbl = new GridBagLayout();
 		JPanel contentPane = new JPanel();
@@ -189,7 +189,7 @@ public class GUIMain extends JFrame{
 
 		return contentPane;
 	}
-	public void saveToImage(){
+	void saveToImage(){
 		BufferedImage bufferedImage = ScreenImage.createImage(this.drawingSurface);
 		
 		
@@ -226,7 +226,7 @@ public class GUIMain extends JFrame{
 		}		
 	}
 	
-	public void saveGame(){
+	void saveGame(){
 		JFileChooser fileChooser = new JFileChooser();	
 		if (!(this.generalInformation == null)) {
 			fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -255,7 +255,7 @@ public class GUIMain extends JFrame{
 					JOptionPane.WARNING_MESSAGE);
 		}
 	}
-	public void loadGame() {
+    void loadGame() {
 		JFileChooser fileChooser = new JFileChooser();
 		FileNameExtensionFilter filter = new FileNameExtensionFilter(null, "dat");
 		fileChooser.setFileFilter(filter);
