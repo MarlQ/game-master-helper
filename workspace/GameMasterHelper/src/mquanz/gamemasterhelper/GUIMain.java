@@ -19,9 +19,10 @@ public class GUIMain extends JFrame{
 	 * TODO: (Function) Copy & Paste
 	 * TODO: Adding, Deleting, Renaming Maps
 	 * TODO: Option to change background color, and texture
-	 * TODO: Flow Diagramm parts
+	 * TODO: Flow Diagram parts
 	 * TODO: Furniture
 	 * TODO: (Function) Undo-Redo
+	 * TODO: change size of map (-> ask, delete Items)
 	 *
 	 * Side Pane
 	 * TODO: (Tool) ladder creation tool (-> rectangle tool)
@@ -31,8 +32,6 @@ public class GUIMain extends JFrame{
 	 *
 	 * Menu Bar
 	 * TODO: Ability to set meter
-	 * TODO: Move Save, Load and Save to Image here
-	 * TODO: Clear map
 	 * TODO: Custom Item/Npc-Type Manager
 	 * TODO: Item/Npc/Maplink-Overview
 	 *
@@ -49,7 +48,9 @@ public class GUIMain extends JFrame{
 	 * OTHER & CLEAN-UP
 	 * TODO: (Clean up) line, rect.,etc. draw tool (move to drawing surface)
 	 * TODO: (Clean up) versioning
+	 * TODO: (Clean up) commenting
 	 * TODO: (Bug) Box by the slider only updates with Enter
+	 * TODO: (Bug) No snapping to grid on right mouse button
 	 * TODO: Move to Java 8 or 9, replace listeners with lambda expressions
 	 * 
 	 * 
@@ -109,6 +110,8 @@ public class GUIMain extends JFrame{
 		
 		
 		mainFrame.setContentPane(mainFrame.createContentPane());
+		mainFrame.setJMenuBar(new GUIMenuBar(mainFrame));
+
 		mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		
 		mainFrame.pack();
@@ -132,7 +135,7 @@ public class GUIMain extends JFrame{
 		GUITopPane topPane = new GUITopPane(this);
 
 
-		LH.place(0,0,1,1,1,0.2,"n","c",null,contentPane,gbl,c,topPane);
+		LH.place(0,0,1,1,1,0.1,"n","c",null,contentPane,gbl,c,topPane);
 		LH.place(0,1,1,1,1,0.8,"b","c",null,contentPane,gbl,c,scrollPane);
 		LH.place(1,1,1,1,0,0.8,"n","c",null,contentPane,gbl,c,sidePane);
 		LH.place(0,2,2,1,1,0,"h","c",null,contentPane,gbl,c,bottomPane);

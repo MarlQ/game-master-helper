@@ -41,34 +41,6 @@ public class GUISidePane extends JPanel implements ChangeListener, PropertyChang
 			}
 		});
 
-		JButton buttonSave = new JButton("Save");
-		buttonSave.setHorizontalTextPosition(SwingConstants.CENTER);
-		buttonSave.setVerticalTextPosition(SwingConstants.CENTER);
-		buttonSave.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e) {
-				GUISidePane.this.parentFrame.saveGame();
-
-			}
-		});
-
-		JButton buttonLoad = new JButton("Load");
-		buttonLoad.setHorizontalTextPosition(SwingConstants.CENTER);
-		buttonLoad.setVerticalTextPosition(SwingConstants.CENTER);
-		buttonLoad.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e) {
-				GUISidePane.this.parentFrame.loadGame();
-			}
-		});
-
-		JButton buttonSaveToImage = new JButton("Save to Image");
-		buttonSaveToImage.setHorizontalTextPosition(SwingConstants.CENTER);
-		buttonSaveToImage.setVerticalTextPosition(SwingConstants.CENTER);
-		buttonSaveToImage.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e) {
-				GUISidePane.this.parentFrame.saveToImage();
-			}
-		});
-
 		final JButton buttonModeDrag = new JButton();
 		buttonModeDrag.setIcon(GeneralInformation.createImageIcon("/gui/tool_drag.png"));
 		buttonModeDrag.setPreferredSize(new Dimension(32,32));
@@ -151,12 +123,6 @@ public class GUISidePane extends JPanel implements ChangeListener, PropertyChang
 		textFieldStrokeSize.addPropertyChangeListener(this);
 
 		LH.place(0,0,4,1,1,1,"h","c",null,this,gbl,c,buttonChangeMap);
-		LH.place(0,1,4,1,1,1,"h","c",null,this,gbl,c,buttonSave);
-		LH.place(0,2,4,1,1,1,"h","c",null,this,gbl,c,buttonLoad);
-		LH.place(0,3,4,1,1,1,"h","c",null,this,gbl,c,buttonSaveToImage);
-
-
-
 
 		LH.place(1,4,1,1,1,1,"n","e",null,this,gbl,c,buttonModeDrag);
 		LH.place(2,4,1,1,0.55,1,"n","w",null,this,gbl,c,buttonModePencil);
