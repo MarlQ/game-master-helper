@@ -108,8 +108,19 @@ public class GUISidePane extends JPanel implements ChangeListener, PropertyChang
 			}
 		});
 
-		final JButton buttonDrawGrid = new JButton(GeneralInformation.createImageIcon("/gui/option_drawgrid.png"));
+		final JButton buttonModeRect = new JButton(GeneralInformation.createImageIcon("/gui/tool_rectangle.png"));
+		buttonModeRect.setPreferredSize(new Dimension(32,32));
+		buttonModeRect.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				GUISidePane.this.parentFrame.scrollPane.mode = 5;
+				toggleEnabled(buttonModeRect);
+			}
+		});
+
+
+		final JToggleButton buttonDrawGrid = new JToggleButton(GeneralInformation.createImageIcon("/gui/option_drawgrid.png"));
 		buttonDrawGrid.setPreferredSize(new Dimension(32,32));
+		buttonDrawGrid.setSelected(GUIMain.DRAW_GRID_DEFAULT);
 		buttonDrawGrid.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				GUISidePane.this.parentFrame.scrollPane.objectToMove.drawGrid = !GUISidePane.this.parentFrame.scrollPane.objectToMove.drawGrid;
@@ -117,8 +128,9 @@ public class GUISidePane extends JPanel implements ChangeListener, PropertyChang
 			}
 		});
 
-		final JButton buttonSnapGrid = new JButton(GeneralInformation.createImageIcon("/gui/option_snapgrid.png"));
+		final JToggleButton buttonSnapGrid = new JToggleButton(GeneralInformation.createImageIcon("/gui/option_snapgrid.png"));
 		buttonSnapGrid.setPreferredSize(new Dimension(32,32));
+		buttonSnapGrid.setSelected(GUIMain.SNAP_TO_GRID_DEFAULT);
 		buttonSnapGrid.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				GUISidePane.this.parentFrame.scrollPane.snapToGrid = !GUISidePane.this.parentFrame.scrollPane.snapToGrid;
@@ -143,16 +155,21 @@ public class GUISidePane extends JPanel implements ChangeListener, PropertyChang
 		LH.place(0,2,4,1,1,1,"h","c",null,this,gbl,c,buttonLoad);
 		LH.place(0,3,4,1,1,1,"h","c",null,this,gbl,c,buttonSaveToImage);
 
+
+
+
 		LH.place(1,4,1,1,1,1,"n","e",null,this,gbl,c,buttonModeDrag);
 		LH.place(2,4,1,1,0.55,1,"n","w",null,this,gbl,c,buttonModePencil);
 		LH.place(1,5,1,1,1,1,"n","e",null,this,gbl,c,buttonModeLine);
 		LH.place(2,5,1,1,0.55,1,"n","w",null,this,gbl,c,buttonModeFill);
-		LH.place(1,6,1,1,1,1,"n","e",null,this,gbl,c,buttonDrawGrid);
-		LH.place(2,6,1,1,0.55,1,"n","w",null,this,gbl,c,buttonSnapGrid);
+		LH.place(1,6,1,1,1,1,"n","e",null,this,gbl,c,buttonModeRect);
 
-		LH.place(0,7,3,1,1,1,"n","c",null,this,gbl,c,sliderStrokeSize);
-		LH.place(3,7,1,1,0,1,"h","c",null,this,gbl,c,textFieldStrokeSize);
-		LH.place(0,8,4,1,1,1,"n","c",null,this,gbl,c,colorChooser);
+		LH.place(1,7,1,1,1,1,"n","e",null,this,gbl,c,buttonDrawGrid);
+		LH.place(2,7,1,1,0.55,1,"n","w",null,this,gbl,c,buttonSnapGrid);
+
+		LH.place(0,8,3,1,1,1,"n","c",null,this,gbl,c,sliderStrokeSize);
+		LH.place(3,8,1,1,0,1,"h","c",null,this,gbl,c,textFieldStrokeSize);
+		LH.place(0,9,4,1,1,1,"n","c",null,this,gbl,c,colorChooser);
 
 		setVisible(true);
 	}

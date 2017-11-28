@@ -15,33 +15,37 @@ public class GUIMain extends JFrame{
 	private static final long serialVersionUID = 1L;
 	
 	/**
-	 * Side Bar
-	 * TODO: (Tool) rectangle draw tool
-	 * TODO: (Button) ladder creation tool (-> rectangle tool)
-	 * TODO: (Tool) Box Selection
+	 *
 	 * TODO: (Function) Copy & Paste
-	 * TODO: (Button) Clear map
-	 * TODO: (Tool) Cut
-	 * TODO: Create proper on-off graphics for buttons
-	 *
-	 *
-	 *
-	 * TODO: Changing Tooltip for the modes in the bottom right corner
-	 * TODO: (Menu) ability to set meter
-	 * TODO: Edit Screens for npcs & mapLink (with Dialog)
-	 * TODO: Link to a file in the edit screens
 	 * TODO: Adding, Deleting, Renaming Maps
-	 * TODO: (Menu) Custom Item/Npc-Type Manager
-	 * TODO: Portraits For Npcs (that you can enlarge)
-	 * TODO: Auto-Resize For Icons (and maybe an option to toggle that off)
-	 * TODO: (Menu) Item/Npc/Maplink-Overview
-	 * TODO: (Opt.) Object quick info on the side
 	 * TODO: Option to change background color, and texture
-	 *
-	 *
 	 * TODO: Flow Diagramm parts
 	 * TODO: Furniture
-	 * 
+	 * TODO: (Function) Undo-Redo
+	 *
+	 * Side Pane
+	 * TODO: (Tool) ladder creation tool (-> rectangle tool)
+	 * TODO: (Tool) Box Selection
+	 * TODO: (Tool) Cut (-> Scissors)
+	 * TODO: (Opt.) Object quick info on the side
+	 *
+	 * Menu Bar
+	 * TODO: Ability to set meter
+	 * TODO: Move Save, Load and Save to Image here
+	 * TODO: Clear map
+	 * TODO: Custom Item/Npc-Type Manager
+	 * TODO: Item/Npc/Maplink-Overview
+	 *
+	 * Bottom Bar:
+	 * TODO: Size, Length information for rectangle tool
+	 * TODO: Changing Tooltip for the modes in the bottom right corner
+	 *
+	 * Edit Screen:
+	 * TODO: Edit Screens for npcs & mapLink (with Dialog)
+	 * TODO: Link to a file in the edit screens
+	 * TODO: Portraits For Npcs (that you can enlarge)
+	 * TODO: Auto-Resize For Icons (and maybe an option to toggle that off)
+
 	 * OTHER & CLEAN-UP
 	 * TODO: (Clean up) line, rect.,etc. draw tool (move to drawing surface)
 	 * TODO: (Clean up) versioning
@@ -59,7 +63,7 @@ public class GUIMain extends JFrame{
 	
 	//GUIDragScrollPane
 	static final boolean SNAP_TO_GRID_DEFAULT = true;
-	static final int MODE_DEFAULT = 5;
+	static final int MODE_DEFAULT = 1;
 	
 	//GUIDrawingSurface
 	static final Color COLOR_PRIM_DEFAULT = Color.BLACK;
