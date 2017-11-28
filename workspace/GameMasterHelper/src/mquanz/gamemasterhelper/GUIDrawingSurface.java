@@ -77,8 +77,6 @@ public class GUIDrawingSurface extends JPanel implements Scrollable{
     {
         super.paintComponent(g);
         
-
-        
         if(mapInformation.drawingImage == null){
         	mapInformation.drawingImage = new BufferedImage(getSize().width,getSize().height, ColorSpace.TYPE_RGB);
             g2 = (Graphics2D) mapInformation.drawingImage.getGraphics();
@@ -141,6 +139,18 @@ public class GUIDrawingSurface extends JPanel implements Scrollable{
 		AreaFiller.floodFillImage(mapInformation.drawingImage, x, y, drawingColorPrim);
 		repaint();	
 	}
+	void clearMap(){
+		clearDrawing();
+
+		dragScrollPane.selectedIcon = null;
+		for (MapObjectIcon itemIcon : this.mapInformation.itemIcons) {
+			remove(itemIcon);
+		}
+		this.mapInformation.itemIcons.clear();
+
+		revalidate();
+		repaint();
+	}
 
 	void changeMap(MapInformation mapInformation){
 		
@@ -158,6 +168,7 @@ public class GUIDrawingSurface extends JPanel implements Scrollable{
 			}
 			if(mapInformation.drawingImage != null){
 				g2 = (Graphics2D) mapInformation.drawingImage.getGraphics();
+				g2.setStroke(drawingStroke);
 				g2.setPaint(drawingColorPrim);
 			}
 			this.setMaximumSize(mapInformation.mapSize);
