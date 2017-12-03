@@ -43,11 +43,19 @@ GUIMenuBar(GUIMain mainFrame){
             GUIMenuBar.this.mainFrame.saveToImage();
         }
     });
+    JMenuItem itemList = new JMenuItem("Item List");
+    itemList.addActionListener(new ActionListener(){
+        public void actionPerformed(ActionEvent e) {
+            new GUIObjectListScreen(GUIMenuBar.this.mainFrame);
+            new GUIDialogObjectList(GUIMenuBar.this.mainFrame);
+        }
+    });
 
     file.add(load);
     file.add(save);
     map.add(clearMap);
     map.add(saveToImage);
+    map.add(itemList);
     add(file);
     add(map);
 

@@ -39,21 +39,21 @@ public class GeneralInformation implements java.io.Serializable {
 		itemTypes = new ArrayList<ItemType>();
 		maps = new ArrayList<MapInformation>();
 		
-		itemTypeText = new ItemType("Text",createImageIcon("/icons/Papier.png"));
-		itemTypeFirearm = new ItemType("Firearm",createImageIcon("/icons/gun.png"));
+		itemTypeText = new ItemType("Text",createImageIcon("res/icons/Papier.png"));
+		itemTypeFirearm = new ItemType("Firearm",createImageIcon("res/icons/gun.png"));
 		
 		itemTypes.add(itemTypeText);
 		itemTypes.add(itemTypeFirearm);
 		
-		npcTypeGeneric = new NpcType("Generic",createImageIcon("/icons/NpcGeneric.png"));
-		npcTypeImportant = new NpcType("Important",createImageIcon("/icons/NpcImportant.png"));
-		npcTypeVampire = new NpcType("Vampire",createImageIcon("/icons/NpcVampire.png"));
+		npcTypeGeneric = new NpcType("Generic",createImageIcon("res/icons/NpcGeneric.png"));
+		npcTypeImportant = new NpcType("Important",createImageIcon("res/icons/NpcImportant.png"));
+		npcTypeVampire = new NpcType("Vampire",createImageIcon("res/icons/NpcVampire.png"));
 		
 		npcTypes.add(npcTypeGeneric);
 		npcTypes.add(npcTypeImportant);
 		npcTypes.add(npcTypeVampire);
 		
-		mapLinkType_small = new MapLinkType("Small", createImageIcon("/icons/MapLink.png"));
+		mapLinkType_small = new MapLinkType("Small", createImageIcon("res/icons/MapLink.png"));
 		
 		mapLinkTypes.add(mapLinkType_small);
 		
@@ -85,7 +85,10 @@ public class GeneralInformation implements java.io.Serializable {
 	}
 
 	public static ImageIcon createImageIcon(String path) {
+
 		java.net.URL imgURL = GeneralInformation.class.getResource(path);
+		System.out.println(path);
+		System.out.println(imgURL);
 		if (imgURL != null) {
 			
 			BufferedImage image;

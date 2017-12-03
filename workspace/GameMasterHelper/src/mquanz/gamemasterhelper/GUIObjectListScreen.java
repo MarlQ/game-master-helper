@@ -31,6 +31,9 @@ public class GUIObjectListScreen extends JDialog {
        table.setPreferredScrollableViewportSize(new Dimension (500, 80));
        table.setFillsViewportHeight(true);
        add(new JScrollPane(table));
+       setVisible(true);
+        pack();
+
 
     }
 
