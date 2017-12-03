@@ -1,11 +1,10 @@
 package mquanz.gamemasterhelper;
-import java.awt.Dimension;
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
-
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 
 public class GeneralInformation implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
@@ -87,8 +86,6 @@ public class GeneralInformation implements java.io.Serializable {
 	public static ImageIcon createImageIcon(String path) {
 
 		java.net.URL imgURL = GeneralInformation.class.getResource(path);
-		System.out.println(path);
-		System.out.println(imgURL);
 		if (imgURL != null) {
 			
 			BufferedImage image;
