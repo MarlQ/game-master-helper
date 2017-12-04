@@ -2,18 +2,22 @@ package mquanz.gamemasterhelper;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class GUIDialogObjectList extends JDialog {
 
     int rowCount = 0;
 
+    GUIMain mainFrame;
 
     ArrayList<MapObjectIcon> mapObjectIconList = new ArrayList<MapObjectIcon>();
     ArrayList<ArrayList<JComponent>> rowList = new ArrayList<ArrayList<JComponent>>();
 
 public GUIDialogObjectList(GUIMain mainFrame) {
-    super();
+    super(mainFrame, "Object List");
+    this.mainFrame = mainFrame;
     GridBagLayout gbl = new GridBagLayout();
     GridBagConstraints c = new GridBagConstraints();
     setLayout(gbl);
@@ -26,6 +30,7 @@ public GUIDialogObjectList(GUIMain mainFrame) {
     JTextField textFieldIcon = new JTextField("Icon");
     JTextField textFieldMap = new JTextField("Map");
     JTextField textFieldPosition = new JTextField("Position");
+
     textFieldName.setEditable(false);
     textFieldIcon.setEditable(false);
     textFieldClass.setEditable(false);
@@ -74,16 +79,10 @@ private void deleteRow(int rowIndex){
 private void addRow(MapObjectIcon mapObject,MapInformation map, GridBagLayout gbl, GridBagConstraints c){
     JTextField nameField = new JTextField(mapObject.mapObject.name);
 
-    JTextField classField = new JTextField(mapObject.mapObject.getClass().getName());
+    JTextField classField = new JTextField(mapObject.mapObject.className);
     classField.setEditable(false);
 
-    JTextField typeField;
-
-    if(mapObject.mapObject.type != null){
-        typeField = new JTextField(mapObject.mapObject.type.typeName);
-    }
-    else{typeField = new JTextField("ERROR");}
-
+    JTextField typeField = new JTextField(mapObject.mapObject.type.typeName);
     typeField.setEditable(false);
 
     JButton icon = new JButton(mapObject.mapObject.icon);
@@ -91,7 +90,24 @@ private void addRow(MapObjectIcon mapObject,MapInformation map, GridBagLayout gb
     JTextField mapName = new JTextField(map.name);
     mapName.setEditable(false);
 
-    JTextField position = new JTextField("x: " + mapObject.posX + " y: " + mapObject.posY);
+
+    JTextField textFieldPosition;
+    if(mapObject.mapObject.getClass() == MapLink.class){
+        textFieldPosition = new JTextField("x: " + mapObject.posX + " y: " + mapObject.posY + " (teleport: x: " + ((MapLink) mapObject.mapObject).linkPosX + " y: " + ((MapLink) mapObject.mapObject).linkPosY + ")");
+
+    }
+
+    else{
+        textFieldPosition = new JTextField("x: " + mapObject.posX + " y: " + mapObject.posY);
+    }
+
+
+    JButton buttonGoto = new JButton("goto");
+    buttonGoto.addActionListener(new ActionListener(){
+        public void actionPerformed(ActionEvent e) {
+            //GUIDialogObjectList.this.mainFrame.drawingSurface.changeMap
+        }
+    });
 
     ArrayList<JComponent> rowComponents = new ArrayList<JComponent>();
 
@@ -100,7 +116,7 @@ private void addRow(MapObjectIcon mapObject,MapInformation map, GridBagLayout gb
     rowComponents.add(typeField);
     rowComponents.add(icon);
     rowComponents.add(mapName);
-    rowComponents.add(position);
+    rowComponents.add(textFieldPosition);
 
     this.rowList.add(rowComponents);
     this.mapObjectIconList.add(mapObject);
@@ -112,7 +128,7 @@ private void addRow(MapObjectIcon mapObject,MapInformation map, GridBagLayout gb
     LH.place(2,rowCount, 1,1,1,1,"b","c",null,this,gbl,c,typeField);
     LH.place(3,rowCount, 1,1,1,1,"b","c",null,this,gbl,c,icon);
     LH.place(4,rowCount, 1,1,1,1,"b","c",null,this,gbl,c,mapName);
-    LH.place(5,rowCount, 1,1,1,1,"b","c",null,this,gbl,c,position);
+    LH.place(5,rowCount, 1,1,1,1,"b","c",null,this,gbl,c,textFieldPosition);
 
 }
 

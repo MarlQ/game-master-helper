@@ -1,7 +1,6 @@
 package mquanz.gamemasterhelper;
-import java.awt.Color;
-
-import javax.swing.ImageIcon;
+import javax.swing.*;
+import java.awt.*;
 
 public class MapObject {
 
@@ -12,6 +11,7 @@ public class MapObject {
 	public Color textColor;
 	public ImageIcon icon;
 	public ObjectType type;
+	public String className;
 	
 	public MapObject(String name, Color textColor, ImageIcon icon,ObjectType type) {
 		this.name = name;

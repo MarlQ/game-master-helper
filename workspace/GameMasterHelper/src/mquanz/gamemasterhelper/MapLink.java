@@ -1,13 +1,11 @@
 package mquanz.gamemasterhelper;
-import java.awt.Color;
-
-import javax.swing.ImageIcon;
+import javax.swing.*;
+import java.awt.*;
 
 public class MapLink extends MapObject {
 
-	public int linkPosX, linkPosY;
+	int linkPosX, linkPosY;
 	MapInformation map;
-	MapLinkType mapLinkType;
 	public ImageIcon icon;
 
 	public MapLink(String name, Color textColor, int linkPosX, int linkPosY, MapInformation map,
@@ -16,7 +14,8 @@ public class MapLink extends MapObject {
 		this.linkPosX = linkPosX;
 		this.linkPosY = linkPosY;
 		this.map = map;
-		this.mapLinkType = mapLinkType;
+		this.type = mapLinkType;
+		this.className = "Map Link";
 
 	}
 
@@ -25,7 +24,8 @@ public class MapLink extends MapObject {
 		this.linkPosX = linkPosX;
 		this.linkPosY = linkPosY;
 		this.map = map;
-		this.mapLinkType = mapLinkType;
+		this.type = mapLinkType;
+		this.className = "Map Link";
 	}
 
 }
