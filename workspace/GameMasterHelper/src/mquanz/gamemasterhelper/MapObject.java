@@ -5,8 +5,6 @@ import java.awt.*;
 public class MapObject {
 
 
-	
-	
 	public String name;
 	public Color textColor;
 	public ImageIcon icon;

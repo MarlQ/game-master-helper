@@ -5,10 +5,9 @@ import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public abstract class AreaFiller {
+abstract class AreaFiller {
 
-	
-	public static void floodFillImage(BufferedImage image,int x, int y, Color color) 
+	static void floodFillImage(BufferedImage image,int x, int y, Color color)
 	{
 	    int srcColor = image.getRGB(x, y);
 	    if(color.getRGB() == srcColor) return;
@@ -49,71 +48,4 @@ public abstract class AreaFiller {
 	    hits[y][x] = true;
 	    return true;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	public static void fillPaintArea(Color newColor, BufferedImage bufferedImage, int x, int y) {
-
-		int newColorINT = newColor.getRGB();
-		int[][] rgbArray = convertTo2DUsingGetRGB(bufferedImage);
-		int oldColorINT = rgbArray[x][y];
-
-		fillPaint(rgbArray, x, y, oldColorINT, newColorINT);
-
-		int width = bufferedImage.getWidth();
-		int height = bufferedImage.getHeight();
-
-		for (int row = 0; row < height; row++) {
-			for (int col = 0; col < width; col++) {
-				bufferedImage.setRGB(x, y, rgbArray[x][y]);
-			}
-		}
-	}
-
-	private static void fillPaint(int[][] array, int x, int y, int oldColor, int newColor) {
-		if (x < 0 || x >= array.length || y < 0 || y >= array[x].length)
-			return;
-		if (array[x][y] != oldColor)
-			return;
-
-		array[x][y] = newColor;
-		
-		//TODO: Optimize?
-		
-		fillPaint(array, x-1, y, oldColor, newColor);
-		fillPaint(array, x+1, y, oldColor, newColor);
-		fillPaint(array, x, y-1, oldColor, newColor);
-		fillPaint(array, x, y+1, oldColor, newColor);
-		
-	}
-
-	private static int[][] convertTo2DUsingGetRGB(BufferedImage bufferedImage) {
-		int width = bufferedImage.getWidth();
-		int height = bufferedImage.getHeight();
-		int[][] result = new int[height][width];
-
-		for (int row = 0; row < height; row++) {
-			for (int col = 0; col < width; col++) {
-				result[row][col] = bufferedImage.getRGB(col, row);
-			}
-		}
-		return result;
-	}
-
 }

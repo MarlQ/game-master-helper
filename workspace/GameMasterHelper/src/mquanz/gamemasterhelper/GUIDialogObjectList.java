@@ -39,12 +39,12 @@ public GUIDialogObjectList(GUIMain mainFrame) {
     textFieldPosition.setEditable(false);
 
 
-    LH.place(0,0, 1,1,1,1,"b","c",null,this,gbl,c,textFieldName);
-    LH.place(1,0, 1,1,1,1,"b","c",null,this,gbl,c,textFieldClass);
-    LH.place(2,0, 1,1,1,1,"b","c",null,this,gbl,c,textFieldType);
-    LH.place(3,0, 1,1,1,1,"b","c",null,this,gbl,c,textFieldIcon);
-    LH.place(4,0, 1,1,1,1,"b","c",null,this,gbl,c,textFieldMap);
-    LH.place(5,0, 1,1,1,1,"b","c",null,this,gbl,c,textFieldPosition);
+    LH.place(0,0, 1,1,1,1,"b","c",null,this,c,textFieldName);
+    LH.place(1,0, 1,1,1,1,"b","c",null,this,c,textFieldClass);
+    LH.place(2,0, 1,1,1,1,"b","c",null,this,c,textFieldType);
+    LH.place(3,0, 1,1,1,1,"b","c",null,this,c,textFieldIcon);
+    LH.place(4,0, 1,1,1,1,"b","c",null,this,c,textFieldMap);
+    LH.place(5,0, 1,1,1,1,"b","c",null,this,c,textFieldPosition);
 
     for (MapInformation map : ginfo.maps) {
         for (MapObjectIcon mapObject : map.itemIcons) {
@@ -123,12 +123,12 @@ private void addRow(MapObjectIcon mapObject,MapInformation map, GridBagLayout gb
 
     rowCount++;
 
-    LH.place(0,rowCount, 1,1,1,1,"b","c",null,this,gbl,c,nameField);
-    LH.place(1,rowCount, 1,1,1,1,"b","c",null,this,gbl,c,classField);
-    LH.place(2,rowCount, 1,1,1,1,"b","c",null,this,gbl,c,typeField);
-    LH.place(3,rowCount, 1,1,1,1,"b","c",null,this,gbl,c,icon);
-    LH.place(4,rowCount, 1,1,1,1,"b","c",null,this,gbl,c,mapName);
-    LH.place(5,rowCount, 1,1,1,1,"b","c",null,this,gbl,c,textFieldPosition);
+    LH.place(0,rowCount, 1,1,1,1,"b","c",null,this,c,nameField);
+    LH.place(1,rowCount, 1,1,1,1,"b","c",null,this,c,classField);
+    LH.place(2,rowCount, 1,1,1,1,"b","c",null,this,c,typeField);
+    LH.place(3,rowCount, 1,1,1,1,"b","c",null,this,c,icon);
+    LH.place(4,rowCount, 1,1,1,1,"b","c",null,this,c,mapName);
+    LH.place(5,rowCount, 1,1,1,1,"b","c",null,this,c,textFieldPosition);
 
 }
 

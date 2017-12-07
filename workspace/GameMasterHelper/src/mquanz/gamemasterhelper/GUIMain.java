@@ -135,10 +135,10 @@ public class GUIMain extends JFrame{
 		GUITopPane topPane = new GUITopPane(this);
 
 
-		LH.place(0,0,1,1,1,0.1,"n","c",null,contentPane,gbl,c,topPane);
-		LH.place(0,1,1,1,1,0.8,"b","c",null,contentPane,gbl,c,scrollPane);
-		LH.place(1,1,1,1,0,0.8,"n","c",null,contentPane,gbl,c,sidePane);
-		LH.place(0,2,2,1,1,0,"h","c",null,contentPane,gbl,c,bottomPane);
+		LH.place(0,0,1,1,1,0.1,"n","c",null,contentPane,c,topPane);
+		LH.place(0,1,1,1,1,0.8,"b","c",null,contentPane,c,scrollPane);
+		LH.place(1,1,1,1,0,0.8,"n","c",null,contentPane,c,sidePane);
+		LH.place(0,2,2,1,1,0,"h","c",null,contentPane,c,bottomPane);
 
 		AbstractAction pressedShiftAction = new AbstractAction() {
 			private static final long serialVersionUID = 1L;

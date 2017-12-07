@@ -38,7 +38,7 @@ public class DragLayout implements LayoutManager
 	/**
 	 *  Create a DragLayout and indicate how the component size is determined.
 	 *
-	 *  @param usePreferred size see setPreferredSize() for values.
+	 *  @param usePreferredSize see setPreferredSize() for values.
 	 */
 	public DragLayout(boolean usePreferredSize)
 	{
@@ -80,7 +80,7 @@ public class DragLayout implements LayoutManager
 	/**
 	 * Removes the specified component from the layout.
 	 *
-	 * @param comp the component to be removed
+	 * @param component the component to be removed
 	 */
 	@Override
 	public void removeLayoutComponent(Component component)
@@ -90,7 +90,7 @@ public class DragLayout implements LayoutManager
 	/**
 	 *	Determine the minimum size on the Container
 	 *
-	 *  @param	 target   the container in which to do the layout
+	 *  @param	 parent   the container in which to do the layout
 	 *  @return	 the minimum dimensions needed to lay out the
 	 *			 subcomponents of the specified container
 	 */
@@ -185,7 +185,7 @@ public class DragLayout implements LayoutManager
 	/**
 	 * Lays out the specified container using this layout.
 	 *
-	 * @param	  target   the container in which to do the layout
+	 * @param	  parent   the container in which to do the layout
 	 */
 	@Override
 	public void layoutContainer(Container parent)

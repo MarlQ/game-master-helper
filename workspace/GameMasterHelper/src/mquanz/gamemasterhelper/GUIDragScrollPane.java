@@ -190,7 +190,7 @@ class GUIDragScrollPane extends JScrollPane {
 
 							int distance = (int) Math.sqrt(xDist*xDist+yDist*yDist);
 
-							bottomPane.setLineLength(distance);
+							bottomPane.setContextualInfoLineTool(distance);
 						}
 					}
 					else if(mode == 5){
@@ -296,7 +296,7 @@ class GUIDragScrollPane extends JScrollPane {
 					if(mode == 3){
 						//Line Tool
 						objectToMove.lineStartPoint = new Point(startX,startY);
-						bottomPane.setLineLength(0);
+						bottomPane.setContextualInfoLineTool(0);
 					}
 					else if(mode == 5){
 						//Rectangle Tool
@@ -325,7 +325,7 @@ class GUIDragScrollPane extends JScrollPane {
 					// Line Tool
 					objectToMove.lineStartPoint = null;
 					objectToMove.lineEndPoint = null;
-					bottomPane.nullLineLength();
+					bottomPane.resetContextualInfoLineTool();
 					objectToMove.repaint();
 				} else if (mode == 2) {
 					// Pencil Tool Sec
@@ -378,7 +378,7 @@ class GUIDragScrollPane extends JScrollPane {
 						if (objectToMove.lineStartPoint != null && objectToMove.lineEndPoint != null) {
 							objectToMove.g2.drawLine(objectToMove.lineStartPoint.x, objectToMove.lineStartPoint.y,xTrans,yTrans);
 						}
-						bottomPane.nullLineLength();
+						bottomPane.resetContextualInfoLineTool();
 
 						objectToMove.lineStartPoint = null;
 						objectToMove.lineEndPoint = null;

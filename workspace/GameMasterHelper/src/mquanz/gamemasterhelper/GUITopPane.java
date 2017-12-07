@@ -8,10 +8,7 @@ import java.awt.event.ActionListener;
 public class GUITopPane extends JPanel{
 	private static final long serialVersionUID = 1L;
 
-	GUIMain parentFrame;
-	JTextField mapNameTextField;
-
-
+	private GUIMain parentFrame;
 	
 	public GUITopPane(GUIMain parentFrame){
 

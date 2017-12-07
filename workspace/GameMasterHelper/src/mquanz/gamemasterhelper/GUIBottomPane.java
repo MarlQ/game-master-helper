@@ -5,10 +5,7 @@ import javax.swing.*;
 class GUIBottomPane extends JPanel {
 
     private JTextField textFieldMouseC;
-    private JTextField textFieldDistance;
-
-
-
+    private JTextField textFieldContextualInfo;
 
      GUIBottomPane(){
         super();
@@ -18,12 +15,12 @@ class GUIBottomPane extends JPanel {
         textFieldMouseC.setColumns(10);
         textFieldMouseC.setBorder(null);
 
-        textFieldDistance = new JTextField("");
-        textFieldDistance.setEditable(false);
-        textFieldDistance.setColumns(20);
-        textFieldDistance.setBorder(null);
+         textFieldContextualInfo = new JTextField("");
+         textFieldContextualInfo.setEditable(false);
+         textFieldContextualInfo.setColumns(20);
+         textFieldContextualInfo.setBorder(null);
         add(textFieldMouseC);
-        add(textFieldDistance);
+        add(textFieldContextualInfo);
 
     }
 
@@ -31,13 +28,20 @@ class GUIBottomPane extends JPanel {
     void updateMouseCoordinates(int x, int y){
         this.textFieldMouseC.setText("x: " + x + " y: " + y);
     }
-    void setLineLength(int length){
+    void setContextualInfoLineTool(int length){
         int lengthInMeters = length/GUIMain.METER;
-        this.textFieldDistance.setText("Length: " + length + " (" + lengthInMeters + " meters)");
+        this.textFieldContextualInfo.setText("Length: " + length + " (" + lengthInMeters + " meters)");
     }
 
-    void nullLineLength(){
-        textFieldDistance.setText("");
+    void resetContextualInfoLineTool(){
+        textFieldContextualInfo.setText("");
+    }
+
+    void setContextualInfoRectTool(int lengthX, int lengthY){
+
+        int lengthInMetersX = lengthX/GUIMain.METER;
+        int lengthInMetersY = lengthY/GUIMain.METER;
+        this.textFieldContextualInfo.setText("Dimensions: " + lengthX + " x " + lengthY + " (" + lengthInMetersX + " x " + lengthInMetersY + " meters)");
     }
 
 }

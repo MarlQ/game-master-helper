@@ -109,18 +109,18 @@ public class GUISidePane extends JPanel implements ChangeListener, PropertyChang
 		textFieldStrokeSize.addPropertyChangeListener(this);
 
 
-		LH.place(1,4,1,1,1,1,"n","e",null,this,gbl,c,buttonModeDrag);
-		LH.place(2,4,1,1,0.55,1,"n","w",null,this,gbl,c,buttonModePencil);
-		LH.place(1,5,1,1,1,1,"n","e",null,this,gbl,c,buttonModeLine);
-		LH.place(2,5,1,1,0.55,1,"n","w",null,this,gbl,c,buttonModeFill);
-		LH.place(1,6,1,1,1,1,"n","e",null,this,gbl,c,buttonModeRect);
+		LH.place(1,4,1,1,1,1,"n","e",null,this,c,buttonModeDrag);
+		LH.place(2,4,1,1,0.55,1,"n","w",null,this,c,buttonModePencil);
+		LH.place(1,5,1,1,1,1,"n","e",null,this,c,buttonModeLine);
+		LH.place(2,5,1,1,0.55,1,"n","w",null,this,c,buttonModeFill);
+		LH.place(1,6,1,1,1,1,"n","e",null,this,c,buttonModeRect);
 
-		LH.place(1,7,1,1,1,1,"n","e",null,this,gbl,c,buttonDrawGrid);
-		LH.place(2,7,1,1,0.55,1,"n","w",null,this,gbl,c,buttonSnapGrid);
+		LH.place(1,7,1,1,1,1,"n","e",null,this,c,buttonDrawGrid);
+		LH.place(2,7,1,1,0.55,1,"n","w",null,this,c,buttonSnapGrid);
 
-		LH.place(0,8,3,1,1,1,"n","c",null,this,gbl,c,sliderStrokeSize);
-		LH.place(3,8,1,1,0,1,"h","c",null,this,gbl,c,textFieldStrokeSize);
-		LH.place(0,9,4,1,1,1,"n","c",null,this,gbl,c,colorChooser);
+		LH.place(0,8,3,1,1,1,"n","c",null,this,c,sliderStrokeSize);
+		LH.place(3,8,1,1,0,1,"h","c",null,this,c,textFieldStrokeSize);
+		LH.place(0,9,4,1,1,1,"n","c",null,this,c,colorChooser);
 
 		setVisible(true);
 	}

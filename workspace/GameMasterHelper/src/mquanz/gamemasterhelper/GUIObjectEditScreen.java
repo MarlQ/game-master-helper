@@ -16,15 +16,31 @@ class GUIObjectEditScreen extends JDialog {
 	
 	
 	private JButton changeIconButton;
-	//Item item;
 	MapObjectIcon mapObjectIcon;
 	private ArrayList<GUIObjectEditScreen> editScreenList;
 
+	GUIObjectEditScreen(JFrame parentFrame,MapObjectIcon mapObjectIcon, ArrayList<GUIObjectEditScreen> editScreenList){
+		super(parentFrame,"Edit");
+		this.editScreenList = editScreenList;
+		this.mapObjectIcon = mapObjectIcon;
+
+		MapObject mapObject = mapObjectIcon.mapObject;
+
+		if(mapObject.getClass() == Item.class){
+			//Item Edit Screen
+			createItemEditScreen();
+
+		} else if(mapObject.getClass() == Npc.class){
+			//NPC Edit Screen
+			createNPCEditScreen();
+		}
+		setVisible(true);
+		pack();
+	}
 
 
 
-
-	public void createBasicGUI(GridBagLayout gbl, GridBagConstraints c){
+	void createBasicGUI(GridBagLayout gbl, GridBagConstraints c){
 		MapObject mapObject = mapObjectIcon.mapObject;
 
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -88,20 +104,15 @@ class GUIObjectEditScreen extends JDialog {
 
 		});
 
-		LH.place(0,0,4,1,1,1,"n","c",null,this,gbl,c,textFieldName);
-		LH.place(1,1,1,1,0,0,"n","c",null,this,gbl,c,changeTextColorDesc);
-		LH.place(2,1,1,1,0,0,"n","c",null,this,gbl,c,buttonChangeTextColor);
-		LH.place(3,1,1,1,1,1,"n","e",null,this,gbl,c,iconDesc);
-		LH.place(3,2,1,1,1,1,"n","e",null,this,gbl,c,changeIconButton);
+		LH.place(0,0,4,1,1,1,"n","c",null,this,c,textFieldName);
+		LH.place(1,1,1,1,0,0,"n","c",null,this,c,changeTextColorDesc);
+		LH.place(2,1,1,1,0,0,"n","c",null,this,c,buttonChangeTextColor);
+		LH.place(3,1,1,1,1,1,"n","e",null,this,c,iconDesc);
+		LH.place(3,2,1,1,1,1,"n","e",null,this,c,changeIconButton);
 	}
 
-
-	GUIObjectEditScreen(JFrame parentFrame,MapObjectIcon mapObjectIcon, ArrayList<GUIObjectEditScreen> editScreenList){
-		super(parentFrame,"Edit");
-		this.editScreenList = editScreenList;
-		this.mapObjectIcon = mapObjectIcon;
-
-		MapObject mapObject = mapObjectIcon.mapObject;
+	void createNPCEditScreen(){
+		Npc npc = (Npc)mapObjectIcon.mapObject;
 
 		GridBagConstraints c = new GridBagConstraints();
 		GridBagLayout gbl = new GridBagLayout();
@@ -109,58 +120,61 @@ class GUIObjectEditScreen extends JDialog {
 
 		createBasicGUI(gbl,c);
 
-		
-		if(mapObject.getClass() == Item.class){
-			Item item = (Item)mapObject;
-			
-			JTextField textAreaDescrDesc = new JTextField("Description");
-			textAreaDescrDesc.setEditable(false);
-			JTextArea textAreaDescr = new JTextArea(item.descr);
-			textAreaDescr.setPreferredSize(new Dimension( 500, 300));
+		JTextField textFieldInventoryDesc = new JTextField("Inventory");
+		textFieldInventoryDesc.setEditable(false);
 
-			LH.place(0,3,4,1,0,0,"n","c",null,this,gbl,c,textAreaDescrDesc);
-			LH.place(0,4,4,1,1,1,"n","c",null,this,gbl,c,textAreaDescr);
+		LH.place(0,3,4,1,0,0,"n","c",null,this,c,textFieldInventoryDesc);
 
-		} else if(mapObject.getClass() == Npc.class){
-			Npc npc = (Npc)mapObject;
+		if(npc.inventory != null){
+			for(int i = 0; i < npc.inventory.size(); i++){
+				Item item = npc.inventory.get(i);
 
-			JTextField textFieldInventoryDesc = new JTextField("Inventory");
-			textFieldInventoryDesc.setEditable(false);
+				JButton buttonItemIcon = new JButton();
+				buttonItemIcon.setPreferredSize(new Dimension(64,64));
 
-			LH.place(0,3,4,1,0,0,"n","c",null,this,gbl,c,textFieldInventoryDesc);
+				if (item.icon != null){
+					ImageIcon imageIcon = new ImageIcon(item.icon.getImage().getScaledInstance(64, 64, Image.SCALE_DEFAULT));
+					buttonItemIcon.setIcon(imageIcon);
+				}
 
-			if(npc.inventory != null){
-				for(int i = 0; i < npc.inventory.size(); i++){
-					Item item = npc.inventory.get(i);
+				JTextField textFieldItemName = new JTextField(item.name);
+				textFieldItemName.setColumns(20);
 
-					JButton buttonItemIcon = new JButton();
-					buttonItemIcon.setPreferredSize(new Dimension(64,64));
+				Insets newInsets = new Insets(10,15,10,15);
 
-					if (item.icon != null){
-						ImageIcon imageIcon = new ImageIcon(item.icon.getImage().getScaledInstance(64, 64, Image.SCALE_DEFAULT));
-						buttonItemIcon.setIcon(imageIcon);
-					}
+				if(((i+1)%2) == 0){
+					LH.place(2,3+i,1,1,0,0,"n","e",newInsets,this,c,buttonItemIcon);
+					LH.place(3,3+i,1,1,1,0,"n","w",null,this,c,textFieldItemName);
+				}
+				else{
+					LH.place(0,4+i,1,1,1,0,"n","e", newInsets,this,c,buttonItemIcon);
+					LH.place(1,4+i,1,1,0,0,"n","w",null,this,c,textFieldItemName);
 
-					JTextField textFieldItemName = new JTextField(item.name);
-					textFieldItemName.setColumns(20);
-
-					Insets newInsets = new Insets(10,15,10,15);
-
-					if(((i+1)%2) == 0){
-						LH.place(2,3+i,1,1,0,0,"n","e",newInsets,this,gbl,c,buttonItemIcon);
-						LH.place(3,3+i,1,1,1,0,"n","w",null,this,gbl,c,textFieldItemName);
-					}
-					else{
-						LH.place(0,4+i,1,1,1,0,"n","e", newInsets,this,gbl,c,buttonItemIcon);
-						LH.place(1,4+i,1,1,0,0,"n","w",null,this,gbl,c,textFieldItemName);
-
-					}
 				}
 			}
-
 		}
-
-		setVisible(true);
-		pack();
 	}
+
+	void createItemEditScreen(){
+		Item item = (Item)mapObjectIcon.mapObject;
+
+		GridBagConstraints c = new GridBagConstraints();
+		GridBagLayout gbl = new GridBagLayout();
+		setLayout(gbl);
+
+		createBasicGUI(gbl,c);
+
+		JTextField textAreaDescrDesc = new JTextField("Description");
+		textAreaDescrDesc.setEditable(false);
+		JTextArea textAreaDescr = new JTextArea(item.descr);
+		textAreaDescr.setPreferredSize(new Dimension( 500, 300));
+
+		LH.place(0,3,4,1,0,0,"n","c",null,this,c,textAreaDescrDesc);
+		LH.place(0,4,4,1,1,1,"n","c",null,this,c,textAreaDescr);
+
+	}
+
+
+
+
 }

@@ -1,14 +1,10 @@
 package mquanz.gamemasterhelper;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import java.awt.*;
 
 
 abstract class LH {
 
-	static void place(int x, int y, int w, int h, double wx, double wy, String fill, String anchor, Insets insets, Container p, GridBagLayout gbl, GridBagConstraints c,Component component){
+	static void place(int x, int y, int w, int h, double wx, double wy, String fill, String anchor, Insets insets, Container p, GridBagConstraints c,Component component){
 		c.gridx = x;
 		c.gridy = y;
 		c.gridwidth = w;

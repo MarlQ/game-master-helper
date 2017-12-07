@@ -5,9 +5,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-public abstract class FileSaverLoader {
+abstract class FileSaverLoader {
 
-	public static void saveData(String s, GeneralInformation generalInformation) throws java.io.FileNotFoundException {
+	 static void saveData(String s, GeneralInformation generalInformation) throws java.io.FileNotFoundException {
 		String path = s + "\\" + generalInformation.name + ".dat";
 		try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(path))) {
 			out.writeObject(generalInformation);
@@ -19,7 +19,7 @@ public abstract class FileSaverLoader {
 		}
 	}
 
-	public static GeneralInformation loadData(String s) {
+	 static GeneralInformation loadData(String s) {
 		if (s.endsWith(".dat")) {
 			GeneralInformation generalInformation;
 			try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(s))) {

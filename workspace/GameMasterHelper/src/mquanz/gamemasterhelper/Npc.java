@@ -22,6 +22,7 @@ public class Npc extends MapObject{
 		this.inventory = new ArrayList<Item>();
 
 
+		//TODO: TESTING
 		inventory.add(new Item("Hello", "Bla", GeneralInformation.itemTypeText, null));
 		inventory.add(new Item("Hello2", "Bla", GeneralInformation.itemTypeFirearm, null));
 		inventory.add(new Item("Hello3", "Bla", GeneralInformation.itemTypeText, null));

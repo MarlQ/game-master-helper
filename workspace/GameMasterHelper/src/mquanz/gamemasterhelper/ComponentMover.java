@@ -1,8 +1,8 @@
 package mquanz.gamemasterhelper;
+import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import javax.swing.JComponent;
-import javax.swing.SwingUtilities;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 /**
  * This class allows you to move a Component by using a mouse. The Component
@@ -129,7 +129,7 @@ public class ComponentMover extends MouseAdapter {
 	/**
 	 * Remove listeners from the specified component
 	 *
-	 * @param component
+	 * @param components
 	 *            the component the listeners are removed from
 	 */
 	public void deregisterComponent(MapObjectIcon... components) {
@@ -140,7 +140,7 @@ public class ComponentMover extends MouseAdapter {
 	/**
 	 * Add the required listeners to the specified component
 	 *
-	 * @param component
+	 * @param components
 	 *            the component the listeners are added to
 	 */
 	public void registerComponent(MapObjectIcon... components) {

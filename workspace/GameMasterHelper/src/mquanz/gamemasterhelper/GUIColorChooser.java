@@ -31,8 +31,6 @@ public class GUIColorChooser extends JPanel implements ActionListener{
 
 		setLayout(gridbagLayout);
 		
-		
-		
 		JPanel primSecColorPanel = new JPanel();
 		primSecColorPanel.setLayout(gridbagLayout);
 	
@@ -84,7 +82,6 @@ public class GUIColorChooser extends JPanel implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		JButton source = (JButton) arg0.getSource();
-		
 		
 		if(source == buttonColorChooserPrim){
 			isPrimSelected = true;
