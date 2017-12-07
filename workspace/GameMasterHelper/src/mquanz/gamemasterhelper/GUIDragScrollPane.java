@@ -456,7 +456,7 @@ class GUIDragScrollPane extends JScrollPane {
 				getHorizontalScrollBar().setValue(mapLink.linkPosY);
 			}
 			// TODO: Edit Screen
-		} else if (mapObject.getClass() == Item.class) {
+		} else {
 
 			for (GUIObjectEditScreen editScreen : objectEditScreenList) {
 				if (editScreen.mapObjectIcon == selectedIcon) {

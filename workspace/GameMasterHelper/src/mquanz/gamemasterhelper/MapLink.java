@@ -6,7 +6,6 @@ public class MapLink extends MapObject {
 
 	int linkPosX, linkPosY;
 	MapInformation map;
-	public ImageIcon icon;
 
 	public MapLink(String name, Color textColor, int linkPosX, int linkPosY, MapInformation map,
 			MapLinkType mapLinkType, ImageIcon icon) {
@@ -19,7 +18,7 @@ public class MapLink extends MapObject {
 
 	}
 
-	public MapLink(String name, int linkPosX, int linkPosY, MapInformation map, MapLinkType mapLinkType,  ImageIcon icon) {
+	MapLink(String name, int linkPosX, int linkPosY, MapInformation map, MapLinkType mapLinkType,  ImageIcon icon) {
 		super(name, Color.CYAN,icon,mapLinkType);
 		this.linkPosX = linkPosX;
 		this.linkPosY = linkPosY;
