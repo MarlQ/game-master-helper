@@ -1,32 +1,41 @@
 package mquanz.gamemasterhelper;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 
-public class GUITopPane extends JPanel implements PropertyChangeListener{
+public class GUITopPane extends JPanel{
 	private static final long serialVersionUID = 1L;
 
 	GUIMain parentFrame;
 	JTextField mapNameTextField;
+
+
 	
 	public GUITopPane(GUIMain parentFrame){
-		mapNameTextField = new JTextField(parentFrame.drawingSurface.mapInformation.name);
-		mapNameTextField.setSize(mapNameTextField.getPreferredSize());
-		
-		//add(mapNameTextField);
-		//mapNameTextField.addPropertyChangeListener(this);
+
+		this.parentFrame = parentFrame;
+
+		int mapNameCount = parentFrame.generalInformation.maps.size();
+
+		String[] mapNameList = new String[mapNameCount];
+
+		for(int i = 0; i < mapNameCount; i++){
+			mapNameList[i] = parentFrame.generalInformation.maps.get(i).name;
+		}
+
+
+		JComboBox comboBoxMaps = new JComboBox(mapNameList);
+		comboBoxMaps.setEditable(true);
+		comboBoxMaps.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				JComboBox cb = (JComboBox)e.getSource();
+				GUITopPane.this.parentFrame.drawingSurface.changeMap(GUITopPane.this.parentFrame.generalInformation.maps.get(cb.getSelectedIndex()));
+			}
+		});
+		add(comboBoxMaps);
 		
 	}
 
-	@Override
-	public void propertyChange(PropertyChangeEvent arg0) {
-		JTextField source = (JTextField) (arg0.getSource());
-		if(source == mapNameTextField){
-			mapNameTextField.setText(source.getText());
-			parentFrame.drawingSurface.mapInformation.name = source.getText();
-		}
-		
-	}
 }

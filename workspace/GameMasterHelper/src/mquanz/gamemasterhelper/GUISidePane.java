@@ -12,14 +12,12 @@ public class GUISidePane extends JPanel implements ChangeListener, PropertyChang
 	private static final long serialVersionUID = 1L;
 
 	GUIMain parentFrame;
-	GUIMapPopupMenu changeMapPopupMenu;
-	JSlider sliderStrokeSize;
+	private JSlider sliderStrokeSize;
 
-	JFormattedTextField textFieldStrokeSize;
-	JButton buttonChangeMap;
-	JButton lastActiveButton;
+	private JFormattedTextField textFieldStrokeSize;
+	private JButton lastActiveButton;
 	
-	public GUISidePane(GUIMain parentFrame) {
+	GUISidePane(GUIMain parentFrame) {
 		super();
 		this.parentFrame = parentFrame;
 		setOpaque(true);
@@ -28,18 +26,6 @@ public class GUISidePane extends JPanel implements ChangeListener, PropertyChang
 		GridBagLayout gbl = new GridBagLayout();
 
 		setLayout(gbl);
-
-		changeMapPopupMenu = new GUIMapPopupMenu(this);
-
-		buttonChangeMap = new JButton("Map 01");
-		buttonChangeMap.setHorizontalTextPosition(SwingConstants.CENTER);
-		buttonChangeMap.setVerticalTextPosition(SwingConstants.CENTER);
-		buttonChangeMap.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e) {
-				changeMapPopupMenu.show(buttonChangeMap, buttonChangeMap.getX() + buttonChangeMap.getSize().width,
-						buttonChangeMap.getY());
-			}
-		});
 
 		final JButton buttonModeDrag = new JButton();
 		buttonModeDrag.setIcon(GeneralInformation.createImageIcon("res/gui/tool_drag.png"));
@@ -122,7 +108,6 @@ public class GUISidePane extends JPanel implements ChangeListener, PropertyChang
 		textFieldStrokeSize.setColumns(3);
 		textFieldStrokeSize.addPropertyChangeListener(this);
 
-		LH.place(0,0,4,1,1,1,"h","c",null,this,gbl,c,buttonChangeMap);
 
 		LH.place(1,4,1,1,1,1,"n","e",null,this,gbl,c,buttonModeDrag);
 		LH.place(2,4,1,1,0.55,1,"n","w",null,this,gbl,c,buttonModePencil);

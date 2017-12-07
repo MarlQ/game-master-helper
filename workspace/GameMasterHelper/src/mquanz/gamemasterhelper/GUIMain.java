@@ -20,7 +20,7 @@ public class GUIMain extends JFrame{
 	 * TODO: Adding, Deleting, Renaming Maps
 	 * TODO: Option to change background color, and texture
 	 * TODO: Flow Diagram parts
-	 * TODO: Furniture
+	 * TODO: Furniture (-> z-order)
 	 * TODO: (Function) Undo-Redo
 	 * TODO: change size of map (-> ask, delete Items)
 	 *
