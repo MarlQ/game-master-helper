@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 public class GeneralInformation implements java.io.Serializable {
@@ -58,6 +59,12 @@ public class GeneralInformation implements java.io.Serializable {
 		//TODO: TESTING
 		newMap("Map 01", new Dimension(3000,3000));
 		newMap("Map 02", new Dimension(400,300));
+		newMap("Map 03", new Dimension(400,300));
+		newMap("Map 04", new Dimension(400,300));
+
+		Property damage = new Property("Damage", "Number", 5, NumberFormat.getIntegerInstance());
+
+		itemTypeFirearm.properties.add(damage);
 
 	}
 
