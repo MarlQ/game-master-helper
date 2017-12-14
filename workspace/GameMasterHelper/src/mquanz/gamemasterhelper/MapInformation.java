@@ -46,6 +46,11 @@ public class MapInformation implements java.io.Serializable{
   		this.itemIcons.add(newMapObjectIcon);	
   	    return newMapObjectIcon;
   	}
-	
+	@Override
+	public String toString(){
+    	return this.name;
+	}
+
+
 
 }
