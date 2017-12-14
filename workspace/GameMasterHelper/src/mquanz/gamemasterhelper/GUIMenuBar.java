@@ -49,12 +49,19 @@ public class GUIMenuBar extends JMenuBar {
             }
         });
 
+        JMenuItem itemTypeList = new JMenuItem("Item Types");
+        itemTypeList.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                new GUIDialogTypeList(GUIMenuBar.this.mainFrame);
+            }
+        });
         file.add(load);
         file.add(save);
 
         map.add(clearMap);
         map.add(saveToImage);
         map.add(itemList);
+        map.add(itemTypeList);
 
         add(file);
         add(map);
