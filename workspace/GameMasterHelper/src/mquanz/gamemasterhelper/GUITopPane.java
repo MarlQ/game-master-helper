@@ -32,6 +32,15 @@ public class GUITopPane extends JPanel{
 			}
 		});
 		add(comboBoxMaps);
+
+		JButton buttonOpenMapList = new JButton("+");
+		buttonOpenMapList.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				new GUIDialogMapList(parentFrame);
+			}
+		});
+
+		add(buttonOpenMapList);
 		
 	}
 
