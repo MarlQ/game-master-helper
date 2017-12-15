@@ -38,7 +38,6 @@ public class GUIMain extends JFrame{
 	 * TODO: Item/Npc/Maplink-Overview
 	 *
 	 * Bottom Bar:
-	 * TODO: Size, Length information for rectangle tool
 	 * TODO: Changing Tooltip for the modes in the bottom right corner
 	 *
 	 * Edit Screen:
@@ -55,13 +54,10 @@ public class GUIMain extends JFrame{
 	 * TODO: (Bug) No snapping to grid on right mouse button
 	 * TODO: Move to Java 8 or 9, replace listeners with lambda expressions
 	 * 
-	 * 
 	 * FUTURE THINGS:
 	 * TODO: Save and load function
 	 * TODO: Minimap
 	 * TODO: Placement tool and catalogue (maybe on the left?)
-	 * 
-	 * 
 	 */
 	
 	//GUIDragScrollPane
