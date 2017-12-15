@@ -9,26 +9,24 @@ public class GUITopPane extends JPanel{
 	private static final long serialVersionUID = 1L;
 
 	private GUIMain parentFrame;
+
+	JComboBox comboBoxMaps;
+	GUIDialogMapList dialogMapList;
 	
 	public GUITopPane(GUIMain parentFrame){
 
 		this.parentFrame = parentFrame;
 
-		int mapNameCount = parentFrame.generalInformation.maps.size();
+		comboBoxMaps = new JComboBox();
 
-		String[] mapNameList = new String[mapNameCount];
-
-		for(int i = 0; i < mapNameCount; i++){
-			mapNameList[i] = parentFrame.generalInformation.maps.get(i).name;
+		for(MapInformation map : parentFrame.generalInformation.maps){
+			comboBoxMaps.addItem(map);
 		}
-
-
-		JComboBox comboBoxMaps = new JComboBox(mapNameList);
-		comboBoxMaps.setEditable(true);
+		comboBoxMaps.setEditable(false);
 		comboBoxMaps.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				JComboBox cb = (JComboBox)e.getSource();
-				GUITopPane.this.parentFrame.drawingSurface.changeMap(GUITopPane.this.parentFrame.generalInformation.maps.get(cb.getSelectedIndex()));
+				parentFrame.mapController.changeMap((MapInformation)cb.getSelectedItem());
 			}
 		});
 		add(comboBoxMaps);
@@ -36,12 +34,16 @@ public class GUITopPane extends JPanel{
 		JButton buttonOpenMapList = new JButton("+");
 		buttonOpenMapList.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				new GUIDialogMapList(parentFrame);
+				if(GUITopPane.this.dialogMapList != null){
+					GUITopPane.this.dialogMapList.dispose();
+				}
+				GUITopPane.this.dialogMapList = new GUIDialogMapList(parentFrame);
 			}
 		});
 
 		add(buttonOpenMapList);
 		
 	}
+
 
 }

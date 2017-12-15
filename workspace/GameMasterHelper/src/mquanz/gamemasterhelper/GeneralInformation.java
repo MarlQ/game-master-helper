@@ -73,6 +73,7 @@ public class GeneralInformation implements java.io.Serializable {
 		itemTypes.add(newItemType);
 	}
 
+	//TODO: TESTING
 	public MapInformation newMap(String mapName, Dimension mapSize){
 		MapInformation map = new MapInformation(mapName, mapSize);
 		maps.add(map);

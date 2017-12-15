@@ -153,44 +153,55 @@ public class GUIDrawingSurface extends JPanel implements Scrollable{
 	}
 
 	void changeMap(MapInformation mapInformation){
-		
-		if(this.mapInformation != mapInformation){
-			if(dragScrollPane != null){
-				if(dragScrollPane.selectedIcon != null){
-					dragScrollPane.selectedIcon.isSelected = false;
-					dragScrollPane.selectedIcon.repaint();
-					dragScrollPane.selectedIcon = null;
+
+			if (this.mapInformation != mapInformation) {
+				if (dragScrollPane != null) {
+					if (dragScrollPane.selectedIcon != null) {
+						dragScrollPane.selectedIcon.isSelected = false;
+						dragScrollPane.selectedIcon.repaint();
+						dragScrollPane.selectedIcon = null;
+					}
 				}
+				if (this.mapInformation != null) {
+					for(MapObjectIcon itemIcon : this.mapInformation.itemIcons){
+						remove(itemIcon);
+					}
+				}
+
+				if(mapInformation != null){
+					if (mapInformation.drawingImage != null) {
+						g2 = (Graphics2D) mapInformation.drawingImage.getGraphics();
+						g2.setStroke(drawingStroke);
+						g2.setPaint(drawingColorPrim);
+					}
+
+						this.setMaximumSize(mapInformation.mapSize);
+						this.setPreferredSize(mapInformation.mapSize);
+						revalidate();
+						repaint();
+
+						componentMover = new ComponentMover(this);
+
+						for (MapObjectIcon itemIcon : mapInformation.itemIcons) {
+							add(itemIcon);
+							itemIcon.setLocation(itemIcon.posX, itemIcon.posY);
+							Dimension size = itemIcon.getPreferredSize();
+							itemIcon.setBounds(itemIcon.posX, itemIcon.posY, size.width, size.height);
+							itemIcon.repaint();
+
+							componentMover.registerComponent(itemIcon);
+						}
+
+				}else{
+					this.setMaximumSize(new Dimension(0,0));
+					this.setPreferredSize(new Dimension(0,0));
+					revalidate();
+					repaint();
+				}
+				this.mapInformation = mapInformation;
+
 			}
-		if(this.mapInformation != null){	
-			for (MapObjectIcon itemIcon : this.mapInformation.itemIcons) {
-				remove(itemIcon);
-			}
-			if(mapInformation.drawingImage != null){
-				g2 = (Graphics2D) mapInformation.drawingImage.getGraphics();
-				g2.setStroke(drawingStroke);
-				g2.setPaint(drawingColorPrim);
-			}
-			this.setMaximumSize(mapInformation.mapSize);
-			this.setPreferredSize(mapInformation.mapSize);
-			revalidate();
-			repaint();	
-		}
-		this.mapInformation = mapInformation;
-		componentMover = new ComponentMover(this);
 
-		for (MapObjectIcon itemIcon : mapInformation.itemIcons) {
-
-			add(itemIcon);
-			itemIcon.setLocation(itemIcon.posX, itemIcon.posY);
-			Dimension size = itemIcon.getPreferredSize();
-			itemIcon.setBounds(itemIcon.posX, itemIcon.posY, size.width, size.height);
-			itemIcon.repaint();
-
-			componentMover.registerComponent(itemIcon);
-
-		}
-		}
 	}
 	@Override
 	public Dimension getPreferredScrollableViewportSize() {

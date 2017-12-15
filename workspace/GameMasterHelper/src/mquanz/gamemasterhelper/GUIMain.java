@@ -89,6 +89,10 @@ public class GUIMain extends JFrame{
 	GeneralInformation generalInformation;
 	GUIDrawingSurface drawingSurface;
 	GUIDragScrollPane scrollPane;
+
+
+	GUITopPane topPane;
+	ControllerMap mapController;
 	
 	public static void main(String[] args){
 		
@@ -106,7 +110,8 @@ public class GUIMain extends JFrame{
 		
 		GeneralInformation generalInformation = new GeneralInformation();
 		GUIMain mainFrame = new GUIMain("Gamemaster helper", generalInformation);
-		
+
+		mainFrame.mapController = new ControllerMap(mainFrame);
 		
 		
 		mainFrame.setContentPane(mainFrame.createContentPane());
@@ -132,7 +137,7 @@ public class GUIMain extends JFrame{
 		drawingSurface.dragScrollPane = scrollPane;
 		
 		GUISidePane sidePane = new GUISidePane(this);
-		GUITopPane topPane = new GUITopPane(this);
+		topPane = new GUITopPane(this);
 
 
 		LH.place(0,0,1,1,1,0.1,"n","c",null,contentPane,c,topPane);
