@@ -50,9 +50,13 @@ public class GUIDialogMapList extends JDialog {
         JButton buttonDeleteMap = new JButton("-");
         buttonDeleteMap.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                //TODO: Ask if it should delete, remove does not update
-                mainFrame.mapController.deleteMap((MapInformation)GUIDialogMapList.this.list.getSelectedValue());
-
+                MapInformation map = (MapInformation)GUIDialogMapList.this.list.getSelectedValue();
+                if(map.itemIcons.isEmpty()){
+                    mainFrame.mapController.deleteMap(map);
+                }
+                else{
+                    deleteMapDialog(map);
+                }
             }
         });
         buttonDeleteMap.setEnabled(false);
@@ -75,6 +79,21 @@ public class GUIDialogMapList extends JDialog {
 
         setVisible(true);
         pack();
+    }
+
+    void deleteMapDialog(MapInformation map){
+        String[] options = {"Yes","Cancel"};
+
+        int n = JOptionPane.showOptionDialog(GUIDialogMapList.this,
+                "This map contains items which may get deleted. Delete anyway?",
+                "Warning",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE, null, options, options[0]); //default button title
+
+        if(n == JOptionPane.YES_OPTION){
+            mainFrame.mapController.deleteMap(map);
+        }
+
     }
 
     void createMapDialog() {

@@ -17,7 +17,7 @@ public class GUIMain extends JFrame{
 	/**
 	 *
 	 * TODO: (Function) Copy & Paste
-	 * TODO: Adding, Deleting, Renaming Maps
+	 * TODO: Renaming Maps
 	 * TODO: Option to change background color, and texture
 	 * TODO: Flow Diagram parts
 	 * TODO: Furniture (-> z-order)
@@ -25,6 +25,8 @@ public class GUIMain extends JFrame{
 	 * TODO: change size of map (-> ask, delete Items)
 	 *
 	 * Side Pane
+	 * TODO: Color Chooser for prim and sec drawing (button to the left)
+	 * TODO: Ability to change Color palette (button to the right) and save with Map
 	 * TODO: (Tool) ladder creation tool (-> rectangle tool)
 	 * TODO: (Tool) Box Selection
 	 * TODO: (Tool) Cut (-> Scissors)
