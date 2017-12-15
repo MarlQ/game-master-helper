@@ -201,6 +201,12 @@ class GUIDragScrollPane extends JScrollPane {
 						else{
 							objectToMove.rectangleEndPoint.setLocation(xTrans,yTrans);
 						}
+						if(objectToMove.rectangleStartPoint != null){
+							int xDist = objectToMove.rectangleEndPoint.x-objectToMove.rectangleStartPoint.x;
+							int yDist = objectToMove.rectangleEndPoint.y-objectToMove.rectangleStartPoint.y;
+
+							bottomPane.setContextualInfoRectTool(xDist, yDist);
+						}
 
 					}
 					objectToMove.repaint();

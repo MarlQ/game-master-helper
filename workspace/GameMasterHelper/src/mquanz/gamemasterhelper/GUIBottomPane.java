@@ -17,7 +17,7 @@ class GUIBottomPane extends JPanel {
 
          textFieldContextualInfo = new JTextField("");
          textFieldContextualInfo.setEditable(false);
-         textFieldContextualInfo.setColumns(20);
+         textFieldContextualInfo.setColumns(30);
          textFieldContextualInfo.setBorder(null);
         add(textFieldMouseC);
         add(textFieldContextualInfo);
@@ -41,7 +41,8 @@ class GUIBottomPane extends JPanel {
 
         int lengthInMetersX = lengthX/GUIMain.METER;
         int lengthInMetersY = lengthY/GUIMain.METER;
-        this.textFieldContextualInfo.setText("Dimensions: " + lengthX + " x " + lengthY + " (" + lengthInMetersX + " x " + lengthInMetersY + " meters)");
+        int squareMeters = lengthInMetersX*lengthInMetersY;
+        this.textFieldContextualInfo.setText("Dimensions: " + lengthX + " x " + lengthY + " (" + lengthInMetersX + " x " + lengthInMetersY + " meters = " + squareMeters + " m²)");
     }
 
 }
