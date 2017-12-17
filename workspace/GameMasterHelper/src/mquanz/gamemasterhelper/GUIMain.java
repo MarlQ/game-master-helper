@@ -76,7 +76,7 @@ public class GUIMain extends JFrame{
 	static final boolean DRAW_GRID_DEFAULT = true;
 	static final boolean ALLOW_ANTIALIASING = false;
 
-	//Temporary
+	//TODO: Temporary
 	static final int METER = 20;
 	
 	private GUIMain(String title, GeneralInformation generalInformation){
@@ -87,8 +87,6 @@ public class GUIMain extends JFrame{
 	GeneralInformation generalInformation;
 	GUIDrawingSurface drawingSurface;
 	GUIDragScrollPane scrollPane;
-
-
 	GUITopPane topPane;
 	ControllerMap mapController;
 	
@@ -108,17 +106,14 @@ public class GUIMain extends JFrame{
 		
 		GeneralInformation generalInformation = new GeneralInformation();
 		GUIMain mainFrame = new GUIMain("Gamemaster helper", generalInformation);
-
 		mainFrame.mapController = new ControllerMap(mainFrame);
-		
-		
+
 		mainFrame.setContentPane(mainFrame.createContentPane());
 		mainFrame.setJMenuBar(new GUIMenuBar(mainFrame));
 
 		mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		
 		mainFrame.pack();
-	
+
 		//mainFrame.setSize(450, 260);
 		mainFrame.setLocationRelativeTo(null);
 		mainFrame.setVisible(true);
@@ -137,68 +132,69 @@ public class GUIMain extends JFrame{
 		GUISidePane sidePane = new GUISidePane(this);
 		topPane = new GUITopPane(this);
 
-
 		LH.place(0,0,1,1,1,0.1,"n","c",null,contentPane,c,topPane);
 		LH.place(0,1,1,1,1,0.8,"b","c",null,contentPane,c,scrollPane);
 		LH.place(1,1,1,1,0,0.8,"n","c",null,contentPane,c,sidePane);
 		LH.place(0,2,2,1,1,0,"h","c",null,contentPane,c,bottomPane);
 
+		setupKeybindings(contentPane);
+
+		return contentPane;
+	}
+	void setupKeybindings(JPanel contentPane){
 		AbstractAction pressedShiftAction = new AbstractAction() {
 			private static final long serialVersionUID = 1L;
-		    public void actionPerformed(ActionEvent e) {	
-		    	if(!GUIMain.this.scrollPane.shiftPressed){
+			public void actionPerformed(ActionEvent e) {
+				if(!GUIMain.this.scrollPane.shiftPressed){
 					GUIMain.this.scrollPane.shiftPressed = true;
 					GUIMain.this.scrollPane.shiftLineHorizontal = 0;
-		    	}
-		    }
+				}
+			}
 		};
 		AbstractAction releasedShiftAction = new AbstractAction() {
 			private static final long serialVersionUID = 1L;
-		    public void actionPerformed(ActionEvent e) {		
-					GUIMain.this.scrollPane.shiftPressed = false;
-					GUIMain.this.scrollPane.shiftLineHorizontal = 0;
-		    }
+			public void actionPerformed(ActionEvent e) {
+				GUIMain.this.scrollPane.shiftPressed = false;
+				GUIMain.this.scrollPane.shiftLineHorizontal = 0;
+			}
 		};
 
 		AbstractAction pressedDeleteAction = new AbstractAction() {
 			private static final long serialVersionUID = 1L;
-		    public void actionPerformed(ActionEvent e) {		
-					if(scrollPane.selectedIcon != null){
-						for(GUIObjectEditScreen editScreen : scrollPane.objectEditScreenList){
-							if(editScreen.mapObjectIcon == scrollPane.selectedIcon){
-								editScreen.dispose();
-								scrollPane.objectEditScreenList.remove(editScreen);
-								break;
-							}
+			public void actionPerformed(ActionEvent e) {
+				if(scrollPane.selectedIcon != null){
+					for(GUIObjectEditScreen editScreen : scrollPane.objectEditScreenList){
+						if(editScreen.mapObjectIcon == scrollPane.selectedIcon){
+							editScreen.dispose();
+							scrollPane.objectEditScreenList.remove(editScreen);
+							break;
 						}
-						scrollPane.objectToMove.componentMover.deregisterComponent(scrollPane.selectedIcon);
-						scrollPane.objectToMove.remove(scrollPane.selectedIcon);
-						scrollPane.objectToMove.mapInformation.itemIcons.remove(scrollPane.selectedIcon);
-						scrollPane.selectedIcon = null;
-						scrollPane.objectToMove.repaint();
 					}
-		    }
+					scrollPane.objectToMove.componentMover.deregisterComponent(scrollPane.selectedIcon);
+					scrollPane.objectToMove.remove(scrollPane.selectedIcon);
+					scrollPane.objectToMove.mapInformation.itemIcons.remove(scrollPane.selectedIcon);
+					scrollPane.selectedIcon = null;
+					scrollPane.objectToMove.repaint();
+				}
+			}
 		};
-		
+
 		contentPane.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_SHIFT, InputEvent.SHIFT_DOWN_MASK, false),
-                "pressedShift");
+				"pressedShift");
 		contentPane.getActionMap().put("pressedShift",
 				pressedShiftAction);
 		contentPane.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke("released SHIFT"),"releasedShift");
-	    contentPane.getActionMap().put("releasedShift",releasedShiftAction);
-		
+		contentPane.getActionMap().put("releasedShift",releasedShiftAction);
+
 		contentPane.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke("DELETE"),
-                "pressedDelete");
+				"pressedDelete");
 		contentPane.getActionMap().put("pressedDelete",
 				pressedDeleteAction);
-		
-
-		return contentPane;
 	}
+
 	void saveToImage(){
 		BufferedImage bufferedImage = ScreenImage.createImage(this.drawingSurface);
-		
-		
+
 		JFileChooser fileChooser = new JFileChooser();	
 		if (!(this.generalInformation == null)) {
 			boolean wasSaved = false;

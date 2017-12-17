@@ -25,14 +25,14 @@ public class GUIMenuBar extends JMenuBar {
         JMenuItem load = new JMenuItem("Load");
         load.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                GUIMenuBar.this.mainFrame.loadGame();
+                //GUIMenuBar.this.mainFrame.loadGame();
             }
         });
 
         JMenuItem save = new JMenuItem("Save");
         save.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                GUIMenuBar.this.mainFrame.saveGame();
+                //GUIMenuBar.this.mainFrame.saveGame();
             }
         });
 
