@@ -20,9 +20,14 @@ public class GUIDialogMapList extends JDialog {
     GUIMain mainFrame;
 
     public GUIDialogMapList(GUIMain mainFrame) {
-        super(mainFrame, "Drag Test");
+        super(mainFrame, "Maps");
+
         this.mainFrame = mainFrame;
         setSize(200, 150);
+        Point Location = mainFrame.topPane.buttonOpenMapList.getLocationOnScreen();
+        Location.x += mainFrame.topPane.buttonOpenMapList.getWidth();
+
+        setLocation(Location);
 
         GridBagLayout gbl = new GridBagLayout();
         GridBagConstraints c = new GridBagConstraints();
@@ -73,7 +78,8 @@ public class GUIDialogMapList extends JDialog {
             }
         });
 
-        LH.place(0, 0, 1, 6, 1, 1, "b", "w", null, this, c, list);
+        JScrollPane scrollPane = new JScrollPane(list);
+        LH.place(0, 0, 1, 6, 1, 1, "b", "w", null, this, c, scrollPane);
         LH.place(1, 3, 1, 1, 1, 1, "n", "c", null, this, c, buttonAddMap);
         LH.place(1, 4, 1, 1, 1, 1, "n", "c", null, this, c, buttonDeleteMap);
 
@@ -98,6 +104,7 @@ public class GUIDialogMapList extends JDialog {
 
     void createMapDialog() {
         JDialog dialogCreateMap = new JDialog(GUIDialogMapList.this, "new Map");
+        dialogCreateMap.setLocationRelativeTo(this);
 
         GridBagLayout gbl = new GridBagLayout();
         GridBagConstraints c = new GridBagConstraints();

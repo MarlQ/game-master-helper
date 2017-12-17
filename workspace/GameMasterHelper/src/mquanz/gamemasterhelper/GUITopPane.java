@@ -12,6 +12,7 @@ public class GUITopPane extends JPanel{
 
 	JComboBox comboBoxMaps;
 	GUIDialogMapList dialogMapList;
+	JButton buttonOpenMapList;
 	
 	public GUITopPane(GUIMain parentFrame){
 
@@ -31,7 +32,7 @@ public class GUITopPane extends JPanel{
 		});
 		add(comboBoxMaps);
 
-		JButton buttonOpenMapList = new JButton("+");
+		buttonOpenMapList = new JButton("+");
 		buttonOpenMapList.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				if(GUITopPane.this.dialogMapList != null){
