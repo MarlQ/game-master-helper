@@ -31,46 +31,26 @@ class GUIDragScrollPane extends JScrollPane {
         this.bottomPane = bottomPane;
         setPreferredSize(new Dimension(500, 500));
 
-        ViewportDragScrollListener l = new ViewportDragScrollListener(objectToMove, false);
+        ViewportDragScrollListener l = new ViewportDragScrollListener(objectToMove);
         JViewport gridScrollPaneViewport = getViewport();
         gridScrollPaneViewport.addMouseMotionListener(l);
         gridScrollPaneViewport.addMouseListener(l);
-        gridScrollPaneViewport.addHierarchyListener(l);
-
     }
 
-    class ViewportDragScrollListener extends MouseAdapter implements HierarchyListener {
+    class ViewportDragScrollListener extends MouseAdapter{
         private static final int SPEED = 4;
-        private static final int DELAY = 10;
         private final Cursor dc;
         private final Cursor hc = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
-        private final javax.swing.Timer scroller;
         private final JComponent label;
         private final Point startPt = new Point();
         private final Point move = new Point();
-        private boolean autoScroll = false;
 
-        private int currentX, currentY, oldX, oldY;
+        CPoint startP  = new CPoint(0,0);
+        CPoint endP = new CPoint(0,0);
 
-        private ViewportDragScrollListener(JComponent comp, boolean autoScroll) {
+        private ViewportDragScrollListener(JComponent comp) {
             this.label = comp;
-            this.autoScroll = autoScroll;
             this.dc = comp.getCursor();
-            this.scroller = new javax.swing.Timer(DELAY, new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    JViewport vport = (JViewport) label.getParent();
-                    Point vp = vport.getViewPosition();
-                    vp.translate(move.x, move.y);
-                    label.scrollRectToVisible(new Rectangle(vp, vport.getSize()));
-                }
-            });
-        }
-
-        public void hierarchyChanged(HierarchyEvent e) {
-            JComponent c = (JComponent) e.getSource();
-            if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !c.isDisplayable() && autoScroll) {
-                scroller.stop();
-            }
         }
 
         @Override
@@ -102,40 +82,28 @@ class GUIDragScrollPane extends JScrollPane {
                         break;
                     case 2:
                         // Pencil Tool
-                        currentX = xTrans;
-                        currentY = yTrans;
+                        endP.setLocation(e.getX(), e.getY());
+                        endP.transform(e);
 
                         if (snapToGrid) {
-                            int modX = currentX % GUIMain.METER;
-                            int modY = currentY % GUIMain.METER;
-
-                            if (modX > GUIMain.METER / 2) {
-                                currentX += GUIMain.METER - modX;
-                            } else {
-                                currentX -= modX;
-                            }
-                            if (modY > GUIMain.METER / 2) {
-                                currentY += GUIMain.METER - modY;
-                            } else {
-                                currentY -= modY;
-                            }
+                            endP.alignToGrid();
                         }
                         if (shiftPressed) {
-                            int difX = currentX - oldX;
-                            int difY = currentY - oldY;
+                            int difX = endP.x - startP.x;
+                            int difY = endP.y - startP.y;
                             if (!(difX == 0 && difY == 0)) {
                                 if (shiftLineHorizontal == 2) {
-                                    currentY = oldY;
+                                    endP.y = startP.y;
                                 } else if (shiftLineHorizontal == 1) {
-                                    currentX = oldX;
+                                    endP.x = startP.x;
                                 } else if (difX == 0) {
-                                    currentX = oldX;
+                                    endP.x = startP.x;
                                     shiftLineHorizontal = 1;
                                 } else if (difY == 0) {
-                                    currentY = oldY;
+                                    endP.y = startP.y;
                                     shiftLineHorizontal = 2;
                                 } else {
-                                    currentX = oldX;
+                                    endP.x = startP.x;
                                     shiftLineHorizontal = 1;
                                 }
                             }
@@ -143,22 +111,22 @@ class GUIDragScrollPane extends JScrollPane {
 
                         if (objectToMove.g2 != null) {
                             objectToMove.g2.setPaint(objectToMove.drawingColorPrim);
-                            objectToMove.g2.drawLine(oldX, oldY, currentX, currentY);
+                            objectToMove.g2.drawLine(startP.x, startP.y, endP.x, endP.y);
                             objectToMove.repaint();
-                            oldX = currentX;
-                            oldY = currentY;
+                            startP.setLocation(endP);
                         }
                         break;
                     case 3:
                     case 5:
                         // Line Tool, Rectangle Tool
-                        Point endPoint = transform(e);
+                        endP.setLocation(e.getX(), e.getY());
+                        endP.transform(e);
                         if (snapToGrid) {
-                            endPoint = transformCoordinatesGrid(endPoint);
+                            endP.alignToGrid();
                         }
                         if (mode == 3) {
                             //Line Tool
-                            objectToMove.lineEndPoint = endPoint;
+                            objectToMove.lineEndPoint = endP;
                             if (objectToMove.lineStartPoint != null) {
                                 int xDist = objectToMove.lineEndPoint.x - objectToMove.lineStartPoint.x;
                                 int yDist = objectToMove.lineEndPoint.y - objectToMove.lineStartPoint.y;
@@ -169,7 +137,7 @@ class GUIDragScrollPane extends JScrollPane {
                             }
                         } else if (mode == 5) {
                             //Rectangle Tool
-                            objectToMove.rectangleEndPoint = endPoint;
+                            objectToMove.rectangleEndPoint = endP;
                             if (objectToMove.rectangleStartPoint != null) {
                                 int xDist = objectToMove.rectangleEndPoint.x - objectToMove.rectangleStartPoint.x;
                                 int yDist = objectToMove.rectangleEndPoint.y - objectToMove.rectangleStartPoint.y;
@@ -186,32 +154,38 @@ class GUIDragScrollPane extends JScrollPane {
             if (SwingUtilities.isRightMouseButton(e)) {
                 if (mode == 2) {
                     // Pencil Tool Sec
-                    currentX = xTrans;
-                    currentY = yTrans;
+                    endP.setLocation(e.getX(),e.getY());
+                    endP.transform(e);
 
                     if (snapToGrid) {
-                        int modX = currentX % GUIMain.METER;
-                        int modY = currentY % GUIMain.METER;
-
-                        if (modX > GUIMain.METER / 2) {
-                            currentX += GUIMain.METER - modX;
-                        } else {
-                            currentX -= modX;
-                        }
-                        if (modY > GUIMain.METER / 2) {
-                            currentY += GUIMain.METER - modY;
-                        } else {
-                            currentY -= modY;
+                        endP.alignToGrid();
+                    }
+                    if (shiftPressed) {
+                        int difX = endP.x - startP.x;
+                        int difY = endP.y - startP.y;
+                        if (!(difX == 0 && difY == 0)) {
+                            if (shiftLineHorizontal == 2) {
+                                endP.y = startP.y;
+                            } else if (shiftLineHorizontal == 1) {
+                                endP.x = startP.x;
+                            } else if (difX == 0) {
+                                endP.x = startP.x;
+                                shiftLineHorizontal = 1;
+                            } else if (difY == 0) {
+                                endP.y = startP.y;
+                                shiftLineHorizontal = 2;
+                            } else {
+                                endP.x = startP.x;
+                                shiftLineHorizontal = 1;
+                            }
                         }
                     }
-
                     if (objectToMove.g2 != null) {
                         objectToMove.g2.setPaint(objectToMove.drawingColorSeco);
-                        objectToMove.g2.drawLine(oldX, oldY, currentX, currentY);
+                        objectToMove.g2.drawLine(startP.x, startP.y, endP.x, endP.y);
                         objectToMove.g2.setPaint(objectToMove.drawingColorPrim);
                         objectToMove.repaint();
-                        oldX = currentX;
-                        oldY = currentY;
+                        startP.setLocation(endP);
                     }
                 }
             }
@@ -228,9 +202,6 @@ class GUIDragScrollPane extends JScrollPane {
                         ((JComponent) e.getSource()).setCursor(hc);
                         startPt.setLocation(e.getPoint());
                         move.setLocation(0, 0);
-                        if (autoScroll) {
-                            scroller.stop();
-                        }
                         if (selectedIcon != null) {
                             selectedIcon.isSelected = false;
                             selectedIcon.repaint();
@@ -239,40 +210,29 @@ class GUIDragScrollPane extends JScrollPane {
                         break;
                     case 2:
                         // Pencil Tool
-                        oldX = mouseX + ((JViewport) e.getComponent()).getViewPosition().x;
-                        oldY = mouseY + ((JViewport) e.getComponent()).getViewPosition().y;
+                        startP.setLocation(e.getX(),e.getY());
+                        startP.transform(e);
 
                         if (snapToGrid) {
-                            int modX = oldX % GUIMain.METER;
-                            int modY = oldY % GUIMain.METER;
-
-                            if (modX > GUIMain.METER / 2) {
-                                oldX += GUIMain.METER - modX;
-                            } else {
-                                oldX -= modX;
-                            }
-                            if (modY > GUIMain.METER / 2) {
-                                oldY += GUIMain.METER - modY;
-                            } else {
-                                oldY -= modY;
-                            }
+                            startP.alignToGrid();
                         }
                         break;
                     case 3:
                     case 5:
                         // Line Tool, Rectangle Tool
-                        Point startPoint = transform(e);
+                        startP.setLocation(e.getX(),e.getY());
+                        startP.transform(e);
 
                         if (snapToGrid) {
-                            startPoint = transformCoordinatesGrid(startPoint);
+                            startP.alignToGrid();
                         }
                         if (mode == 3) {
                             //Line Tool
-                            objectToMove.lineStartPoint = startPoint;
+                            objectToMove.lineStartPoint = startP;
                             bottomPane.setContextualInfoLineTool(0);
                         } else if (mode == 5) {
                             //Rectangle Tool
-                            objectToMove.rectangleStartPoint = startPoint;
+                            objectToMove.rectangleStartPoint = startP;
                         }
                         objectToMove.repaint();
 
@@ -296,8 +256,12 @@ class GUIDragScrollPane extends JScrollPane {
                         break;
                     case 2:
                         //Pencil Tool
-                        oldX = e.getX() + ((JViewport) e.getComponent()).getViewPosition().x;
-                        oldY = e.getY() + ((JViewport) e.getComponent()).getViewPosition().y;
+                        startP.setLocation(e.getX(),e.getY());
+                        startP.transform(e);
+
+                        if (snapToGrid) {
+                            startP.alignToGrid();
+                        }
                         break;
                     case 3:
                         //Line Tool
@@ -324,18 +288,16 @@ class GUIDragScrollPane extends JScrollPane {
                     case 1:
                         //Drag Mode
                         ((JComponent) e.getSource()).setCursor(dc);
-                        if (autoScroll) {
-                            scroller.start();
-                        }
                         break;
                     case 3:
                         //Line Tool
-                        Point newTarget = transform(e);
+                        endP.setLocation(e.getX(), e.getY());
+                        endP.transform(e);
                         if (snapToGrid) {
-                            newTarget = transformCoordinatesGrid(newTarget);
+                            endP.alignToGrid();
                         }
                         if (objectToMove.lineStartPoint != null && objectToMove.lineEndPoint != null) {
-                            objectToMove.g2.drawLine(objectToMove.lineStartPoint.x, objectToMove.lineStartPoint.y, newTarget.x, newTarget.y);
+                            objectToMove.g2.drawLine(objectToMove.lineStartPoint.x, objectToMove.lineStartPoint.y, endP.x, endP.y);
                         }
                         bottomPane.resetContextualInfoLineTool();
 
@@ -378,22 +340,44 @@ class GUIDragScrollPane extends JScrollPane {
                 if (mode == 1) {
                     ((JComponent) e.getSource()).setCursor(dc);
                     move.setLocation(0, 0);
-                    if (autoScroll) {
-                        scroller.stop();
-                    }
                 }
             }
         }
     }
+    class CPoint extends Point{
+        CPoint(int x, int y){
+            super(x,y);
+        }
 
-    Point transform(MouseEvent e) {
+        void transform(MouseEvent e){
+            this.x += ((JViewport) e.getComponent()).getViewPosition().x;
+            this.y += ((JViewport) e.getComponent()).getViewPosition().y;
+        }
+        void alignToGrid(){
+            int modX = this.x % GUIMain.METER;
+            int modY = this.y % GUIMain.METER;
+            if (modX > GUIMain.METER / 2) {
+                this.x += GUIMain.METER - modX;
+            } else {
+                this.x -= modX;
+            }
+            if (modY > GUIMain.METER / 2) {
+                this.y += GUIMain.METER - modY;
+            } else {
+                this.y -= modY;
+            }
+        }
+
+    }
+/**
+    private Point transform(MouseEvent e) {
         Point p = e.getPoint();
         int xTrans = p.x + ((JViewport) e.getComponent()).getViewPosition().x;
         int yTrans = p.y + ((JViewport) e.getComponent()).getViewPosition().y;
         return new Point(xTrans, yTrans);
     }
 
-    Point transformCoordinatesGrid(Point point) {
+    private Point transformCoordinatesGrid(Point point) {
         int newX = point.x;
         int newY = point.y;
         int modX = point.x % GUIMain.METER;
@@ -410,6 +394,7 @@ class GUIDragScrollPane extends JScrollPane {
         }
         return new Point(newX, newY);
     }
+ **/
 
     void itemClicked(MapObjectIcon itemIcon) {
         if (selectedIcon == null) {
