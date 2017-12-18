@@ -63,6 +63,7 @@ public class GUIMain extends JFrame{
 	//GUIDragScrollPane
 	static final boolean SNAP_TO_GRID_DEFAULT = true;
 	static final int MODE_DEFAULT = 1;
+	static final double STAIR_STEP_FREQUENCY = 0.9; //per Pixel
 	
 	//GUIDrawingSurface
 	static final Color COLOR_PRIM_DEFAULT = Color.BLACK;

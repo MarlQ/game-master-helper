@@ -74,6 +74,14 @@ public class GUISidePane extends JPanel implements ChangeListener, PropertyChang
 				toggleEnabled(buttonModeRect);
 			}
 		});
+		final JButton buttonModeStairs = new JButton(GeneralInformation.createImageIcon("res/gui/tool_stairs.png"));
+		buttonModeStairs.setPreferredSize(new Dimension(32,32));
+		buttonModeStairs.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				GUISidePane.this.parentFrame.scrollPane.mode = 6;
+				toggleEnabled(buttonModeStairs);
+			}
+		});
 
 
 		final JToggleButton buttonDrawGrid = new JToggleButton(GeneralInformation.createImageIcon("res/gui/option_drawgrid.png"));
@@ -114,6 +122,7 @@ public class GUISidePane extends JPanel implements ChangeListener, PropertyChang
 		LH.place(1,5,1,1,1,1,"n","e",null,this,c,buttonModeLine);
 		LH.place(2,5,1,1,0.55,1,"n","w",null,this,c,buttonModeFill);
 		LH.place(1,6,1,1,1,1,"n","e",null,this,c,buttonModeRect);
+		LH.place(2,6,1,1,0.55,1,"n","w",null,this,c,buttonModeStairs);
 
 		LH.place(1,7,1,1,1,1,"n","e",null,this,c,buttonDrawGrid);
 		LH.place(2,7,1,1,0.55,1,"n","w",null,this,c,buttonSnapGrid);

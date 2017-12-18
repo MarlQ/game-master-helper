@@ -19,7 +19,7 @@ class GUIDragScrollPane extends JScrollPane {
     boolean snapToGrid = GUIMain.SNAP_TO_GRID_DEFAULT;
     int mode = GUIMain.MODE_DEFAULT;
     /*
-     * 1 == Drag Mode 2 == Pencil 3 == Line 4 == Fill, 5 == Rectangle
+     * 1 == Drag Mode 2 == Pencil 3 == Line 4 == Fill, 5 == Rectangle, 6 == Stairs
      *
      */
     int shiftLineHorizontal = 0;
@@ -118,6 +118,7 @@ class GUIDragScrollPane extends JScrollPane {
                         break;
                     case 3:
                     case 5:
+                    case 6:
                         // Line Tool, Rectangle Tool
                         endP.setLocation(e.getX(), e.getY());
                         endP.transform(e);
@@ -135,7 +136,7 @@ class GUIDragScrollPane extends JScrollPane {
 
                                 bottomPane.setContextualInfoLineTool(distance);
                             }
-                        } else if (mode == 5) {
+                        } else if (mode == 5 || mode == 6) {
                             //Rectangle Tool
                             objectToMove.rectangleEndPoint = endP;
                             if (objectToMove.rectangleStartPoint != null) {
@@ -219,6 +220,7 @@ class GUIDragScrollPane extends JScrollPane {
                         break;
                     case 3:
                     case 5:
+                    case 6:
                         // Line Tool, Rectangle Tool
                         startP.setLocation(e.getX(),e.getY());
                         startP.transform(e);
@@ -230,7 +232,7 @@ class GUIDragScrollPane extends JScrollPane {
                             //Line Tool
                             objectToMove.lineStartPoint = startP;
                             bottomPane.setContextualInfoLineTool(0);
-                        } else if (mode == 5) {
+                        } else if (mode == 5 || mode == 6) {
                             //Rectangle Tool
                             objectToMove.rectangleStartPoint = startP;
                         }
@@ -271,6 +273,7 @@ class GUIDragScrollPane extends JScrollPane {
                         objectToMove.repaint();
                         break;
                     case 5:
+                    case 6:
                         //Rectangle Tool
                         objectToMove.rectangleStartPoint = null;
                         objectToMove.rectangleEndPoint = null;
@@ -306,6 +309,7 @@ class GUIDragScrollPane extends JScrollPane {
                         objectToMove.repaint();
                         break;
                     case 5:
+                    case 6:
                         //Rectangle Tool
                         if (objectToMove.rectangleStartPoint != null && objectToMove.rectangleEndPoint != null) {
                             int rectWidth = objectToMove.rectangleEndPoint.x - objectToMove.rectangleStartPoint.x;
@@ -320,11 +324,34 @@ class GUIDragScrollPane extends JScrollPane {
                             } else {
                                 objectToMove.g2.drawRect(objectToMove.rectangleStartPoint.x, objectToMove.rectangleStartPoint.y, rectWidth, rectHeight);
                             }
+
+                            if (mode == 6) {
+                                //Stairs Tool
+
+                                if (rectHeight < 0 && rectWidth < 0) {
+                                    rectWidth = Math.abs(rectWidth);
+                                    int stepCount = (int) GUIMain.STAIR_STEP_FREQUENCY*rectWidth;
+                                    System.out.println(stepCount);
+                                    int stepWidth = rectWidth/stepCount;
+                                    for(int i = 0; i < stepCount; i++){
+                                        objectToMove.g2.drawRect(objectToMove.rectangleEndPoint.x+i*stepWidth, objectToMove.rectangleEndPoint.y, stepWidth, Math.abs(rectHeight));
+                                    }
+
+                                } else if (rectWidth < 0) {
+                                    objectToMove.g2.drawRect(objectToMove.rectangleStartPoint.x + rectWidth, objectToMove.rectangleStartPoint.y, Math.abs(rectWidth), rectHeight);
+                                } else if (rectHeight < 0) {
+                                    objectToMove.g2.drawRect(objectToMove.rectangleStartPoint.x, objectToMove.rectangleStartPoint.y + rectHeight, rectWidth, Math.abs(rectHeight));
+                                } else {
+                                    objectToMove.g2.drawRect(objectToMove.rectangleStartPoint.x, objectToMove.rectangleStartPoint.y, rectWidth, rectHeight);
+                                }
+
+                            }
                         }
                         objectToMove.rectangleStartPoint = null;
                         objectToMove.rectangleEndPoint = null;
                         objectToMove.repaint();
                         break;
+
                 }
             }
             if (SwingUtilities.isRightMouseButton(e)) {
