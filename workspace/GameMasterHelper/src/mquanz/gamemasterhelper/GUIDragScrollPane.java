@@ -23,6 +23,7 @@ class GUIDragScrollPane extends JScrollPane {
      *
      */
     int shiftLineHorizontal = 0;
+    private boolean stairsClicked = false;
 
     GUIDragScrollPane(GUIDrawingSurface objectToMove, GUIBottomPane bottomPane) {
         super(objectToMove);
@@ -118,7 +119,6 @@ class GUIDragScrollPane extends JScrollPane {
                         break;
                     case 3:
                     case 5:
-                    case 6:
                         // Line Tool, Rectangle Tool
                         endP.setLocation(e.getX(), e.getY());
                         endP.transform(e);
@@ -136,7 +136,7 @@ class GUIDragScrollPane extends JScrollPane {
 
                                 bottomPane.setContextualInfoLineTool(distance);
                             }
-                        } else if (mode == 5 || mode == 6) {
+                        } else if (mode == 5) {
                             //Rectangle Tool
                             objectToMove.rectangleEndPoint = endP;
                             if (objectToMove.rectangleStartPoint != null) {
@@ -147,6 +147,22 @@ class GUIDragScrollPane extends JScrollPane {
                         }
                         objectToMove.repaint();
                         break;
+                    case 6:
+                        //Stairs Tool
+                        CPoint p = new CPoint(e.getX(),e.getY());
+                        p.transform(e);
+                        if(snapToGrid){
+                            p.alignToGrid();
+                        }
+                        if(stairsClicked){
+                            System.out.println("After second press");
+                           objectToMove.stairsPoint3 = p;
+                           objectToMove.repaint();
+                        }else{
+                            System.out.println("After first press");
+                            objectToMove.stairsPoint2 = p;
+                            objectToMove.repaint();
+                        }
                     default:
                         break;
 
@@ -220,7 +236,6 @@ class GUIDragScrollPane extends JScrollPane {
                         break;
                     case 3:
                     case 5:
-                    case 6:
                         // Line Tool, Rectangle Tool
                         startP.setLocation(e.getX(),e.getY());
                         startP.transform(e);
@@ -232,12 +247,11 @@ class GUIDragScrollPane extends JScrollPane {
                             //Line Tool
                             objectToMove.lineStartPoint = startP;
                             bottomPane.setContextualInfoLineTool(0);
-                        } else if (mode == 5 || mode == 6) {
+                        } else if (mode == 5) {
                             //Rectangle Tool
                             objectToMove.rectangleStartPoint = startP;
                         }
                         objectToMove.repaint();
-
                         break;
                     case 4:
                         // Fill Tool
@@ -245,6 +259,29 @@ class GUIDragScrollPane extends JScrollPane {
                         int y = mouseY + ((JViewport) e.getComponent()).getViewPosition().y;
                         objectToMove.fillAreaWithColor(x, y);
                         break;
+                    case 6:
+                        //Stairs Tool
+                        CPoint p = new CPoint(e.getX(),e.getY());
+                        p.transform(e);
+                        if (snapToGrid) {
+                            p.alignToGrid();
+                        }
+                        if(objectToMove.stairsPoint1 == null){
+                            objectToMove.stairsPoint1 = p;
+                            System.out.println("Pressed first time");
+                        }
+                        else if(!stairsClicked){
+                            objectToMove.stairsPoint2 = p;
+                            stairsClicked = true;
+                            System.out.println("Pressed second time");
+                        } else{
+                            stairsClicked = false;
+                            objectToMove.stairsPoint1 = null;
+                            objectToMove.stairsPoint2 = null;
+                            objectToMove.stairsPoint3 = null;
+                            System.out.println("Pressed third time");
+                        }
+                        objectToMove.repaint();
                 }
 
             }
@@ -273,12 +310,18 @@ class GUIDragScrollPane extends JScrollPane {
                         objectToMove.repaint();
                         break;
                     case 5:
-                    case 6:
                         //Rectangle Tool
                         objectToMove.rectangleStartPoint = null;
                         objectToMove.rectangleEndPoint = null;
                         objectToMove.repaint();
                         break;
+                    case 6:
+                        //Stairs Tool
+                        objectToMove.stairsPoint1 = null;
+                        objectToMove.stairsPoint2 = null;
+                        objectToMove.stairsPoint3 = null;
+                        stairsClicked = false;
+                        objectToMove.repaint();
                 }
             }
         }
@@ -309,7 +352,6 @@ class GUIDragScrollPane extends JScrollPane {
                         objectToMove.repaint();
                         break;
                     case 5:
-                    case 6:
                         //Rectangle Tool
                         if (objectToMove.rectangleStartPoint != null && objectToMove.rectangleEndPoint != null) {
                             int rectWidth = objectToMove.rectangleEndPoint.x - objectToMove.rectangleStartPoint.x;
@@ -324,33 +366,14 @@ class GUIDragScrollPane extends JScrollPane {
                             } else {
                                 objectToMove.g2.drawRect(objectToMove.rectangleStartPoint.x, objectToMove.rectangleStartPoint.y, rectWidth, rectHeight);
                             }
-
-                            if (mode == 6) {
-                                //Stairs Tool
-
-                                if (rectHeight < 0 && rectWidth < 0) {
-                                    rectWidth = Math.abs(rectWidth);
-                                    int stepCount = (int) GUIMain.STAIR_STEP_FREQUENCY*rectWidth;
-                                    System.out.println(stepCount);
-                                    int stepWidth = rectWidth/stepCount;
-                                    for(int i = 0; i < stepCount; i++){
-                                        objectToMove.g2.drawRect(objectToMove.rectangleEndPoint.x+i*stepWidth, objectToMove.rectangleEndPoint.y, stepWidth, Math.abs(rectHeight));
-                                    }
-
-                                } else if (rectWidth < 0) {
-                                    objectToMove.g2.drawRect(objectToMove.rectangleStartPoint.x + rectWidth, objectToMove.rectangleStartPoint.y, Math.abs(rectWidth), rectHeight);
-                                } else if (rectHeight < 0) {
-                                    objectToMove.g2.drawRect(objectToMove.rectangleStartPoint.x, objectToMove.rectangleStartPoint.y + rectHeight, rectWidth, Math.abs(rectHeight));
-                                } else {
-                                    objectToMove.g2.drawRect(objectToMove.rectangleStartPoint.x, objectToMove.rectangleStartPoint.y, rectWidth, rectHeight);
-                                }
-
-                            }
                         }
                         objectToMove.rectangleStartPoint = null;
                         objectToMove.rectangleEndPoint = null;
                         objectToMove.repaint();
                         break;
+                    case 6:
+                        //Stairs Tool
+                        //TODO:
 
                 }
             }

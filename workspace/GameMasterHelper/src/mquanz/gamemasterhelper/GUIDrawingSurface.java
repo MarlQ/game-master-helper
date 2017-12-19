@@ -21,6 +21,7 @@ public class GUIDrawingSurface extends JPanel implements Scrollable{
 	GUIDragScrollPane dragScrollPane;
 	Point lineStartPoint, lineEndPoint;
 	Point rectangleStartPoint, rectangleEndPoint;
+	Point stairsPoint1, stairsPoint2, stairsPoint3;
 	
 	boolean drawGrid = GUIMain.DRAW_GRID_DEFAULT;
 	
@@ -109,6 +110,17 @@ public class GUIDrawingSurface extends JPanel implements Scrollable{
 			}
 			else {
 				g.drawRect(rectangleStartPoint.x, rectangleStartPoint.y,rectWidth,rectHeight);
+			}
+		}
+		if(stairsPoint1 != null && stairsPoint2 != null){
+			((Graphics2D) g).setStroke(drawingStroke);
+			((Graphics2D) g).setPaint(drawingColorPrim);
+			g.drawLine(stairsPoint1.x, stairsPoint1.y, stairsPoint2.x,  stairsPoint2.y);
+			if(stairsPoint3 != null){
+				Point p = new Point(stairsPoint1.x-stairsPoint2.x, stairsPoint1.y-stairsPoint2.y);
+				g.drawLine(stairsPoint1.x,stairsPoint1.y,p.x,p.y);
+				g.drawLine(stairsPoint2.x,stairsPoint2.y, stairsPoint3.x,stairsPoint3.y);
+				g.drawLine(stairsPoint3.x,stairsPoint3.y,p.x,p.y);
 			}
 		}
         if(drawGrid){
