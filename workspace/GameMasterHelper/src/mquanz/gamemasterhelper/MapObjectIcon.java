@@ -32,7 +32,7 @@ public class MapObjectIcon extends JLabel implements java.io.Serializable {
 			this.setIcon(mapObject.type.icon);
 		}
 		else{
-			this.setIcon(new MissingIcon());
+			this.setIcon(MissingIcon.createIcon());
 		}
 		
 		Dimension size = this.getPreferredSize();

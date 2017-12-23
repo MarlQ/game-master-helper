@@ -16,7 +16,7 @@ public class MapObject {
 		this.textColor = textColor;
 		if(icon == null){
 			if(type.icon == null){
-				this.icon = new MissingIcon();
+				this.icon = MissingIcon.createIcon();
 			}
 			else this.icon = type.icon;
 		}

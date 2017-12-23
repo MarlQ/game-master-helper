@@ -91,11 +91,11 @@ public class GeneralInformation implements java.io.Serializable {
 				return new ImageIcon(image);
 			} catch (IOException e) {
 				// Returns a "Missing" Icon (a red cross)
-				return new MissingIcon();
+				return MissingIcon.createIcon();
 			}
 		} else {
 			// Returns a "Missing" Icon (a red cross)
-			return new MissingIcon();
+			return MissingIcon.createIcon();
 		}
 
 	}
@@ -108,11 +108,11 @@ public class GeneralInformation implements java.io.Serializable {
 				return new ImageIcon(image);
 			} catch (IOException e) {
 				// Returns a "Missing" Icon (a red cross)
-				return new MissingIcon();
+				return MissingIcon.createIcon();
 			}
 		} else {
 			// Returns a "Missing" Icon (a red cross)
-			return new MissingIcon();
+			return MissingIcon.createIcon();
 		}
 
 	}
