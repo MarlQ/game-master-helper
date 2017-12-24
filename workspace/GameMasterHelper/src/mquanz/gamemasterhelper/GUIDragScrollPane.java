@@ -1,5 +1,7 @@
 package mquanz.gamemasterhelper;
 
+import com.sun.javafx.geom.Vec2d;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -59,6 +61,41 @@ class GUIDragScrollPane extends JScrollPane {
             int x = e.getX() + ((JViewport) e.getComponent()).getViewPosition().x;
             int y = e.getY() + ((JViewport) e.getComponent()).getViewPosition().y;
             bottomPane.updateMouseCoordinates(x, y);
+
+            if(mode == 6){
+                //Stairs Tool
+                CPoint p = new CPoint(e.getX(),e.getY());
+                p.transform(e);
+                if(snapToGrid){
+                    p.alignToGrid();
+                }
+                if(stairsClicked){
+                    objectToMove.stairsPoint3 = p;
+                    if(shiftPressed){
+                        //Makes the stairs go stairs go straight (orthogonal)
+                        int dx = objectToMove.stairsPoint2.x-objectToMove.stairsPoint1.x;
+                        int dy = objectToMove.stairsPoint2.y-objectToMove.stairsPoint1.y;
+
+                        //Middle point
+                        int mx = objectToMove.stairsPoint1.x+dx/2;
+                        int my = objectToMove.stairsPoint1.y+dy/2;
+                        Point m = new Point(mx,my);
+
+                        double a = dy*(m.y-objectToMove.stairsPoint3.y)+dx*(m.x-objectToMove.stairsPoint3.x);
+                        double b = (dx*dx+dy*dy);
+                        double c = a/b;
+
+                        double projX = objectToMove.stairsPoint3.x+c*dx;
+                        double projY = objectToMove.stairsPoint3.y+c*dy;
+                        objectToMove.stairsPoint3.x = (int) projX;
+                        objectToMove.stairsPoint3.y = (int) projY;
+                    }
+                    objectToMove.repaint();
+                }else{
+                    objectToMove.stairsPoint2 = p;
+                    objectToMove.repaint();
+                }
+            }
         }
 
         @Override
@@ -147,22 +184,6 @@ class GUIDragScrollPane extends JScrollPane {
                         }
                         objectToMove.repaint();
                         break;
-                    case 6:
-                        //Stairs Tool
-                        CPoint p = new CPoint(e.getX(),e.getY());
-                        p.transform(e);
-                        if(snapToGrid){
-                            p.alignToGrid();
-                        }
-                        if(stairsClicked){
-                            System.out.println("After second press");
-                           objectToMove.stairsPoint3 = p;
-                           objectToMove.repaint();
-                        }else{
-                            System.out.println("After first press");
-                            objectToMove.stairsPoint2 = p;
-                            objectToMove.repaint();
-                        }
                     default:
                         break;
 
@@ -268,18 +289,43 @@ class GUIDragScrollPane extends JScrollPane {
                         }
                         if(objectToMove.stairsPoint1 == null){
                             objectToMove.stairsPoint1 = p;
-                            System.out.println("Pressed first time");
                         }
                         else if(!stairsClicked){
                             objectToMove.stairsPoint2 = p;
                             stairsClicked = true;
-                            System.out.println("Pressed second time");
                         } else{
-                            stairsClicked = false;
-                            objectToMove.stairsPoint1 = null;
-                            objectToMove.stairsPoint2 = null;
+                            //Draw Outline
+                            objectToMove.g2.setStroke(new BasicStroke(1));
+                            //objectToMove.g2.setPaint(Color.BLUE);
+
+                            int widthX = objectToMove.stairsPoint2.x-objectToMove.stairsPoint1.x;
+                            int widthY = objectToMove.stairsPoint2.y-objectToMove.stairsPoint1.y;
+                            Point p3 = new Point(objectToMove.stairsPoint3.x+widthX/2, objectToMove.stairsPoint3.y+widthY/2);
+                            Point p4 = new Point(objectToMove.stairsPoint3.x-widthX/2, objectToMove.stairsPoint3.y-widthY/2);
+
+                            objectToMove.g2.drawLine(objectToMove.stairsPoint1.x, objectToMove.stairsPoint1.y, objectToMove.stairsPoint2.x,  objectToMove.stairsPoint2.y);
+                            objectToMove.g2.drawLine(objectToMove.stairsPoint1.x,objectToMove.stairsPoint1.y,p4.x,p4.y);
+                            objectToMove.g2.drawLine(objectToMove.stairsPoint2.x,objectToMove.stairsPoint2.y,p3.x,p3.y);
+                            objectToMove.g2.drawLine(p3.x,p3.y,p4.x,p4.y);
+
+                            //TODO: Draw Steps
+                            double length = (objectToMove.stairsPoint2.x-p3.x)*(objectToMove.stairsPoint2.x-p3.x)+(objectToMove.stairsPoint2.y-p3.y)*(objectToMove.stairsPoint2.y-p3.y);
+                            length = Math.sqrt(length);
+                            System.out.println("Length" + length);
+                            int staircount = (int) (GUIMain.STAIR_STEP_FREQUENCY*length);
+                            int stairlengthX = (p3.x-objectToMove.stairsPoint2.x)/staircount;
+                            int stairlengthY = (p3.y-objectToMove.stairsPoint2.y)/staircount;
+                            System.out.println("staircount" + staircount);
+                            System.out.println("stairlengthX" + stairlengthX);
+                            System.out.println("stairlengthY" + stairlengthY);
+                            for(int i = 0; i < staircount; i++){
+                                objectToMove.g2.drawLine(objectToMove.stairsPoint2.x+i*stairlengthX, objectToMove.stairsPoint2.y+i*stairlengthY, objectToMove.stairsPoint1.x+i*stairlengthX, objectToMove.stairsPoint1.y+i*stairlengthY);
+                            }
+
+                            objectToMove.g2.setStroke(objectToMove.drawingStroke);
+                            objectToMove.stairsPoint1 = p3;
+                            objectToMove.stairsPoint2 = p4;
                             objectToMove.stairsPoint3 = null;
-                            System.out.println("Pressed third time");
                         }
                         objectToMove.repaint();
                 }

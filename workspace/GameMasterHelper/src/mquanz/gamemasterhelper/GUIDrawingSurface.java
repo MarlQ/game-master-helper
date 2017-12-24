@@ -16,7 +16,7 @@ public class GUIDrawingSurface extends JPanel implements Scrollable{
 	Graphics2D g2;
 	Color drawingColorPrim = GUIMain.COLOR_PRIM_DEFAULT;
 	Color drawingColorSeco = GUIMain.COLOR_SEC_DEFAULT;
-	private BasicStroke drawingStroke = new BasicStroke(GUIMain.STROKE_INIT);
+	BasicStroke drawingStroke = new BasicStroke(GUIMain.STROKE_INIT);
 	
 	GUIDragScrollPane dragScrollPane;
 	Point lineStartPoint, lineEndPoint;
@@ -117,10 +117,14 @@ public class GUIDrawingSurface extends JPanel implements Scrollable{
 			((Graphics2D) g).setPaint(drawingColorPrim);
 			g.drawLine(stairsPoint1.x, stairsPoint1.y, stairsPoint2.x,  stairsPoint2.y);
 			if(stairsPoint3 != null){
-				Point p = new Point(stairsPoint1.x-stairsPoint2.x, stairsPoint1.y-stairsPoint2.y);
-				g.drawLine(stairsPoint1.x,stairsPoint1.y,p.x,p.y);
-				g.drawLine(stairsPoint2.x,stairsPoint2.y, stairsPoint3.x,stairsPoint3.y);
-				g.drawLine(stairsPoint3.x,stairsPoint3.y,p.x,p.y);
+				int widthX = stairsPoint2.x-stairsPoint1.x;
+				int widthY = stairsPoint2.y-stairsPoint1.y;
+				Point p3 = new Point(stairsPoint3.x+widthX/2, stairsPoint3.y+widthY/2);
+				Point p4 = new Point(stairsPoint3.x-widthX/2, stairsPoint3.y-widthY/2);
+
+				g.drawLine(stairsPoint1.x,stairsPoint1.y,p4.x,p4.y);
+				g.drawLine(stairsPoint2.x,stairsPoint2.y,p3.x,p3.y);
+				g.drawLine(p3.x,p3.y,p4.x,p4.y);
 			}
 		}
         if(drawGrid){
