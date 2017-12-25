@@ -15,6 +15,7 @@ public class GUIMain extends JFrame{
 	private static final long serialVersionUID = 1L;
 	
 	/**
+	 * TODO: Stair Tool (arrows, curve mode, corner mode)
 	 *
 	 * TODO: (Function) Copy & Paste
 	 * TODO: Renaming Maps
@@ -63,7 +64,7 @@ public class GUIMain extends JFrame{
 	//GUIDragScrollPane
 	static final boolean SNAP_TO_GRID_DEFAULT = true;
 	static final int MODE_DEFAULT = 1;
-	static final double STAIR_STEP_FREQUENCY = 0.2; //per Pixel
+	static final double STAIR_TOOL_STEP_WIDTH = 4; //in Pixels
 	
 	//GUIDrawingSurface
 	static final Color COLOR_PRIM_DEFAULT = Color.BLACK;

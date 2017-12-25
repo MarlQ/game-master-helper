@@ -308,18 +308,16 @@ class GUIDragScrollPane extends JScrollPane {
                             objectToMove.g2.drawLine(objectToMove.stairsPoint2.x,objectToMove.stairsPoint2.y,p3.x,p3.y);
                             objectToMove.g2.drawLine(p3.x,p3.y,p4.x,p4.y);
 
-                            //TODO: Draw Steps
+                            //Draw Steps
                             double length = (objectToMove.stairsPoint2.x-p3.x)*(objectToMove.stairsPoint2.x-p3.x)+(objectToMove.stairsPoint2.y-p3.y)*(objectToMove.stairsPoint2.y-p3.y);
                             length = Math.sqrt(length);
-                            System.out.println("Length" + length);
-                            int staircount = (int) (GUIMain.STAIR_STEP_FREQUENCY*length);
-                            int stairlengthX = (p3.x-objectToMove.stairsPoint2.x)/staircount;
-                            int stairlengthY = (p3.y-objectToMove.stairsPoint2.y)/staircount;
-                            System.out.println("staircount" + staircount);
-                            System.out.println("stairlengthX" + stairlengthX);
-                            System.out.println("stairlengthY" + stairlengthY);
+
+                            double staircount = length/GUIMain.STAIR_TOOL_STEP_WIDTH;
+                            double stairlengthX = (p3.x-objectToMove.stairsPoint2.x)/staircount;
+                            double stairlengthY = (p3.y-objectToMove.stairsPoint2.y)/staircount;
+
                             for(int i = 0; i < staircount; i++){
-                                objectToMove.g2.drawLine(objectToMove.stairsPoint2.x+i*stairlengthX, objectToMove.stairsPoint2.y+i*stairlengthY, objectToMove.stairsPoint1.x+i*stairlengthX, objectToMove.stairsPoint1.y+i*stairlengthY);
+                                objectToMove.g2.drawLine(objectToMove.stairsPoint2.x+ (int) (i*stairlengthX), objectToMove.stairsPoint2.y+ (int) (i*stairlengthY), objectToMove.stairsPoint1.x+ (int) (i*stairlengthX), objectToMove.stairsPoint1.y+(int) (i*stairlengthY));
                             }
 
                             objectToMove.g2.setStroke(objectToMove.drawingStroke);
