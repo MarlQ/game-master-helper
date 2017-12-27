@@ -38,6 +38,7 @@ public class GUISidePane extends JPanel implements ChangeListener, PropertyChang
 		});
 		lastActiveButton = buttonModeDrag;
 		buttonModeDrag.setEnabled(false);
+		buttonModeDrag.setToolTipText("Drag");
 		
 		final JButton buttonModePencil = new JButton(GeneralInformation.createImageIcon("res/gui/tool_pencil.png"));
 		buttonModePencil.setPreferredSize(new Dimension(32,32));
@@ -47,6 +48,7 @@ public class GUISidePane extends JPanel implements ChangeListener, PropertyChang
 				toggleEnabled(buttonModePencil);
 			}
 		});
+		buttonModePencil.setToolTipText("Pencil");
 
 		final JButton buttonModeLine = new JButton(GeneralInformation.createImageIcon("res/gui/tool_line.png"));
 		buttonModeLine.setPreferredSize(new Dimension(32,32));
@@ -56,6 +58,7 @@ public class GUISidePane extends JPanel implements ChangeListener, PropertyChang
 				toggleEnabled(buttonModeLine);
 			}
 		});
+		buttonModeLine.setToolTipText("Line");
 
 		final JButton buttonModeFill = new JButton(GeneralInformation.createImageIcon("res/gui/tool_fill.png"));
 		buttonModeFill.setPreferredSize(new Dimension(32,32));
@@ -65,6 +68,7 @@ public class GUISidePane extends JPanel implements ChangeListener, PropertyChang
 				toggleEnabled(buttonModeFill);
 			}
 		});
+		buttonModeFill.setToolTipText("Fill");
 
 		final JButton buttonModeRect = new JButton(GeneralInformation.createImageIcon("res/gui/tool_rectangle.png"));
 		buttonModeRect.setPreferredSize(new Dimension(32,32));
@@ -74,6 +78,8 @@ public class GUISidePane extends JPanel implements ChangeListener, PropertyChang
 				toggleEnabled(buttonModeRect);
 			}
 		});
+		buttonModeRect.setToolTipText("Rectangle");
+
 		final JButton buttonModeStairs = new JButton(GeneralInformation.createImageIcon("res/gui/tool_stairs.png"));
 		buttonModeStairs.setPreferredSize(new Dimension(32,32));
 		buttonModeStairs.addActionListener(new ActionListener(){
@@ -82,6 +88,7 @@ public class GUISidePane extends JPanel implements ChangeListener, PropertyChang
 				toggleEnabled(buttonModeStairs);
 			}
 		});
+		buttonModeStairs.setToolTipText("Stairs");
 
 
 		final JToggleButton buttonDrawGrid = new JToggleButton(GeneralInformation.createImageIcon("res/gui/option_drawgrid.png"));
@@ -93,6 +100,7 @@ public class GUISidePane extends JPanel implements ChangeListener, PropertyChang
 				GUISidePane.this.parentFrame.scrollPane.objectToMove.repaint();
 			}
 		});
+		buttonDrawGrid.setToolTipText("Draw Grid");
 
 		final JToggleButton buttonSnapGrid = new JToggleButton(GeneralInformation.createImageIcon("res/gui/option_snapgrid.png"));
 		buttonSnapGrid.setPreferredSize(new Dimension(32,32));
@@ -102,6 +110,7 @@ public class GUISidePane extends JPanel implements ChangeListener, PropertyChang
 				GUISidePane.this.parentFrame.scrollPane.snapToGrid = !GUISidePane.this.parentFrame.scrollPane.snapToGrid;
 			}
 		});
+		buttonSnapGrid.setToolTipText("Snap To Grid");
 		
 		JPanel colorChooser = new GUIColorChooser(this);
 
