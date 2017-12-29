@@ -53,7 +53,6 @@ public class ControllerMap {
         for (MapObjectIcon mapObjectIcon : map.itemIcons) {
             int iconWidth = mapObjectIcon.mapObject.icon.getIconWidth();
             int iconHeight = mapObjectIcon.mapObject.icon.getIconHeight();
-            System.out.println("Width " + iconWidth + " Height " + iconHeight);
             if (mapObjectIcon.posX + iconWidth > width || mapObjectIcon.posY + iconHeight > height) {
                 if (mapObjectIcon.isSelected) {
                     mainFrame.drawingSurface.dragScrollPane.selectedIcon = null;
@@ -62,16 +61,22 @@ public class ControllerMap {
                     //Remove non-instanced objects
                     mainFrame.generalInformation.objects.remove(mapObjectIcon.mapObject);
                 }
-                mainFrame.drawingSurface.componentMover.deregisterComponent(mapObjectIcon);
-                mainFrame.drawingSurface.remove(mapObjectIcon);
+                if(map == mainFrame.drawingSurface.mapInformation){
+                    //Update drawn map if it is this one
+                    mainFrame.drawingSurface.componentMover.deregisterComponent(mapObjectIcon);
+                    mainFrame.drawingSurface.remove(mapObjectIcon);
+                }
                 toRemove.add(mapObjectIcon);
             }
         }
         map.itemIcons.removeAll(toRemove);
-        mainFrame.drawingSurface.setMaximumSize(map.mapSize);
-        mainFrame.drawingSurface.setPreferredSize(map.mapSize);
-        mainFrame.drawingSurface.revalidate();
-        mainFrame.drawingSurface.repaint();
+        if(map == mainFrame.drawingSurface.mapInformation){
+            //Update drawn map if it is this one
+            mainFrame.drawingSurface.setMaximumSize(map.mapSize);
+            mainFrame.drawingSurface.setPreferredSize(map.mapSize);
+            mainFrame.drawingSurface.revalidate();
+            mainFrame.drawingSurface.repaint();
+        }
     }
 
     void changeMap(MapInformation map) {

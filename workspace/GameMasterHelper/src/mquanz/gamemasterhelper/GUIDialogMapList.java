@@ -151,7 +151,6 @@ public class GUIDialogMapList extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 tempName = textFieldName.getText();
-                System.out.println(tempName);
                 int n = JOptionPane.YES_OPTION;
                 for(MapObjectIcon mapObjectIcon : map.itemIcons){
                     //Search for objects out of bounds
