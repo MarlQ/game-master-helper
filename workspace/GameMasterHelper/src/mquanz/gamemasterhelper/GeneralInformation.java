@@ -16,6 +16,7 @@ public class GeneralInformation implements java.io.Serializable {
 	ArrayList<NpcType> npcTypes = new ArrayList<NpcType>();
 	ArrayList<MapLinkType> mapLinkTypes = new ArrayList<MapLinkType>();
 	ArrayList<MapInformation> maps;
+	ArrayList<MapObject> objects;
 
 	//Standard item types TODO: For Testing
 	static ItemType itemTypeText;
@@ -36,6 +37,7 @@ public class GeneralInformation implements java.io.Serializable {
 		name = "newGame";
 		itemTypes = new ArrayList<ItemType>();
 		maps = new ArrayList<MapInformation>();
+		objects = new ArrayList<>();
 		
 		itemTypeText = new ItemType("Text",createImageIcon("res/icons/item_paper.png"));
 		itemTypeFirearm = new ItemType("Firearm",createImageIcon("res/icons/item_gun.png"));
