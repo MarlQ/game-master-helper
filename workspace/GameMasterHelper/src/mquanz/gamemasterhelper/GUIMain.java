@@ -17,7 +17,6 @@ public class GUIMain extends JFrame{
 	/**
 	 * TODO: Stair Tool (arrows, curve mode, corner mode)
 	 * TODO: (Function) Copy & Paste
-	 * TODO: Renaming Maps
 	 * TODO: Option to change background color, and texture
 	 * TODO: Flow Diagram parts
 	 * TODO: Furniture (-> z-order)
