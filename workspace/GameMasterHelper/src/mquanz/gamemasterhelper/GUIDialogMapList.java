@@ -52,6 +52,16 @@ public class GUIDialogMapList extends JDialog {
             }
         });
 
+        JButton buttonEditMap = new JButton("edit");
+        buttonEditMap.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MapInformation map = (MapInformation)GUIDialogMapList.this.list.getSelectedValue();
+                editMapDialog(map);
+            }
+        });
+        buttonEditMap.setEnabled(false);
+
         JButton buttonDeleteMap = new JButton("-");
         buttonDeleteMap.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -72,29 +82,151 @@ public class GUIDialogMapList extends JDialog {
                 ListSelectionModel lsm = (ListSelectionModel) e.getSource();
                 if (lsm.isSelectionEmpty()) {
                     buttonDeleteMap.setEnabled(false);
+                    buttonEditMap.setEnabled(false);
                 } else {
                     buttonDeleteMap.setEnabled(true);
+                    buttonEditMap.setEnabled(true);
                 }
             }
         });
 
         JScrollPane scrollPane = new JScrollPane(list);
         LH.place(0, 0, 1, 6, 1, 1, "b", "w", null, this, c, scrollPane);
-        LH.place(1, 3, 1, 1, 1, 1, "n", "c", null, this, c, buttonAddMap);
+        LH.place(1, 2, 1, 1, 1, 1, "n", "c", null, this, c, buttonAddMap);
+        LH.place(1, 3, 1, 1, 1, 1, "n", "c", null, this, c, buttonEditMap);
         LH.place(1, 4, 1, 1, 1, 1, "n", "c", null, this, c, buttonDeleteMap);
 
         setVisible(true);
         pack();
     }
 
+    String tempName;
+    int tempWidth;
+    int tempHeight;
+
+    void editMapDialog(MapInformation map){
+        tempName = map.name;
+        tempWidth = map.mapSize.width;
+        tempHeight = map.mapSize.height;
+
+        JDialog dialogEditMap = new JDialog(this, "Edit");
+        JTextField textFieldNameLabel = new JTextField("Name");
+        textFieldNameLabel.setEditable(false);
+        JTextField textFieldName = new JTextField(map.name);
+        textFieldName.addPropertyChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                tempName = textFieldName.getText();
+            }
+        });
+        JTextField textFieldWidthLabel = new JTextField("Width");
+        textFieldWidthLabel.setEditable(false);
+        JFormattedTextField textFieldWidth = new JFormattedTextField(map.mapSize.width);
+        textFieldWidth.addPropertyChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                int width = (int) textFieldWidth.getValue();
+                if(width < 1){
+                    tempWidth = 1;
+                    textFieldWidth.setValue(1);
+                }
+                else{
+                    tempWidth = width;
+                }
+            }
+        });
+        JTextField textFieldHeightLabel = new JTextField("Height");
+        textFieldHeightLabel.setEditable(false);
+        JFormattedTextField textFieldHeight = new JFormattedTextField(map.mapSize.height);
+        textFieldHeight.addPropertyChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                int height = (int) textFieldHeight.getValue();
+                if(height < 1){
+                    tempHeight = 1;
+                    textFieldHeight.setValue(1);
+                }
+                else{
+                    tempHeight = height;
+                }
+            }
+        });
+        JButton buttonOk = new JButton("OK");
+        buttonOk.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int n = JOptionPane.YES_OPTION;
+                for(MapObjectIcon mapObjectIcon : map.itemIcons){
+                    //Search for objects out of bounds
+                    int iconWidth = mapObjectIcon.mapObject.icon.getIconWidth();
+                    int iconHeight = mapObjectIcon.mapObject.icon.getIconHeight();
+                    if (mapObjectIcon.posX+iconWidth > tempWidth || mapObjectIcon.posY+iconHeight > tempHeight) {
+                        //Ask user if a non-instanced version should be kept
+                        n = changeMapSizeWarningDialog(dialogEditMap);
+                        break;
+                    }
+                }
+                switch(n){
+                    case JOptionPane.YES_OPTION:
+                        //Keep non-instanced version
+                        mainFrame.mapController.changeMapSize(map,tempWidth,tempHeight,false);
+                        mainFrame.mapController.changeMapName(map, tempName);
+                        dialogEditMap.dispose();
+                        break;
+                    case JOptionPane.NO_OPTION:
+                        //Remove completely
+                        mainFrame.mapController.changeMapSize(map,tempWidth,tempHeight,true);
+                        mainFrame.mapController.changeMapName(map, tempName);
+                        dialogEditMap.dispose();
+                        break;
+                }
+            }
+        });
+        JButton buttonCancel = new JButton("Cancel");
+        buttonCancel.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dialogEditMap.dispose();
+            }
+        });
+
+        GridBagConstraints c = new GridBagConstraints();
+        dialogEditMap.setLayout(new GridBagLayout());
+
+
+
+        LH.place(0, 0, 1, 1, 1, 1, "n", "w", null, dialogEditMap, c, textFieldNameLabel);
+        LH.place(1, 0, 1, 1, 1, 1, "h", "w", null, dialogEditMap, c, textFieldName);
+        LH.place(0, 1, 1, 1, 1, 1, "n", "w", null, dialogEditMap, c, textFieldWidthLabel);
+        LH.place(1, 1, 1, 1, 1, 1, "h", "w", null, dialogEditMap, c, textFieldWidth);
+        LH.place(0, 2, 1, 1, 1, 1, "n", "w", null, dialogEditMap, c, textFieldHeightLabel);
+        LH.place(1, 2, 1, 1, 1, 1, "h", "w", null, dialogEditMap, c, textFieldHeight);
+
+        LH.place(0, 3, 2, 1, 1, 1, "n", "c", null, dialogEditMap, c, buttonOk);
+        LH.place(2, 3, 2, 1, 1, 1, "h", "c", null, dialogEditMap, c, buttonCancel);
+
+        dialogEditMap.setLocation(this.getLocationOnScreen());
+        dialogEditMap.setVisible(true);
+        dialogEditMap.pack();
+    }
+    int changeMapSizeWarningDialog(JDialog parentDialog){
+        String[] options = {"Keep", "Delete", "Cancel"};
+        int n = JOptionPane.showOptionDialog(parentDialog,
+                "There are objects outside the newly defined bounds. Should the objects be kept?",
+                "Warning",
+                JOptionPane.YES_NO_CANCEL_OPTION,
+                JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+         return n;
+    }
+
     void deleteMapDialog(MapInformation map){
         String[] options = {"Yes","Cancel"};
 
         int n = JOptionPane.showOptionDialog(GUIDialogMapList.this,
-                "This map contains items which may get deleted. Delete anyway?",
+                "This map contains objects which may get deleted. Delete anyway?",
                 "Warning",
                 JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE, null, options, options[0]); //default button title
+                JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
         if(n == JOptionPane.YES_OPTION){
             mainFrame.mapController.deleteMap(map);
