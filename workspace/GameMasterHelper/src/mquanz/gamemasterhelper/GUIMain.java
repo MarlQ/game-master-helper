@@ -16,7 +16,7 @@ public class GUIMain extends JFrame{
 	
 	/**
 	 * TODO: Stair Tool (arrows, curve mode, corner mode)
-	 * TODO: (Function) Copy & Paste
+	 * TODO: (Function) Copy & Paste (for objects and for drawing)
 	 * TODO: Option to change background color, and texture
 	 * TODO: Flow Diagram parts
 	 * TODO: Furniture (-> z-order)
@@ -42,7 +42,7 @@ public class GUIMain extends JFrame{
 	 * TODO: Link to a file in the edit screens
 	 * TODO: Portraits For Npcs (that you can enlarge)
 	 * TODO: Auto-Resize For Icons (and maybe an option to toggle that off)
-
+	 *
 	 * OTHER & CLEAN-UP
 	 * TODO: (Clean up) line, rect.,etc. draw tool (move to drawing surface)
 	 * TODO: (Clean up) versioning
