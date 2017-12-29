@@ -113,12 +113,7 @@ public class GUIDialogMapList extends JDialog {
         JTextField textFieldNameLabel = new JTextField("Name");
         textFieldNameLabel.setEditable(false);
         JTextField textFieldName = new JTextField(map.name);
-        textFieldName.addPropertyChangeListener(new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                tempName = textFieldName.getText();
-            }
-        });
+
         JTextField textFieldWidthLabel = new JTextField("Width");
         textFieldWidthLabel.setEditable(false);
         JFormattedTextField textFieldWidth = new JFormattedTextField(map.mapSize.width);
@@ -155,6 +150,8 @@ public class GUIDialogMapList extends JDialog {
         buttonOk.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                tempName = textFieldName.getText();
+                System.out.println(tempName);
                 int n = JOptionPane.YES_OPTION;
                 for(MapObjectIcon mapObjectIcon : map.itemIcons){
                     //Search for objects out of bounds
