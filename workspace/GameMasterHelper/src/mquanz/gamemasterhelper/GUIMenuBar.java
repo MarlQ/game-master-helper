@@ -12,8 +12,9 @@ public class GUIMenuBar extends JMenuBar {
         super();
         this.mainFrame = mainFrame;
 
-        JMenu file = new JMenu("File");
-        JMenu map = new JMenu("Map");
+        JMenu menuFile = new JMenu("File");
+        JMenu menuMap = new JMenu("Map");
+        JMenu menuInf = new JMenu("Information");
 
         JMenuItem clearMap = new JMenuItem("Clear Map");
         clearMap.addActionListener(new ActionListener() {
@@ -55,15 +56,17 @@ public class GUIMenuBar extends JMenuBar {
                 new GUIDialogTypeList(GUIMenuBar.this.mainFrame);
             }
         });
-        file.add(load);
-        file.add(save);
+        menuFile.add(load);
+        menuFile.add(save);
 
-        map.add(clearMap);
-        map.add(saveToImage);
-        map.add(itemList);
-        map.add(itemTypeList);
+        menuMap.add(clearMap);
+        menuMap.add(saveToImage);
 
-        add(file);
-        add(map);
+        menuInf.add(itemList);
+        menuInf.add(itemTypeList);
+
+        add(menuFile);
+        add(menuMap);
+        add(menuInf);
     }
 }
