@@ -15,11 +15,10 @@ public class GUIMain extends JFrame{
 	private static final long serialVersionUID = 1L;
 	
 	/**
-	 * TODO: Color Chooser for prim and sec drawing (button to the left)
 	 * TODO: Ability to change Color palette (button to the right) and save with Campaign
 	 * TODO: rename game to campaign
 	 * TODO: Map Link (link to other link or just a point, 1-way, 2-way)
-	 * TODO: Standartization of icon size, grid size (-> meter)
+	 * TODO: Standardization of icon size, grid size (-> meter)
 	 * TODO: Zoom Function
 	 * TODO: (Function) Undo-Redo
 	 *
@@ -52,8 +51,8 @@ public class GUIMain extends JFrame{
 	 * TODO: (Clean up) line, rect.,etc. draw tool (move to drawing surface)
 	 * TODO: (Clean up) versioning
 	 * TODO: (Clean up) commenting
+	 * TODO: (Bug) Remove transparency slider from color chooser (buggy)
 	 * TODO: (Bug) Box by the slider only updates with Enter
-	 * TODO: (Bug) No snapping to grid on right mouse button
 	 * TODO: Move to Java 8 or 9, replace listeners with lambda expressions
 	 * 
 	 * FUTURE THINGS:
