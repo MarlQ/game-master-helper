@@ -1,4 +1,5 @@
 package mquanz.gamemasterhelper;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -17,6 +18,7 @@ public class GeneralInformation implements java.io.Serializable {
 	ArrayList<MapLinkType> mapLinkTypes = new ArrayList<MapLinkType>();
 	ArrayList<MapInformation> maps;
 	ArrayList<MapObject> objects;
+	ArrayList<Color> colorChooserPalette;
 
 	//Standard item types TODO: For Testing
 	static ItemType itemTypeText;
@@ -28,17 +30,28 @@ public class GeneralInformation implements java.io.Serializable {
 	
 	
 	public GeneralInformation(String name, ArrayList<ItemType> itemTypes, ArrayList<MapInformation> maps) {
+		//TODO: Load-constructor for serialization
 		this.name = name;
 		this.itemTypes = itemTypes;
 		this.maps = maps;
 	}
 
 	public GeneralInformation() {
+		//First initialization
 		name = "newGame";
 		itemTypes = new ArrayList<ItemType>();
 		maps = new ArrayList<MapInformation>();
 		objects = new ArrayList<>();
-		
+		colorChooserPalette = new ArrayList<>();
+		for(int i = 0; i < GUIMain.COLOR_CHOOSER_COLOR_COUNT; i++){
+			if(i >= GUIMain.COLOR_CHOOSER_STANDARD_PALETTE.length){
+				colorChooserPalette.add(Color.WHITE);
+			}
+			else{
+				colorChooserPalette.add(GUIMain.COLOR_CHOOSER_STANDARD_PALETTE[i]);
+			}
+		}
+
 		itemTypeText = new ItemType("Text",createImageIcon("res/icons/item_paper.png"));
 		itemTypeFirearm = new ItemType("Firearm",createImageIcon("res/icons/item_gun.png"));
 		
