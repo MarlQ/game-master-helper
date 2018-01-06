@@ -15,16 +15,21 @@ public class GUIMain extends JFrame{
 	private static final long serialVersionUID = 1L;
 	
 	/**
+	 * TODO: Color Chooser for prim and sec drawing (button to the left)
+	 * TODO: Ability to change Color palette (button to the right) and save with Campaign
+	 * TODO: rename game to campaign
+	 * TODO: Map Link (link to other link or just a point, 1-way, 2-way)
+	 * TODO: Standartization of icon size, grid size (-> meter)
+	 * TODO: Zoom Function
+	 * TODO: (Function) Undo-Redo
+	 *
 	 * TODO: Stair Tool (arrows, curve mode, corner mode)
 	 * TODO: (Function) Copy & Paste (for objects and for drawing)
 	 * TODO: Option to change background color, and texture
 	 * TODO: Flow Diagram parts
 	 * TODO: Furniture (-> z-order)
-	 * TODO: (Function) Undo-Redo
 	 *
 	 * Side Pane
-	 * TODO: Color Chooser for prim and sec drawing (button to the left)
-	 * TODO: Ability to change Color palette (button to the right) and save with Map
 	 * TODO: (Tool) Box Selection
 	 * TODO: (Tool) Cut (-> Scissors)
 	 * TODO: (Opt.) Object quick info on the side
@@ -73,6 +78,11 @@ public class GUIMain extends JFrame{
 	static final int GRID_WIDTH_DEFAULT = 1;
 	static final boolean DRAW_GRID_DEFAULT = true;
 	static final boolean ALLOW_ANTIALIASING = false;
+
+	//GUIColorChooser
+	static final Color COLOR_CHOOSER_STANDARD_PALETTE[] = {Color.WHITE, Color.BLACK, Color.RED, Color.BLUE, Color.GREEN, Color.CYAN, Color.ORANGE, Color.YELLOW, Color.PINK, Color.DARK_GRAY};
+	static final int COLOR_CHOOSER_COLOR_COUNT = 15;
+	static final int COLORS_PER_ROW = 5;
 
 	//TODO: Temporary
 	static final int METER = 20;
