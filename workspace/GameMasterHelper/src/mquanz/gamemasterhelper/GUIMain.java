@@ -15,7 +15,6 @@ public class GUIMain extends JFrame{
 	private static final long serialVersionUID = 1L;
 	
 	/**
-	 * TODO: Ability to change Color palette (button to the right) and save with Campaign
 	 * TODO: rename game to campaign
 	 * TODO: Map Link (link to other link or just a point, 1-way, 2-way)
 	 * TODO: Standardization of icon size, grid size (-> meter)
@@ -51,6 +50,7 @@ public class GUIMain extends JFrame{
 	 * TODO: (Clean up) line, rect.,etc. draw tool (move to drawing surface)
 	 * TODO: (Clean up) versioning
 	 * TODO: (Clean up) commenting
+	 * TODO: (GUI) Add graphic to show selected color in ColorChooser and edit palette
 	 * TODO: (Bug) Remove transparency slider from color chooser (buggy)
 	 * TODO: (Bug) Box by the slider only updates with Enter
 	 * TODO: Move to Java 8 or 9, replace listeners with lambda expressions
