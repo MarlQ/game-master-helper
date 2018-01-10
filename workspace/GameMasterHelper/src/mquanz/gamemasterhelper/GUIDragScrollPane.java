@@ -1,7 +1,5 @@
 package mquanz.gamemasterhelper;
 
-import com.sun.javafx.geom.Vec2d;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
