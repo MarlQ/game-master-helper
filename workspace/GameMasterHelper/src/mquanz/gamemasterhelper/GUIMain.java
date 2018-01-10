@@ -15,7 +15,6 @@ public class GUIMain extends JFrame{
 	private static final long serialVersionUID = 1L;
 	
 	/**
-	 * TODO: rename game to campaign
 	 * TODO: Map Link (link to other link or just a point, 1-way, 2-way)
 	 * TODO: Standardization of icon size, grid size (-> meter)
 	 * TODO: Zoom Function
