@@ -1,6 +1,8 @@
 package mquanz.gamemasterhelper;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -51,8 +53,14 @@ public class GUIColorChooser extends JPanel implements ActionListener {
                 openCustomColorDialog();
             }
         });
-        JButton buttonEditPalette = new JButton();
+        JButton buttonEditPalette = new JButton(GeneralInformation.createImageIcon("res/gui/color_palette"));
         buttonEditPalette.setPreferredSize(new Dimension(20, 20));
+        buttonEditPalette.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                openEditPaletteDialog();
+            }
+        });
 
         LH.place(0, 0, 1, 1, 1, 1, "n", "c", null, panelTop, c, buttonCustomColor);
         LH.place(1, 0, 1, 1, 1, 1, "n", "c", null, panelTop, c, buttonColorChooserPrim);
@@ -83,13 +91,104 @@ public class GUIColorChooser extends JPanel implements ActionListener {
                 c.gridy++;
             }
         }
-        c.gridx++;
-        c.gridy++;
-
     }
+    private JButton buttonPaletteSelected;
 
+    private void openEditPaletteDialog(){
+        JDialog dialog = new JDialog(this.parentFrame.parentFrame, "Edit Palette");
+        dialog.setLocationRelativeTo(this.parentFrame.parentFrame);
+        JPanel leftSide = new JPanel();
+        JPanel rightSide = new JPanel();
+        JPanel bottom = new JPanel();
+        leftSide.setLayout(new GridBagLayout());
+        rightSide.setLayout(new GridBagLayout());
+        bottom.setLayout(new GridBagLayout());
+        dialog.setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+
+        JButton buttonSave = new JButton("Apply Change");
+        JButton[] buttonsColorPalette = new JButton[GUIMain.COLOR_CHOOSER_COLOR_COUNT];
+
+        JColorChooser colorChooser = new JColorChooser();
+        colorChooser.removeChooserPanel(colorChooser.getChooserPanels()[0]);
+
+        c.weightx = 1;
+        c.weighty = 1;
+        c.gridwidth = 1;
+        c.gridx = 0;
+        c.gridy = 0;
+
+        for (int i = 0; i < GUIMain.COLOR_CHOOSER_COLOR_COUNT; i++) {
+            buttonsColorPalette[i] = new JButton();
+            buttonsColorPalette[i].addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    //TODO: Show it is selected
+                    buttonPaletteSelected = (JButton) e.getSource();
+                    colorChooser.setColor(buttonPaletteSelected.getBackground());
+                }
+            });
+
+            if (i < parentFrame.parentFrame.generalInformation.colorChooserPalette.size()) {
+                buttonsColorPalette[i].setBackground(parentFrame.parentFrame.generalInformation.colorChooserPalette.get(i));
+            } else {
+                buttonsColorPalette[i].setBackground(Color.WHITE);
+                //TODO: Report Bug
+            }
+            buttonsColorPalette[i].setOpaque(true);
+            buttonsColorPalette[i].setPreferredSize(new Dimension(20, 20));
+            leftSide.add(buttonsColorPalette[i], c);
+            c.gridx++;
+            if (Math.floorMod(i + 1, GUIMain.COLORS_PER_ROW) == 0) {
+                c.gridx = 0;
+                c.gridy++;
+            }
+        }
+        colorChooser.getSelectionModel().addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                if(buttonPaletteSelected != null && !buttonPaletteSelected.getBackground().equals(colorChooser.getColor())){
+                    buttonSave.setEnabled(true);
+                }
+                else{
+                    buttonSave.setEnabled(false);
+                }
+            }
+        });
+
+        LH.place(0,0,1,1,1,1,"n","c",null,rightSide,c,colorChooser);
+
+        buttonSave.setEnabled(false);
+        buttonSave.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               buttonPaletteSelected.setBackground(colorChooser.getColor());
+               for(int i = 0; i < GUIMain.COLOR_CHOOSER_COLOR_COUNT; i++){
+                   if(buttonsColorPalette[i] == buttonPaletteSelected){
+                       parentFrame.parentFrame.generalInformation.colorChooserPalette.set(i, colorChooser.getColor());
+                       buttonsColorChooser[i].setBackground(colorChooser.getColor());
+                   }
+               }
+            }
+        });
+        JButton buttonCancel = new JButton("Cancel");
+        buttonCancel.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                buttonPaletteSelected = null;
+                dialog.dispose();
+            }
+        });
+        LH.place(0,0,1,1,1,1,"n","c",null,bottom,c, buttonSave);
+        LH.place(1,0,1,1,1,1,"n","c",null,bottom,c, buttonCancel);
+
+        LH.place(0,0,1,1,1,1,"n","c",null,dialog,c,leftSide);
+        LH.place(1,0,1,1,1,1,"n","c",null,dialog,c,rightSide);
+        LH.place(0,1,2,1,1,1,"n","c",null,dialog,c,bottom);
+        dialog.setVisible(true);
+        dialog.pack();
+    }
     private Color customColor;
-
     private void openCustomColorDialog() {
         Color startingColor;
         if (isPrimSelected) {
@@ -142,9 +241,5 @@ public class GUIColorChooser extends JPanel implements ActionListener {
                 buttonColorChooserSeco.setBackground(chosenColor);
             }
         }
-
-
-        // TODO Auto-generated method stub
-
     }
 }
