@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 
-public class GeneralInformation implements java.io.Serializable {
+public class CampaignInformation implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 	
 
@@ -29,14 +29,14 @@ public class GeneralInformation implements java.io.Serializable {
 	static MapLinkType mapLinkType_small;
 	
 	
-	public GeneralInformation(String name, ArrayList<ItemType> itemTypes, ArrayList<MapInformation> maps) {
+	public CampaignInformation(String name, ArrayList<ItemType> itemTypes, ArrayList<MapInformation> maps) {
 		//TODO: Load-constructor for serialization
 		this.name = name;
 		this.itemTypes = itemTypes;
 		this.maps = maps;
 	}
 
-	public GeneralInformation() {
+	public CampaignInformation() {
 		//First initialization
 		name = "newGame";
 		itemTypes = new ArrayList<ItemType>();
@@ -97,7 +97,7 @@ public class GeneralInformation implements java.io.Serializable {
 
 	public static ImageIcon createImageIcon(String path) {
 
-		java.net.URL imgURL = GeneralInformation.class.getResource(path);
+		java.net.URL imgURL = CampaignInformation.class.getResource(path);
 		if (imgURL != null) {
 			
 			BufferedImage image;

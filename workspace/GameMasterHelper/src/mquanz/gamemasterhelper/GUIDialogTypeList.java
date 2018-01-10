@@ -99,7 +99,7 @@ public class GUIDialogTypeList extends JDialog {
         int rowNumber = 0;
 
 
-        for(ItemType itemType : mainFrame.generalInformation.itemTypes){
+        for(ItemType itemType : mainFrame.campaignInformation.itemTypes){
             createTypeRow(itemType, c, rowNumber);
             rowNumber += 2;
         }

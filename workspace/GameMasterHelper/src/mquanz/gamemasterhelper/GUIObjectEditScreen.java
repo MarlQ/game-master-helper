@@ -83,7 +83,7 @@ class GUIObjectEditScreen extends JDialog {
 					File file = fileChooser.getSelectedFile();
 					ImageIcon imageIcon = null;
 					try {
-						imageIcon = GeneralInformation.createImageIcon(file.toURI().toURL());
+						imageIcon = CampaignInformation.createImageIcon(file.toURI().toURL());
 					} catch (MalformedURLException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();

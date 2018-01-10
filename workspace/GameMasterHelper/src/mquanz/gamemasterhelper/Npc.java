@@ -23,14 +23,14 @@ public class Npc extends MapObject{
 
 
 		//TODO: TESTING
-		inventory.add(new Item("Hello", "Bla", GeneralInformation.itemTypeText, null));
-		inventory.add(new Item("Hello2", "Bla", GeneralInformation.itemTypeFirearm, null));
-		inventory.add(new Item("Hello3", "Bla", GeneralInformation.itemTypeText, null));
+		inventory.add(new Item("Hello", "Bla", CampaignInformation.itemTypeText, null));
+		inventory.add(new Item("Hello2", "Bla", CampaignInformation.itemTypeFirearm, null));
+		inventory.add(new Item("Hello3", "Bla", CampaignInformation.itemTypeText, null));
 
-		inventory.add(new Item("Hello4", "Bla", GeneralInformation.itemTypeText, null));
-		inventory.add(new Item("Hello5", "Bla", GeneralInformation.itemTypeText, null));
-		inventory.add(new Item("Hello6", "Bla", GeneralInformation.itemTypeText, null));
-		inventory.add(new Item("Hello7", "Bla", GeneralInformation.itemTypeText, null));
+		inventory.add(new Item("Hello4", "Bla", CampaignInformation.itemTypeText, null));
+		inventory.add(new Item("Hello5", "Bla", CampaignInformation.itemTypeText, null));
+		inventory.add(new Item("Hello6", "Bla", CampaignInformation.itemTypeText, null));
+		inventory.add(new Item("Hello7", "Bla", CampaignInformation.itemTypeText, null));
 
 	}
 	

@@ -40,7 +40,7 @@ public class GUIDialogMapList extends JDialog {
         list.setDropMode(DropMode.INSERT);
         new MyDragListener(list);
         DefaultListModel<MapInformation> model = new DefaultListModel<MapInformation>();
-        for (MapInformation map : mainFrame.generalInformation.maps) {
+        for (MapInformation map : mainFrame.campaignInformation.maps) {
             model.addElement(map);
         }
         list.setModel(model);

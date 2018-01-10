@@ -22,7 +22,7 @@ public class ControllerMap {
         standardMapSizeY = mapSize.height;
 
         MapInformation map = new MapInformation(mapName, mapSize);
-        mainFrame.generalInformation.maps.add(map);
+        mainFrame.campaignInformation.maps.add(map);
 
         mainFrame.topPane.comboBoxMaps.addItem(map);
 
@@ -30,7 +30,7 @@ public class ControllerMap {
     }
 
     void deleteMap(MapInformation map) {
-        mainFrame.generalInformation.maps.remove(map);
+        mainFrame.campaignInformation.maps.remove(map);
 
         mainFrame.topPane.comboBoxMaps.removeItem(map);
 
@@ -59,7 +59,7 @@ public class ControllerMap {
                 }
                 if (removeObjects) {
                     //Remove non-instanced objects
-                    mainFrame.generalInformation.objects.remove(mapObjectIcon.mapObject);
+                    mainFrame.campaignInformation.objects.remove(mapObjectIcon.mapObject);
                 }
                 if(map == mainFrame.drawingSurface.mapInformation){
                     //Update drawn map if it is this one

@@ -45,7 +45,7 @@ public class GUIColorChooser extends JPanel implements ActionListener {
         buttonColorChooserSeco.setOpaque(true);
         buttonColorChooserSeco.setPreferredSize(new Dimension(30, 30));
 
-        JButton buttonCustomColor = new JButton(GeneralInformation.createImageIcon("res/gui/color_custom.png"));
+        JButton buttonCustomColor = new JButton(CampaignInformation.createImageIcon("res/gui/color_custom.png"));
         buttonCustomColor.setPreferredSize(new Dimension(20, 20));
         buttonCustomColor.addActionListener(new ActionListener() {
             @Override
@@ -53,7 +53,7 @@ public class GUIColorChooser extends JPanel implements ActionListener {
                 openCustomColorDialog();
             }
         });
-        JButton buttonEditPalette = new JButton(GeneralInformation.createImageIcon("res/gui/color_palette"));
+        JButton buttonEditPalette = new JButton(CampaignInformation.createImageIcon("res/gui/color_palette"));
         buttonEditPalette.setPreferredSize(new Dimension(20, 20));
         buttonEditPalette.addActionListener(new ActionListener() {
             @Override
@@ -76,8 +76,8 @@ public class GUIColorChooser extends JPanel implements ActionListener {
             buttonsColorChooser[i] = new JButton();
             buttonsColorChooser[i].addActionListener(this);
 
-            if (i < parentFrame.parentFrame.generalInformation.colorChooserPalette.size()) {
-                buttonsColorChooser[i].setBackground(parentFrame.parentFrame.generalInformation.colorChooserPalette.get(i));
+            if (i < parentFrame.parentFrame.campaignInformation.colorChooserPalette.size()) {
+                buttonsColorChooser[i].setBackground(parentFrame.parentFrame.campaignInformation.colorChooserPalette.get(i));
             } else {
                 buttonsColorChooser[i].setBackground(Color.WHITE);
                 //TODO: Report Bug
@@ -129,8 +129,8 @@ public class GUIColorChooser extends JPanel implements ActionListener {
                 }
             });
 
-            if (i < parentFrame.parentFrame.generalInformation.colorChooserPalette.size()) {
-                buttonsColorPalette[i].setBackground(parentFrame.parentFrame.generalInformation.colorChooserPalette.get(i));
+            if (i < parentFrame.parentFrame.campaignInformation.colorChooserPalette.size()) {
+                buttonsColorPalette[i].setBackground(parentFrame.parentFrame.campaignInformation.colorChooserPalette.get(i));
             } else {
                 buttonsColorPalette[i].setBackground(Color.WHITE);
                 //TODO: Report Bug
@@ -165,7 +165,7 @@ public class GUIColorChooser extends JPanel implements ActionListener {
                buttonPaletteSelected.setBackground(colorChooser.getColor());
                for(int i = 0; i < GUIMain.COLOR_CHOOSER_COLOR_COUNT; i++){
                    if(buttonsColorPalette[i] == buttonPaletteSelected){
-                       parentFrame.parentFrame.generalInformation.colorChooserPalette.set(i, colorChooser.getColor());
+                       parentFrame.parentFrame.campaignInformation.colorChooserPalette.set(i, colorChooser.getColor());
                        buttonsColorChooser[i].setBackground(colorChooser.getColor());
                    }
                }

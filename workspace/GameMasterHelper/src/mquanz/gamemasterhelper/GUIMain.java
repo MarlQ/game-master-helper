@@ -86,12 +86,12 @@ public class GUIMain extends JFrame{
 	//TODO: Temporary
 	static final int METER = 20;
 	
-	private GUIMain(String title, GeneralInformation generalInformation){
+	private GUIMain(String title, CampaignInformation campaignInformation){
 		super(title);
-		this.generalInformation = generalInformation;
+		this.campaignInformation = campaignInformation;
 	}
 	
-	GeneralInformation generalInformation;
+	CampaignInformation campaignInformation;
 	GUIDrawingSurface drawingSurface;
 	GUIDragScrollPane scrollPane;
 	GUITopPane topPane;
@@ -111,8 +111,8 @@ public class GUIMain extends JFrame{
 	
 	private static void createGUI(){
 		
-		GeneralInformation generalInformation = new GeneralInformation();
-		GUIMain mainFrame = new GUIMain("Gamemaster helper", generalInformation);
+		CampaignInformation campaignInformation = new CampaignInformation();
+		GUIMain mainFrame = new GUIMain("Gamemaster helper", campaignInformation);
 		mainFrame.mapController = new ControllerMap(mainFrame);
 
 		mainFrame.setContentPane(mainFrame.createContentPane());
@@ -132,7 +132,7 @@ public class GUIMain extends JFrame{
 		contentPane.setLayout(gbl);
 
 		GUIBottomPane bottomPane = new GUIBottomPane();
-		drawingSurface = new GUIDrawingSurface(generalInformation.maps.get(0), this.generalInformation);
+		drawingSurface = new GUIDrawingSurface(campaignInformation.maps.get(0), this.campaignInformation);
 		scrollPane = new GUIDragScrollPane(this.drawingSurface,bottomPane);
 		drawingSurface.dragScrollPane = scrollPane;
 		
@@ -203,7 +203,7 @@ public class GUIMain extends JFrame{
 		BufferedImage bufferedImage = ScreenImage.createImage(this.drawingSurface);
 
 		JFileChooser fileChooser = new JFileChooser();	
-		if (!(this.generalInformation == null)) {
+		if (!(this.campaignInformation == null)) {
 			boolean wasSaved = false;
 			while (!wasSaved) {
 				int returnVal = fileChooser.showSaveDialog(this);
@@ -237,7 +237,7 @@ public class GUIMain extends JFrame{
 	
 	void saveGame(){
 		JFileChooser fileChooser = new JFileChooser();	
-		if (!(this.generalInformation == null)) {
+		if (!(this.campaignInformation == null)) {
 			fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 			boolean wasSaved = false;
 			while (!wasSaved) {
@@ -247,7 +247,7 @@ public class GUIMain extends JFrame{
 					File file = fileChooser.getSelectedFile();
 					String s = file.getPath();
 					try {
-						FileSaverLoader.saveData(s, this.generalInformation);
+						FileSaverLoader.saveData(s, this.campaignInformation);
 						wasSaved = true;
 					} catch (FileNotFoundException e1) {
 						JOptionPane.showMessageDialog(this,
@@ -269,7 +269,7 @@ public class GUIMain extends JFrame{
 		FileNameExtensionFilter filter = new FileNameExtensionFilter(null, "dat");
 		fileChooser.setFileFilter(filter);
 		boolean wasLoaded = false;
-		GeneralInformation loadedGeneralInformation;
+		CampaignInformation loadedCampaignInformation;
 
 		while (!wasLoaded) {
 			fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -280,16 +280,16 @@ public class GUIMain extends JFrame{
 				File file = fileChooser.getSelectedFile();
 				String s = file.getPath();
 
-				loadedGeneralInformation = FileSaverLoader.loadData(s);
-				if (loadedGeneralInformation == null) {
+				loadedCampaignInformation = FileSaverLoader.loadData(s);
+				if (loadedCampaignInformation == null) {
 					JOptionPane.showMessageDialog(this,
 							"Incompatible File", "Error",
 							JOptionPane.WARNING_MESSAGE);
 				} else {
-					if (this.generalInformation == null) {
+					if (this.campaignInformation == null) {
 						wasLoaded = true;
-						generalInformation = loadedGeneralInformation;
-						drawingSurface.changeMap(generalInformation.maps.get(0));
+						campaignInformation = loadedCampaignInformation;
+						drawingSurface.changeMap(campaignInformation.maps.get(0));
 						//TODO:
 					} else {
 						//TODO:
@@ -303,8 +303,8 @@ public class GUIMain extends JFrame{
 										JOptionPane.WARNING_MESSAGE);
 						if (n == JOptionPane.YES_OPTION) {
 							wasLoaded = true;
-							this.generalInformation = loadedGeneralInformation;
-							drawingSurface.changeMap(generalInformation.maps.get(0));
+							this.campaignInformation = loadedCampaignInformation;
+							drawingSurface.changeMap(campaignInformation.maps.get(0));
 							
 						} else if (n == JOptionPane.NO_OPTION) {
 							return;

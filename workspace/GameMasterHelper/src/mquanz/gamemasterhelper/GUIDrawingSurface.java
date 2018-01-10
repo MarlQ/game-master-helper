@@ -10,7 +10,7 @@ public class GUIDrawingSurface extends JPanel implements Scrollable{
 	private static final long serialVersionUID = 1L;
 
 	MapInformation mapInformation;
-	GeneralInformation generalInformation;
+	CampaignInformation campaignInformation;
 	ComponentMover componentMover;
 	
 	Graphics2D g2;
@@ -26,10 +26,10 @@ public class GUIDrawingSurface extends JPanel implements Scrollable{
 	boolean drawGrid = GUIMain.DRAW_GRID_DEFAULT;
 	
 
-	GUIDrawingSurface(MapInformation mapInformation, GeneralInformation generalInformation) {
+	GUIDrawingSurface(MapInformation mapInformation, CampaignInformation campaignInformation) {
 		setLayout(null);
 		this.setPreferredSize(mapInformation.mapSize);
-		this.generalInformation = generalInformation;
+		this.campaignInformation = campaignInformation;
 		setBackground(Color.WHITE);
 		changeMap(mapInformation);
 	}

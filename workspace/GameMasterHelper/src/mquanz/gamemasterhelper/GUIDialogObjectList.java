@@ -22,7 +22,7 @@ public GUIDialogObjectList(GUIMain mainFrame) {
     GridBagConstraints c = new GridBagConstraints();
     setLayout(gbl);
 
-    GeneralInformation ginfo = mainFrame.generalInformation;
+    CampaignInformation ginfo = mainFrame.campaignInformation;
 
     JTextField textFieldName = new JTextField("Name");
     JTextField textFieldClass = new JTextField("Class");

@@ -7,10 +7,10 @@ import java.io.ObjectOutputStream;
 
 abstract class FileSaverLoader {
 
-	 static void saveData(String s, GeneralInformation generalInformation) throws java.io.FileNotFoundException {
-		String path = s + "\\" + generalInformation.name + ".dat";
+	 static void saveData(String s, CampaignInformation campaignInformation) throws java.io.FileNotFoundException {
+		String path = s + "\\" + campaignInformation.name + ".dat";
 		try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(path))) {
-			out.writeObject(generalInformation);
+			out.writeObject(campaignInformation);
 			//GUILog.createLog("Serialized data was saved to " + path);
 		} catch (java.io.FileNotFoundException i) {
 			throw new java.io.FileNotFoundException();
@@ -19,12 +19,12 @@ abstract class FileSaverLoader {
 		}
 	}
 
-	 static GeneralInformation loadData(String s) {
+	 static CampaignInformation loadData(String s) {
 		if (s.endsWith(".dat")) {
-			GeneralInformation generalInformation;
+			CampaignInformation campaignInformation;
 			try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(s))) {
 
-				generalInformation = (GeneralInformation) in.readObject();
+				campaignInformation = (CampaignInformation) in.readObject();
 
 			} catch (IOException i) {
 				i.printStackTrace();
@@ -34,7 +34,7 @@ abstract class FileSaverLoader {
 				c.printStackTrace();
 				return null;
 			}
-			return generalInformation;
+			return campaignInformation;
 		} else
 			return null;
 

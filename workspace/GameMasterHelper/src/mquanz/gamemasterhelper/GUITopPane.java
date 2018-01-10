@@ -20,7 +20,7 @@ public class GUITopPane extends JPanel{
 
 		comboBoxMaps = new JComboBox();
 
-		for(MapInformation map : parentFrame.generalInformation.maps){
+		for(MapInformation map : parentFrame.campaignInformation.maps){
 			comboBoxMaps.addItem(map);
 		}
 		comboBoxMaps.setEditable(false);

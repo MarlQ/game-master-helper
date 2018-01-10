@@ -23,21 +23,21 @@ public class GUIPopupMenu extends JPopupMenu {
 
 	public GUIPopupMenu(GUIDrawingSurface drawingSurface){
 		super();
-		GeneralInformation generalInformation = drawingSurface.generalInformation;
+		CampaignInformation campaignInformation = drawingSurface.campaignInformation;
 		this.drawingSurface = drawingSurface;
 		
 		JMenu newItem = new JMenu("New Item");
-		for(ItemType itemType : generalInformation.itemTypes){
+		for(ItemType itemType : campaignInformation.itemTypes){
 			newItem.add(makeItemEntry(itemType));
 		}
 
 		JMenu newNpc = new JMenu("New Npc");
-		for(NpcType npcType : generalInformation.npcTypes){
+		for(NpcType npcType : campaignInformation.npcTypes){
 			newNpc.add(makeItemEntry(npcType));
 		}
 
 		JMenu newMapLink = new JMenu("New Map Link");
-		for(MapLinkType mapLinkType : generalInformation.mapLinkTypes){
+		for(MapLinkType mapLinkType : campaignInformation.mapLinkTypes){
 			newMapLink.add(makeItemEntry(mapLinkType));
 		}
 		
