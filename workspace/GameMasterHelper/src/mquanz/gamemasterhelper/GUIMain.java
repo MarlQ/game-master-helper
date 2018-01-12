@@ -109,7 +109,20 @@ public class GUIMain extends JFrame{
 	}
 	
 	private static void createGUI(){
-		
+		com.jtattoo.plaf.texture.TextureLookAndFeel.setTheme("Textile","","");
+		try {
+			UIManager.setLookAndFeel("com.jtattoo.plaf.texture.TextureLookAndFeel");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (UnsupportedLookAndFeelException e) {
+			e.printStackTrace();
+		}
+
+
 		CampaignInformation campaignInformation = new CampaignInformation();
 		GUIMain mainFrame = new GUIMain("Gamemaster helper", campaignInformation);
 		mainFrame.mapController = new ControllerMap(mainFrame);
