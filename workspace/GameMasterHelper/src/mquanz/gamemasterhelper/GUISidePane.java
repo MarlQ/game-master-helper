@@ -127,11 +127,13 @@ public class GUISidePane extends JPanel implements ChangeListener, PropertyChang
 		sliderStrokeSize.setMajorTickSpacing(10);
 		sliderStrokeSize.setMinorTickSpacing(1);
 		sliderStrokeSize.setPaintTicks(true);
+		sliderStrokeSize.setFocusable(false);
 
 		textFieldStrokeSize = new JFormattedTextField(GUIMain.STROKE_INIT);
 		textFieldStrokeSize.setAlignmentX(CENTER_ALIGNMENT);
 		textFieldStrokeSize.setColumns(3);
 		textFieldStrokeSize.addPropertyChangeListener(this);
+		textFieldStrokeSize.setFocusable(false);
 
 
 		LH.place(1,4,1,1,1,1,"n","e",null,this,c,buttonModeDrag);

@@ -19,6 +19,7 @@ public class GUITopPane extends JPanel{
 		this.parentFrame = parentFrame;
 
 		comboBoxMaps = new JComboBox();
+		comboBoxMaps.setFocusable(false);
 
 		for(MapInformation map : parentFrame.campaignInformation.maps){
 			comboBoxMaps.addItem(map);
@@ -33,6 +34,7 @@ public class GUITopPane extends JPanel{
 		add(comboBoxMaps);
 
 		buttonOpenMapList = new JButton("+");
+		buttonOpenMapList.setFocusable(false);
 		buttonOpenMapList.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				if(GUITopPane.this.dialogMapList != null){
