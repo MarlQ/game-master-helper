@@ -504,9 +504,20 @@ class GUIDragScrollPane extends JScrollPane {
 
     void itemDoubleClicked(MapObjectIcon mapObjectIcon) {
         MapObject mapObject = mapObjectIcon.mapObject;
+
+        for (GUIObjectEditScreen editScreen : objectEditScreenList) {
+            if (editScreen.mapObjectIcon == selectedIcon) {
+                editScreen.toFront();
+                return;
+            }
+        }
+        GUIObjectEditScreen editScreen = new GUIObjectEditScreen(
+                (GUIMain) this.getParent().getParent().getParent().getParent(), mapObjectIcon, objectEditScreenList);
+        editScreen.setLocationRelativeTo(this.getParent().getParent().getParent().getParent());
+        objectEditScreenList.add(editScreen);
+        /**
         if (mapObject.getClass() == MapLink.class) {
             MapLink mapLink = (MapLink) mapObjectIcon.mapObject;
-
             if (mapLink.map != null) {
                 // TODO: Edit Screen Dialog
                 objectToMove.changeMap(mapLink.map);
@@ -514,18 +525,6 @@ class GUIDragScrollPane extends JScrollPane {
                 getHorizontalScrollBar().setValue(mapLink.linkPosY);
             }
             // TODO: Edit Screen
-        } else {
-
-            for (GUIObjectEditScreen editScreen : objectEditScreenList) {
-                if (editScreen.mapObjectIcon == selectedIcon) {
-                    editScreen.toFront();
-                    return;
-                }
-            }
-            GUIObjectEditScreen editScreen = new GUIObjectEditScreen(
-                    (JFrame) this.getParent().getParent().getParent().getParent(), mapObjectIcon, objectEditScreenList);
-            objectEditScreenList.add(editScreen);
-
-        }
+        }**/
     }
 }
