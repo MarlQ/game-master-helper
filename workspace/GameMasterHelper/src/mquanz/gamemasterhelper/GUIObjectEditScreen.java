@@ -6,6 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -17,12 +19,14 @@ class GUIObjectEditScreen extends JDialog {
 	
 	private JButton changeIconButton;
 	MapObjectIcon mapObjectIcon;
+	private GUIMain mainFrame;
 	private ArrayList<GUIObjectEditScreen> editScreenList;
 
-	GUIObjectEditScreen(JFrame parentFrame,MapObjectIcon mapObjectIcon, ArrayList<GUIObjectEditScreen> editScreenList){
+	GUIObjectEditScreen(GUIMain parentFrame,MapObjectIcon mapObjectIcon, ArrayList<GUIObjectEditScreen> editScreenList){
 		super(parentFrame,"Edit");
 		this.editScreenList = editScreenList;
 		this.mapObjectIcon = mapObjectIcon;
+		this.mainFrame = parentFrame;
 
 		MapObject mapObject = mapObjectIcon.mapObject;
 
@@ -33,6 +37,9 @@ class GUIObjectEditScreen extends JDialog {
 		} else if(mapObject.getClass() == Npc.class){
 			//NPC Edit Screen
 			createNPCEditScreen();
+		} else if(mapObject.getClass() == MapLink.class){
+			//Map LInk Edit Screen
+			createMapLinkEditScreen();
 		}
 		setVisible(true);
 		pack();
@@ -40,7 +47,7 @@ class GUIObjectEditScreen extends JDialog {
 
 
 
-	void createBasicGUI(GridBagLayout gbl, GridBagConstraints c){
+	private void createBasicGUI(GridBagLayout gbl, GridBagConstraints c){
 		MapObject mapObject = mapObjectIcon.mapObject;
 
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -49,8 +56,6 @@ class GUIObjectEditScreen extends JDialog {
 			public void windowClosing(WindowEvent arg0) {
 				GUIObjectEditScreen.this.editScreenList.remove(GUIObjectEditScreen.this);
 				dispose();
-				// TODO Auto-generated method stub
-
 			}
 		});
 
@@ -111,7 +116,76 @@ class GUIObjectEditScreen extends JDialog {
 		LH.place(3,2,1,1,1,1,"n","e",null,this,c,changeIconButton);
 	}
 
-	void createNPCEditScreen(){
+	private void createMapLinkEditScreen(){
+		MapLink mapLink = (MapLink)mapObjectIcon.mapObject;
+		GridBagConstraints c = new GridBagConstraints();
+		GridBagLayout gbl = new GridBagLayout();
+		setLayout(gbl);
+
+		createBasicGUI(gbl,c);
+
+		JTextField textFieldLinkDescr = new JTextField("Links to:");
+		textFieldLinkDescr.setEditable(false);
+		JTextField textFieldMapDescr = new JTextField("Map");
+		JComboBox comboBoxMaps = new JComboBox();
+		for(MapInformation map : mainFrame.campaignInformation.maps){
+			comboBoxMaps.addItem(map);
+		}
+		comboBoxMaps.setEditable(false);
+		comboBoxMaps.setSelectedItem(mapLink.map);
+		comboBoxMaps.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				JComboBox cb = (JComboBox)e.getSource();
+				mapLink.map = (MapInformation)cb.getSelectedItem();
+			}
+		});
+
+		textFieldMapDescr.setEditable(false);
+		JTextField textFieldXDescr = new JTextField("X");
+		JFormattedTextField textFieldX = new JFormattedTextField(mapLink.linkPosX);
+		textFieldX.setColumns(8);
+		textFieldX.addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				int value = (int) textFieldX.getValue();
+				if(mapLink.map == null || value < 0){
+					textFieldX.setValue(0);
+				}
+				else if(value > mapLink.map.mapSize.width){
+					textFieldX.setValue(mapLink.map.mapSize.width);
+				}
+			}
+		});
+		textFieldXDescr.setEditable(false);
+		JTextField textFieldYDescr = new JTextField("Y");
+		textFieldYDescr.setEditable(false);
+		JFormattedTextField textFieldY = new JFormattedTextField(mapLink.linkPosY);
+		textFieldY.setColumns(8);
+		textFieldY.addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				int value = (int) textFieldY.getValue();
+				if(mapLink.map == null || value < 0){
+					textFieldY.setValue(0);
+				}
+				else if(value > mapLink.map.mapSize.width){
+					textFieldY.setValue(mapLink.map.mapSize.width);
+				}
+			}
+		});
+
+		LH.place(0,3,4,1,0,0,"n","c",null,this,c,textFieldLinkDescr);
+		LH.place(0,4,1,1,0,0,"n","c",null,this,c,textFieldMapDescr);
+		LH.place(1,4,1,1,0,0,"v","w",null,this,c,comboBoxMaps);
+		LH.place(0,5,1,1,0,0,"n","c",null,this,c,textFieldXDescr);
+		LH.place(1,5,1,1,0,0,"v","w",null,this,c,textFieldX);
+		LH.place(2,5,1,1,0,0,"n","c",null,this,c,textFieldYDescr);
+		LH.place(3,5,1,1,0,0,"v","w",null,this,c,textFieldY);
+
+
+	}
+
+	private void createNPCEditScreen(){
 		Npc npc = (Npc)mapObjectIcon.mapObject;
 
 		GridBagConstraints c = new GridBagConstraints();
@@ -155,7 +229,7 @@ class GUIObjectEditScreen extends JDialog {
 		}
 	}
 
-	void createItemEditScreen(){
+	private void createItemEditScreen(){
 		Item item = (Item)mapObjectIcon.mapObject;
 
 		GridBagConstraints c = new GridBagConstraints();
