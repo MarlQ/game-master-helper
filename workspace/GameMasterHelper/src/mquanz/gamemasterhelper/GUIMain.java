@@ -1,4 +1,7 @@
 package mquanz.gamemasterhelper;
+
+import com.jtattoo.plaf.texture.TextureLookAndFeel;
+
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
@@ -9,6 +12,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Properties;
 
 
 public class GUIMain extends JFrame{
@@ -109,19 +113,15 @@ public class GUIMain extends JFrame{
 	}
 	
 	private static void createGUI(){
-		com.jtattoo.plaf.texture.TextureLookAndFeel.setTheme("Textile","","");
+		Properties props = new Properties();
+		props.put("logoString", "");
+		TextureLookAndFeel.setCurrentTheme(props);
+		com.jtattoo.plaf.texture.TextureLookAndFeel.setTheme("Leather","","");
 		try {
 			UIManager.setLookAndFeel("com.jtattoo.plaf.texture.TextureLookAndFeel");
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (UnsupportedLookAndFeelException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 
 		CampaignInformation campaignInformation = new CampaignInformation();
 		GUIMain mainFrame = new GUIMain("Gamemaster helper", campaignInformation);
