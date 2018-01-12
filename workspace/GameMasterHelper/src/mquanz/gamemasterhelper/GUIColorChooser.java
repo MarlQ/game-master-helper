@@ -36,13 +36,11 @@ public class GUIColorChooser extends JPanel implements ActionListener {
         buttonColorChooserPrim = new JButton();
         buttonColorChooserPrim.addActionListener(this);
         buttonColorChooserPrim.setBackground(Color.BLACK);
-        buttonColorChooserPrim.setOpaque(true);
         buttonColorChooserPrim.setPreferredSize(new Dimension(30, 30));
 
         buttonColorChooserSeco = new JButton();
         buttonColorChooserSeco.addActionListener(this);
         buttonColorChooserSeco.setBackground(Color.WHITE);
-        buttonColorChooserSeco.setOpaque(true);
         buttonColorChooserSeco.setPreferredSize(new Dimension(30, 30));
 
         JButton buttonCustomColor = new JButton(CampaignInformation.createImageIcon("res/gui/color_custom.png"));
@@ -82,7 +80,6 @@ public class GUIColorChooser extends JPanel implements ActionListener {
                 buttonsColorChooser[i].setBackground(Color.WHITE);
                 //TODO: Report Bug
             }
-            buttonsColorChooser[i].setOpaque(true);
             buttonsColorChooser[i].setPreferredSize(new Dimension(20, 20));
             add(buttonsColorChooser[i], c);
             c.gridx++;
