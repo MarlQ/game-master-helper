@@ -14,11 +14,13 @@ class GUIBottomPane extends JPanel {
         textFieldMouseC.setEditable(false);
         textFieldMouseC.setColumns(10);
         textFieldMouseC.setBorder(null);
+        textFieldMouseC.setOpaque(false);
 
          textFieldContextualInfo = new JTextField("");
          textFieldContextualInfo.setEditable(false);
          textFieldContextualInfo.setColumns(30);
          textFieldContextualInfo.setBorder(null);
+         textFieldContextualInfo.setOpaque(false);
         add(textFieldMouseC);
         add(textFieldContextualInfo);
 
