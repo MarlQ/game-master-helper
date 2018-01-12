@@ -46,7 +46,7 @@ public class GUIDrawingSurface extends JPanel implements Scrollable{
 			mapObjectIcon = this.mapInformation.newItem(posX, posY, "New Item", "", (ItemType)objectType);
 		}
 		else if(objectType.getClass() == MapLinkType.class){
-			mapObjectIcon = this.mapInformation.newMapLink(posX, posY, "New Map Link", (MapLinkType)objectType, 0, 0, null );
+			mapObjectIcon = this.mapInformation.newMapLink(posX, posY, "New Map Link", (MapLinkType)objectType, 0, 0, this.mapInformation );
 		}
 		if(mapObjectIcon != null){
 			add(mapObjectIcon);
