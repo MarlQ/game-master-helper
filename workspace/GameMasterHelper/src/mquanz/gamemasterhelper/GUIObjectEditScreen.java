@@ -19,14 +19,16 @@ class GUIObjectEditScreen extends JDialog {
 	
 	private JButton changeIconButton;
 	MapObjectIcon mapObjectIcon;
+	MapInformation currentMap;
 	private GUIMain mainFrame;
 	private ArrayList<GUIObjectEditScreen> editScreenList;
 
-	GUIObjectEditScreen(GUIMain parentFrame,MapObjectIcon mapObjectIcon, ArrayList<GUIObjectEditScreen> editScreenList){
+	GUIObjectEditScreen(GUIMain parentFrame,MapObjectIcon mapObjectIcon, ArrayList<GUIObjectEditScreen> editScreenList, MapInformation currentMap){
 		super(parentFrame,"Edit");
 		this.editScreenList = editScreenList;
 		this.mapObjectIcon = mapObjectIcon;
 		this.mainFrame = parentFrame;
+		this.currentMap = currentMap;
 
 		MapObject mapObject = mapObjectIcon.mapObject;
 
@@ -119,6 +121,7 @@ class GUIObjectEditScreen extends JDialog {
 	MapInformation tempMap;
 	int tempMapX;
 	int tempMapY;
+	MapLink tempTwoWayLink;
 
 	private void createMapLinkEditScreen(){
 		MapLink mapLink = (MapLink)mapObjectIcon.mapObject;
@@ -129,11 +132,19 @@ class GUIObjectEditScreen extends JDialog {
 		tempMap = mapLink.map;
 		tempMapX = mapLink.linkPosX;
 		tempMapY = mapLink.linkPosY;
+		tempTwoWayLink = mapLink.twoWayLink;
 
 		createBasicGUI(gbl,c);
 
-		JTextField textFieldLinkDescr = new JTextField("Links to:");
+		JTextField textFieldLinkDescr = new JTextField("Links to");
 		textFieldLinkDescr.setEditable(false);
+		JRadioButton radioButtonOneWay = new JRadioButton("1-way");
+		JRadioButton radioButtonTwoWay = new JRadioButton("2-way");
+
+		ButtonGroup buttonGroup = new ButtonGroup();
+		buttonGroup.add(radioButtonOneWay);
+		buttonGroup.add(radioButtonTwoWay);
+
 		JTextField textFieldMapDescr = new JTextField("Map");
 		JComboBox comboBoxMaps = new JComboBox();
 		for(MapInformation map : mainFrame.campaignInformation.maps){
@@ -192,6 +203,66 @@ class GUIObjectEditScreen extends JDialog {
 			}
 		});
 
+		JTextField textFieldTwoWayLinkDescr = new JTextField("Link");
+		textFieldTwoWayLinkDescr.setEditable(false);
+		JComboBox comboBoxMapLinks = new JComboBox();
+		for(MapInformation map : mainFrame.campaignInformation.maps){
+			for(MapObjectIcon mapObjectIcon : map.itemIcons){
+				if(mapObjectIcon.mapObject.getClass() == MapLink.class){
+					MapLink ml = (MapLink) mapObjectIcon.mapObject;
+					if(ml != mapLink){
+						comboBoxMapLinks.addItem(ml);
+					}
+				}
+			}
+		}
+		if(mapLink.twoWayLink != null){
+			comboBoxMaps.setSelectedItem(mapLink.twoWayLink);
+		}
+		comboBoxMapLinks.setEditable(false);
+		comboBoxMapLinks.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				JComboBox cb = (JComboBox)e.getSource();
+				tempTwoWayLink = (MapLink) cb.getSelectedItem();
+			}
+		});
+		tempTwoWayLink = (MapLink) comboBoxMapLinks.getSelectedItem();
+		radioButtonOneWay.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				comboBoxMaps.setEnabled(true);
+				textFieldX.setEnabled(true);
+				textFieldY.setEnabled(true);
+				comboBoxMapLinks.setEnabled(false);
+			}
+		});
+		radioButtonTwoWay.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				comboBoxMaps.setEnabled(false);
+				textFieldX.setEnabled(false);
+				textFieldY.setEnabled(false);
+				comboBoxMapLinks.setEnabled(true);
+				if(currentMap == null){
+					System.out.println(mapObjectIcon.posX);
+				}
+				tempMap = currentMap;
+				tempMapX = mapObjectIcon.posX;
+				tempMapY = mapObjectIcon.posY;
+			}
+		});
+		if(mapLink.isTwoWayLink){
+			radioButtonTwoWay.setSelected(true);
+			comboBoxMaps.setEnabled(false);
+			textFieldX.setEnabled(false);
+			textFieldY.setEnabled(false);
+
+		}
+		else{
+			radioButtonOneWay.setSelected(true);
+			comboBoxMapLinks.setEnabled(false);
+		}
+
 		JButton buttonOK = new JButton("OK");
 		buttonOK.addActionListener(new ActionListener() {
 			@Override
@@ -201,7 +272,22 @@ class GUIObjectEditScreen extends JDialog {
 				mapLink.map = tempMap;
 				mapLink.linkPosX = tempMapX;
 				mapLink.linkPosY = tempMapY;
-				tempMap = null;
+
+				if(radioButtonTwoWay.isSelected()){
+					mapLink.twoWayLink = tempTwoWayLink;
+					if(mapLink.twoWayLink != null){
+						mapLink.isTwoWayLink = true;
+						mapLink.twoWayLink.isTwoWayLink = true;
+						mapLink.twoWayLink.twoWayLink = mapLink;
+					}
+				} else{
+					mapLink.isTwoWayLink = false;
+					if(mapLink.twoWayLink != null){
+						mapLink.twoWayLink.isTwoWayLink = false;
+						mapLink.twoWayLink.twoWayLink = null;
+						mapLink.twoWayLink = null;
+					}
+				}
 			}
 		});
 		JButton buttonCancel = new JButton("Cancel");
@@ -219,13 +305,17 @@ class GUIObjectEditScreen extends JDialog {
 		panelButtons.add(buttonCancel);
 
 		LH.place(0,3,4,1,0,0,"n","c",null,this,c,textFieldLinkDescr);
-		LH.place(0,4,1,1,0,0,"n","c",null,this,c,textFieldMapDescr);
-		LH.place(1,4,1,1,0,0,"v","w",null,this,c,comboBoxMaps);
-		LH.place(0,5,1,1,0,0,"n","c",null,this,c,textFieldXDescr);
-		LH.place(1,5,1,1,0,0,"v","w",null,this,c,textFieldX);
-		LH.place(2,5,1,1,0,0,"n","c",null,this,c,textFieldYDescr);
-		LH.place(3,5,1,1,0,0,"v","w",null,this,c,textFieldY);
-		LH.place(0,6,4,1,0,0,"v","c",null,this,c,panelButtons);
+		LH.place(0,4,1,1,0,0,"n","c",null,this,c,radioButtonOneWay);
+		LH.place(2,4,1,1,0,0,"n","w",null,this,c,radioButtonTwoWay);
+		LH.place(0,5,1,1,0,0,"n","c",null,this,c,textFieldMapDescr);
+		LH.place(1,5,1,1,0,0,"v","w",null,this,c,comboBoxMaps);
+		LH.place(2,5,1,1,0,0,"n","c",null,this,c,textFieldTwoWayLinkDescr);
+		LH.place(3,5,1,1,0,0,"v","w",null,this,c,comboBoxMapLinks);
+		LH.place(0,6,1,1,0,0,"n","c",null,this,c,textFieldXDescr);
+		LH.place(1,6,1,1,0,0,"v","w",null,this,c,textFieldX);
+		LH.place(0,7,1,1,0,0,"n","c",null,this,c,textFieldYDescr);
+		LH.place(1,7,1,1,0,0,"v","w",null,this,c,textFieldY);
+		LH.place(0,8,4,1,0,0,"v","c",null,this,c,panelButtons);
 	}
 
 	private void createNPCEditScreen(){

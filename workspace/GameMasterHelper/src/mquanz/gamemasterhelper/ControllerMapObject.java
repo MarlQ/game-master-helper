@@ -26,7 +26,6 @@ public class ControllerMapObject {
 
     }
     private void deleteObjectCompletely(MapObjectIcon objectIcon){
-
     }
     private void deleteObjectsCompletely(ArrayList<MapObjectIcon> objectIcons){
 
@@ -54,6 +53,22 @@ public class ControllerMapObject {
                     objectEditScreenList.remove(editScreen);
                 }
             }
+            if(selectedIcon.mapObject.getClass() == MapLink.class){
+                MapLink mapLink = (MapLink) selectedIcon.mapObject;
+                for(MapInformation map : mainFrame.campaignInformation.maps){
+                    for(MapObjectIcon mapObjectIcon : map.itemIcons){
+                        if(mapObjectIcon.mapObject.getClass() == MapLink.class){
+                            MapLink ml = (MapLink) mapObjectIcon.mapObject;
+                            if(mapLink.twoWayLink == ml){
+                                mapLink.isTwoWayLink = false;
+                                ml.isTwoWayLink = false;
+                                ml.twoWayLink = null;
+                                mapLink.twoWayLink = null;
+                            }
+                        }
+                    }
+                }
+            }
             mainFrame.drawingSurface.componentMover.deregisterComponent(selectedIcon);
             mainFrame.drawingSurface.remove(selectedIcon);
             mainFrame.drawingSurface.mapInformation.itemIcons.remove(selectedIcon);
@@ -78,9 +93,7 @@ public class ControllerMapObject {
         }
     }
 
-    void editObject(MapObjectIcon mapObjectIcon){
-        MapObject mapObject = mapObjectIcon.mapObject;
-
+    void editObject(MapObjectIcon mapObjectIcon, MapInformation currentMap){
         for (GUIObjectEditScreen editScreen : objectEditScreenList) {
             if (editScreen.mapObjectIcon == mapObjectIcon) {
                 editScreen.toFront();
@@ -88,26 +101,31 @@ public class ControllerMapObject {
             }
         }
         GUIObjectEditScreen editScreen = new GUIObjectEditScreen(
-                mainFrame, mapObjectIcon, objectEditScreenList);
+                mainFrame, mapObjectIcon, objectEditScreenList, currentMap);
         editScreen.setLocationRelativeTo(mainFrame);
         objectEditScreenList.add(editScreen);
     }
     void followMapLink(MapLink mapLink){
-        if(mapLink.map != null){
+        if(mapLink.isTwoWayLink && mapLink.twoWayLink != null){
+            mainFrame.mapController.changeMap(mapLink.twoWayLink.map);
+            mainFrame.topPane.comboBoxMaps.setSelectedItem(mapLink.twoWayLink.map);
+            mainFrame.scrollPane.getViewport().setViewPosition(new Point(mapLink.twoWayLink.linkPosX,mapLink.twoWayLink.linkPosY));
+        }
+        else if(mapLink.map != null){
             mainFrame.mapController.changeMap(mapLink.map);
             mainFrame.topPane.comboBoxMaps.setSelectedItem(mapLink.map);
             mainFrame.scrollPane.getViewport().setViewPosition(new Point(mapLink.linkPosX,mapLink.linkPosY));
         }
     }
 
-    void rightClicked(MapObjectIcon mapObjectIcon,MouseEvent e){
+    void rightClicked(MapObjectIcon mapObjectIcon,MouseEvent e, MapInformation currentMap){
 
         JPopupMenu popupMenu = new JPopupMenu();
         JMenuItem menuItemEdit = new JMenuItem("Edit");
         menuItemEdit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                editObject(mapObjectIcon);
+                editObject(mapObjectIcon, currentMap);
             }
         });
         popupMenu.add(menuItemEdit);

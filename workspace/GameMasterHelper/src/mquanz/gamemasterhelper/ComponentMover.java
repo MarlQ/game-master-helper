@@ -198,7 +198,7 @@ public class ComponentMover extends MouseAdapter {
 			Rectangle r = new Rectangle(dragInsets.left, dragInsets.top, width, height);
 
 			if (r.contains(e.getPoint())) {
-				parentPanel.guiMain.mapObjectController.rightClicked(source, e);
+				parentPanel.guiMain.mapObjectController.rightClicked(source, e,parentPanel.mapInformation);
 			}
 		}
 	}
