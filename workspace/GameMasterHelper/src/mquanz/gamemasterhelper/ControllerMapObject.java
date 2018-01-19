@@ -1,6 +1,7 @@
 package mquanz.gamemasterhelper;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -95,8 +96,7 @@ public class ControllerMapObject {
         if(mapLink.map != null){
             mainFrame.mapController.changeMap(mapLink.map);
             mainFrame.topPane.comboBoxMaps.setSelectedItem(mapLink.map);
-            mainFrame.scrollPane.getVerticalScrollBar().setValue(mapLink.linkPosX);
-            mainFrame.scrollPane.getHorizontalScrollBar().setValue(mapLink.linkPosY);
+            mainFrame.scrollPane.getViewport().setViewPosition(new Point(mapLink.linkPosX,mapLink.linkPosY));
         }
     }
 
