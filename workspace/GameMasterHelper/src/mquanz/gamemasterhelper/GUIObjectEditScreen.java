@@ -116,11 +116,19 @@ class GUIObjectEditScreen extends JDialog {
 		LH.place(3,2,1,1,1,1,"n","e",null,this,c,changeIconButton);
 	}
 
+	MapInformation tempMap;
+	int tempMapX;
+	int tempMapY;
+
 	private void createMapLinkEditScreen(){
 		MapLink mapLink = (MapLink)mapObjectIcon.mapObject;
 		GridBagConstraints c = new GridBagConstraints();
 		GridBagLayout gbl = new GridBagLayout();
 		setLayout(gbl);
+
+		tempMap = mapLink.map;
+		tempMapX = mapLink.linkPosX;
+		tempMapY = mapLink.linkPosY;
 
 		createBasicGUI(gbl,c);
 
@@ -136,7 +144,7 @@ class GUIObjectEditScreen extends JDialog {
 		comboBoxMaps.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				JComboBox cb = (JComboBox)e.getSource();
-				mapLink.map = (MapInformation)cb.getSelectedItem();
+				tempMap = (MapInformation)cb.getSelectedItem();
 			}
 		});
 
@@ -150,9 +158,14 @@ class GUIObjectEditScreen extends JDialog {
 				int value = (int) textFieldX.getValue();
 				if(mapLink.map == null || value < 0){
 					textFieldX.setValue(0);
+					tempMapX = 0;
 				}
-				else if(value > mapLink.map.mapSize.width){
-					textFieldX.setValue(mapLink.map.mapSize.width);
+				else if(value > tempMap.mapSize.width){
+					textFieldX.setValue(tempMap.mapSize.width);
+					tempMapX = tempMap.mapSize.width;
+				}
+				else{
+					tempMapX = value;
 				}
 			}
 		});
@@ -167,12 +180,43 @@ class GUIObjectEditScreen extends JDialog {
 				int value = (int) textFieldY.getValue();
 				if(mapLink.map == null || value < 0){
 					textFieldY.setValue(0);
+					tempMapY = 0;
 				}
-				else if(value > mapLink.map.mapSize.width){
-					textFieldY.setValue(mapLink.map.mapSize.width);
+				else if(value > tempMap.mapSize.height){
+					textFieldY.setValue(tempMap.mapSize.height);
+					tempMapY = tempMap.mapSize.height;
+				}
+				else{
+					tempMapY = value;
 				}
 			}
 		});
+
+		JButton buttonOK = new JButton("OK");
+		buttonOK.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				GUIObjectEditScreen.this.editScreenList.remove(GUIObjectEditScreen.this);
+				mapLink.map = tempMap;
+				mapLink.linkPosX = tempMapX;
+				mapLink.linkPosY = tempMapY;
+				tempMap = null;
+			}
+		});
+		JButton buttonCancel = new JButton("Cancel");
+		buttonCancel.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				GUIObjectEditScreen.this.editScreenList.remove(GUIObjectEditScreen.this);
+				dispose();
+				tempMap = null;
+			}
+		});
+
+		JPanel panelButtons = new JPanel();
+		panelButtons.add(buttonOK);
+		panelButtons.add(buttonCancel);
 
 		LH.place(0,3,4,1,0,0,"n","c",null,this,c,textFieldLinkDescr);
 		LH.place(0,4,1,1,0,0,"n","c",null,this,c,textFieldMapDescr);
@@ -181,8 +225,7 @@ class GUIObjectEditScreen extends JDialog {
 		LH.place(1,5,1,1,0,0,"v","w",null,this,c,textFieldX);
 		LH.place(2,5,1,1,0,0,"n","c",null,this,c,textFieldYDescr);
 		LH.place(3,5,1,1,0,0,"v","w",null,this,c,textFieldY);
-
-
+		LH.place(0,6,4,1,0,0,"v","c",null,this,c,panelButtons);
 	}
 
 	private void createNPCEditScreen(){
