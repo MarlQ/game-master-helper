@@ -55,7 +55,7 @@ public class ControllerMap {
             int iconHeight = mapObjectIcon.mapObject.icon.getIconHeight();
             if (mapObjectIcon.posX + iconWidth > width || mapObjectIcon.posY + iconHeight > height) {
                 if (mapObjectIcon.isSelected) {
-                    mainFrame.drawingSurface.dragScrollPane.selectedIcon = null;
+                    mainFrame.mapObjectController.unselectObject(mapObjectIcon);
                 }
                 if (removeObjects) {
                     //Remove non-instanced objects

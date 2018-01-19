@@ -99,6 +99,7 @@ public class GUIMain extends JFrame{
 	GUIDragScrollPane scrollPane;
 	GUITopPane topPane;
 	ControllerMap mapController;
+	ControllerMapObject mapObjectController;
 	
 	public static void main(String[] args){
 		
@@ -126,6 +127,7 @@ public class GUIMain extends JFrame{
 		CampaignInformation campaignInformation = new CampaignInformation();
 		GUIMain mainFrame = new GUIMain("Gamemaster helper", campaignInformation);
 		mainFrame.mapController = new ControllerMap(mainFrame);
+		mainFrame.mapObjectController = new ControllerMapObject(mainFrame);
 
 		mainFrame.setContentPane(mainFrame.createContentPane());
 		mainFrame.setJMenuBar(new GUIMenuBar(mainFrame));
@@ -144,8 +146,8 @@ public class GUIMain extends JFrame{
 		contentPane.setLayout(gbl);
 
 		GUIBottomPane bottomPane = new GUIBottomPane();
-		drawingSurface = new GUIDrawingSurface(campaignInformation.maps.get(0), this.campaignInformation);
-		scrollPane = new GUIDragScrollPane(this.drawingSurface,bottomPane);
+		drawingSurface = new GUIDrawingSurface(campaignInformation.maps.get(0), this.campaignInformation, this);
+		scrollPane = new GUIDragScrollPane(this.drawingSurface,bottomPane,this);
 		drawingSurface.dragScrollPane = scrollPane;
 		
 		GUISidePane sidePane = new GUISidePane(this);
@@ -181,20 +183,7 @@ public class GUIMain extends JFrame{
 		AbstractAction pressedDeleteAction = new AbstractAction() {
 			private static final long serialVersionUID = 1L;
 			public void actionPerformed(ActionEvent e) {
-				if(scrollPane.selectedIcon != null){
-					for(GUIObjectEditScreen editScreen : scrollPane.objectEditScreenList){
-						if(editScreen.mapObjectIcon == scrollPane.selectedIcon){
-							editScreen.dispose();
-							scrollPane.objectEditScreenList.remove(editScreen);
-							break;
-						}
-					}
-					scrollPane.objectToMove.componentMover.deregisterComponent(scrollPane.selectedIcon);
-					scrollPane.objectToMove.remove(scrollPane.selectedIcon);
-					scrollPane.objectToMove.mapInformation.itemIcons.remove(scrollPane.selectedIcon);
-					scrollPane.selectedIcon = null;
-					scrollPane.objectToMove.repaint();
-				}
+				mapObjectController.deleteSelectedObjects();
 			}
 		};
 

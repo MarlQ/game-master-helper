@@ -9,11 +9,11 @@ class GUIDragScrollPane extends JScrollPane {
     private static final long serialVersionUID = 1L;
 
     private GUIPopupMenu popupMenu;
-    MapObjectIcon selectedIcon;
+
     GUIDrawingSurface objectToMove;
-    ArrayList<GUIObjectEditScreen> objectEditScreenList = new ArrayList<GUIObjectEditScreen>();
 
     private GUIBottomPane bottomPane;
+    private GUIMain guiMain;
 
     boolean shiftPressed = false;
     boolean snapToGrid = GUIMain.SNAP_TO_GRID_DEFAULT;
@@ -25,11 +25,12 @@ class GUIDragScrollPane extends JScrollPane {
     int shiftLineHorizontal = 0;
     private boolean stairsClicked = false;
 
-    GUIDragScrollPane(GUIDrawingSurface objectToMove, GUIBottomPane bottomPane) {
+    GUIDragScrollPane(GUIDrawingSurface objectToMove, GUIBottomPane bottomPane, GUIMain guiMain) {
         super(objectToMove);
         popupMenu = new GUIPopupMenu(objectToMove);
         this.objectToMove = objectToMove;
         this.bottomPane = bottomPane;
+        this.guiMain = guiMain;
         setPreferredSize(new Dimension(500, 500));
 
         ViewportDragScrollListener l = new ViewportDragScrollListener(objectToMove);
@@ -238,11 +239,7 @@ class GUIDragScrollPane extends JScrollPane {
                         ((JComponent) e.getSource()).setCursor(hc);
                         startPt.setLocation(e.getPoint());
                         move.setLocation(0, 0);
-                        if (selectedIcon != null) {
-                            selectedIcon.isSelected = false;
-                            selectedIcon.repaint();
-                            selectedIcon = null;
-                        }
+                        guiMain.mapObjectController.unselectAllObjects();
                         break;
                     case 2:
                         // Pencil Tool
@@ -488,43 +485,4 @@ class GUIDragScrollPane extends JScrollPane {
     }
  **/
 
-    void itemClicked(MapObjectIcon itemIcon) {
-        if (selectedIcon == null) {
-            itemIcon.isSelected = true;
-            selectedIcon = itemIcon;
-            itemIcon.repaint();
-        } else if (selectedIcon != itemIcon) {
-            selectedIcon.isSelected = false;
-            selectedIcon.repaint();
-            itemIcon.isSelected = true;
-            selectedIcon = itemIcon;
-            itemIcon.repaint();
-        }
-    }
-
-    void itemDoubleClicked(MapObjectIcon mapObjectIcon) {
-        MapObject mapObject = mapObjectIcon.mapObject;
-
-        for (GUIObjectEditScreen editScreen : objectEditScreenList) {
-            if (editScreen.mapObjectIcon == selectedIcon) {
-                editScreen.toFront();
-                return;
-            }
-        }
-        GUIObjectEditScreen editScreen = new GUIObjectEditScreen(
-                (GUIMain) this.getParent().getParent().getParent().getParent(), mapObjectIcon, objectEditScreenList);
-        editScreen.setLocationRelativeTo(this.getParent().getParent().getParent().getParent());
-        objectEditScreenList.add(editScreen);
-        /**
-        if (mapObject.getClass() == MapLink.class) {
-            MapLink mapLink = (MapLink) mapObjectIcon.mapObject;
-            if (mapLink.map != null) {
-                // TODO: Edit Screen Dialog
-                objectToMove.changeMap(mapLink.map);
-                getVerticalScrollBar().setValue(mapLink.linkPosX);
-                getHorizontalScrollBar().setValue(mapLink.linkPosY);
-            }
-            // TODO: Edit Screen
-        }**/
-    }
 }

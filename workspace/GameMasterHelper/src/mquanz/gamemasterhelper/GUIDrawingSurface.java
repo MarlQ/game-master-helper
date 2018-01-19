@@ -12,6 +12,7 @@ public class GUIDrawingSurface extends JPanel implements Scrollable{
 	MapInformation mapInformation;
 	CampaignInformation campaignInformation;
 	ComponentMover componentMover;
+	GUIMain guiMain;
 	
 	Graphics2D g2;
 	Color drawingColorPrim = GUIMain.COLOR_PRIM_DEFAULT;
@@ -26,10 +27,11 @@ public class GUIDrawingSurface extends JPanel implements Scrollable{
 	boolean drawGrid = GUIMain.DRAW_GRID_DEFAULT;
 	
 
-	GUIDrawingSurface(MapInformation mapInformation, CampaignInformation campaignInformation) {
+	GUIDrawingSurface(MapInformation mapInformation, CampaignInformation campaignInformation, GUIMain guiMain) {
 		setLayout(null);
 		this.setPreferredSize(mapInformation.mapSize);
 		this.campaignInformation = campaignInformation;
+		this.guiMain = guiMain;
 		setBackground(Color.WHITE);
 		changeMap(mapInformation);
 	}
@@ -158,7 +160,7 @@ public class GUIDrawingSurface extends JPanel implements Scrollable{
 	void clearMap(){
 		clearDrawing();
 
-		dragScrollPane.selectedIcon = null;
+		guiMain.mapObjectController.unselectAllObjects();
 		for (MapObjectIcon itemIcon : this.mapInformation.itemIcons) {
 			remove(itemIcon);
 		}
@@ -172,11 +174,7 @@ public class GUIDrawingSurface extends JPanel implements Scrollable{
 
 			if (this.mapInformation != mapInformation) {
 				if (dragScrollPane != null) {
-					if (dragScrollPane.selectedIcon != null) {
-						dragScrollPane.selectedIcon.isSelected = false;
-						dragScrollPane.selectedIcon.repaint();
-						dragScrollPane.selectedIcon = null;
-					}
+					guiMain.mapObjectController.unselectAllObjects();
 				}
 				if (this.mapInformation != null) {
 					for(MapObjectIcon itemIcon : this.mapInformation.itemIcons){

@@ -185,10 +185,20 @@ public class ComponentMover extends MouseAdapter {
 
 			if (r.contains(e.getPoint())) {
 				setupForDragging(e);
-				parentPanel.dragScrollPane.itemClicked(source);
+				parentPanel.guiMain.mapObjectController.selectSingleObject(source);
 				if (e.getClickCount() == 2) {
-					parentPanel.dragScrollPane.itemDoubleClicked(source);
+					parentPanel.guiMain.mapObjectController.doubleClicked(source);
 				}
+			}
+		}
+		else if(SwingUtilities.isRightMouseButton(e)){
+			source = (MapObjectIcon) e.getComponent();
+			int width = source.getSize().width - dragInsets.left - dragInsets.right;
+			int height = source.getSize().height - dragInsets.top - dragInsets.bottom;
+			Rectangle r = new Rectangle(dragInsets.left, dragInsets.top, width, height);
+
+			if (r.contains(e.getPoint())) {
+				parentPanel.guiMain.mapObjectController.rightClicked(source, e);
 			}
 		}
 	}
