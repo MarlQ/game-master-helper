@@ -6,6 +6,11 @@ public class MapLink extends MapObject {
 
 	int linkPosX, linkPosY;
 	MapInformation map;
+	MapLink twoWayLink;
+	Boolean isTwoWayLink;
+
+	MapInformation ownMap;
+	int ownPosX, ownPosY;
 
 	public MapLink(String name, Color textColor, int linkPosX, int linkPosY, MapInformation map,
 			MapLinkType mapLinkType, ImageIcon icon) {
@@ -25,6 +30,8 @@ public class MapLink extends MapObject {
 		this.map = map;
 		this.type = mapLinkType;
 		this.className = "Map Link";
+		this.twoWayLink = null;
+		this.isTwoWayLink = false;
 	}
 
 }
