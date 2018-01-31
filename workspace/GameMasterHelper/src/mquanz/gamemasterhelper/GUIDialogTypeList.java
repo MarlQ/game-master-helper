@@ -59,7 +59,7 @@ public class GUIDialogTypeList extends JDialog {
     }
 
     void createPropertyRow(Property property, GridBagConstraints c, int rowCounter, JPanel panel){
-
+/**
         JTextField textFieldPropertyName = new JTextField(property.name);
         JButton textFieldTypeName = new JButton(property.typeName);
 
@@ -82,6 +82,7 @@ public class GUIDialogTypeList extends JDialog {
         LH.place(1,rowCounter,1,1,0,0,"n","c",null,panel,c,textFieldTypeName);
         LH.place(2,rowCounter,1,1,0,0,"n","c",null,panel,c,formattedTextFieldValue);
         LH.place(3,rowCounter,1,1,0,0,"n","c",null,panel,c,buttonDeleteProperty);
+ **/
 
     }
 

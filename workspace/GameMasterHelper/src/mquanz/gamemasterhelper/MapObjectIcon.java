@@ -1,11 +1,7 @@
 package mquanz.gamemasterhelper;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import javax.swing.JLabel;
+import javax.swing.*;
+import java.awt.*;
 
 public class MapObjectIcon extends JLabel implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
@@ -45,6 +41,10 @@ public class MapObjectIcon extends JLabel implements java.io.Serializable {
 		super.setLocation(x, y);
 		this.posX = x;
 		this.posY = y;
+		if(mapObject.getClass() == MapLink.class){
+			((MapLink) mapObject).ownPosX = posX;
+			((MapLink) mapObject).ownPosY = posY;
+		}
 	}
 
 	@Override

@@ -1,19 +1,27 @@
 package mquanz.gamemasterhelper;
 
-import java.text.Format;
+import java.util.ArrayList;
 
 public class Property {
 
     String name;
-    String typeName;
 
     Object value;
-    Format format;
 
-    public Property(String name, String typeName, Object value, Format format) {
+    private Property(String name, Object value) {
         this.name = name;
-        this.typeName = typeName;
         this.value = value;
-        this.format = format;
+    }
+
+    public static ArrayList<Property> createStandardProperties(){
+        ArrayList<Property> properties = new ArrayList<>();
+
+        //Map Link
+        properties.add(new Property("Map Link", new MapLinkData()));
+
+
+
+
+        return properties;
     }
 }
